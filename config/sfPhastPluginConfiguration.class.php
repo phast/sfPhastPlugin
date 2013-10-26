@@ -19,7 +19,6 @@ class sfPhastPluginConfiguration extends sfPluginConfiguration
 
 	public function configure()
 	{
-
 	}
 
 }
