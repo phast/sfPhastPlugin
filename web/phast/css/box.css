@@ -1,0 +1,137 @@
+.phast-box{
+	position: relative;
+}
+
+.phast-box > i.loading{
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0;
+	background-color: white;
+    z-index: 400;
+}
+
+html .phast-box-textedit{
+	height: 300px;
+}
+
+.phast-box-calendar{
+	position: relative;
+}
+.phast-box-calendar > input[type="text"]{
+	padding-left: 22px;
+}
+.phast-box-calendar > img{
+	position: absolute;
+	top: 50%;
+	left: 3px;
+	margin-top: -8px;
+	cursor: pointer;
+}
+
+.phast-box-notice{
+    display: block;
+    margin-bottom: 5px;
+    font-size: 9px;
+    font-weight: normal;
+    color: #999;
+    line-height: 1;
+}
+
+
+.phast-box-static{
+	padding: 3px 10px;
+	border: 1px solid #eee;
+	cursor: default;
+	background-color: #fafafa;
+}
+.phast-box-static:hover{
+	color: black;
+	background-color: white;
+	border-color: #AAACB2;
+	box-shadow: 0 0 3px #ccc;
+}
+
+.DynarchCalendar-topCont{
+	width: auto;
+}
+
+.phast-box-type-field-file > dd > div{
+	margin-top: 5px;
+}
+
+.phast-box-selectgroup{
+	list-style: none;
+}
+.phast-box-selectgroup > li + li{
+	margin-top: 2px;
+}
+
+.phast-box-choose{
+	position: relative;
+}
+.phast-box-choose input{
+	cursor: pointer;
+}
+.phast-box-choose > a.clear{
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	bottom: 1px;
+	width: 20px;
+	background-image: url(../icons/bdelete.png);
+	background-position: 50% 56%;
+}
+.phast-box-choose > a.clear:hover{
+	background-color: #ffe8e3;
+}
+
+.phast-box-modal{
+	position: absolute;
+	background-color: white;
+	padding: 20px;
+	border: 1px solid black;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.phast-box-buttons{
+	margin-top: 20px;
+}
+.phast-box-buttons + dl{
+	margin-top: 20px;
+}
+
+.phast-box-section{
+	overflow: hidden;
+	padding: 8px 20px;
+	margin: 25px -20px 15px -20px;
+	font-weight: bold;
+	color: white;
+	background-color: #4682b4;
+	text-shadow: 0 1px 1px #294c6a;
+}
+.phast-box-section:first-child{
+	margin-top: -20px;
+}
+.phast-box-section .phast-box-buttons{
+	float: right;
+	margin-top: -4px;
+	margin-bottom: -75px;
+}
+.phast-box-section .phast-ui-button{
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.phast-box-section .phast-ui-button:hover{
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+}
+
+.phast-box-save{
+	background-image: url(../icons/save.png);
+	background-repeat: no-repeat;
+	background-position: 6px 50%;
+	padding-left: 30px;
+    cursor: pointer;
+}

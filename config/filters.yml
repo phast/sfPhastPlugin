@@ -1,0 +1,8 @@
+rendering: ~
+security:  ~
+cache:     ~
+
+execution:
+  class:  sfPhastExecutionFilter
+  param:
+    type: execution
