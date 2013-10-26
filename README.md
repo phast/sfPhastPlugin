@@ -1,4 +1,4 @@
-sfPlugin
+sfPhastPlugin
 ========
 
 Symfony1 plugin
