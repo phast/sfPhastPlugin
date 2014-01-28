@@ -1,0 +1,13 @@
+/.idea/
+/lib/model/om/
+/lib/model/map/
+/lib/venor/
+/cache/
+/log/
+/data/
+/plugins/
+/symfony
+/composer.lock
+/config/databases.yml
+/*.bat
+thumbs.db
