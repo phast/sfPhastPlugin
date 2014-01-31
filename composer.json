@@ -6,6 +6,6 @@
     "require": {
 		"php": ">=5.4.0",
 		"composer/installers": "*",
-		"propel/sf-propel-o-r-m-plugin": "1.5.*@dev",
+		"propel/sf-propel-o-r-m-plugin": "1.5.*@dev"
     }
 }
