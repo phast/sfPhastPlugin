@@ -2,10 +2,14 @@
     "name": "phast/sf-phast-plugin",
     "type": "symfony1-plugin",
     "keywords": ["symfony", "phast", "ui", "cms"],
-	"version": "0.1.0",
     "require": {
 		"php": ">=5.4.0",
 		"composer/installers": "*",
 		"propel/sf-propel-o-r-m-plugin": "1.5.*@dev"
+    },
+	"extra": {
+        "branch-alias": {
+            "dev-master": "0.1.0"
+        }
     }
 }
