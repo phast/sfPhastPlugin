@@ -36,7 +36,7 @@
 		"php": ">=5.4.0",
 		"composer/installers": "*",
 		"symfony/symfony1": "dev-master",
-		"propel/sf-propel-o-r-m-plugin": "dev-master",
+		"propel/sf-propel-o-r-m-plugin": "1.5.*@dev",
 		"twig/twig": "1.15.*@dev",
         "henrikbjorn/sf-twig-plugin": "dev-master"
     },
