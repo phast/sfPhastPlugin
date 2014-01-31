@@ -1,10 +1,46 @@
 {
+    "config": {
+        "vendor-dir": "lib/vendor"
+    },
+	"repositories": [
+		{
+            "type": "package",
+            "package": {
+                "name": "symfony/symfony1",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony/symfony1",
+                    "reference": "1.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "henrikbjorn/sf-twig-plugin",
+                "type": "symfony1-plugin",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/henrikbjorn/sfTwigPlugin",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
     "name": "phast/sf-phast-plugin",
     "type": "symfony1-plugin",
     "keywords": ["symfony", "phast", "ui", "cms"],
     "require": {
 		"php": ">=5.4.0",
-        "composer/installers": "*",
-        "propel/sf-propel-o-r-m-plugin": "dev-master"
+		"composer/installers": "*",
+		"symfony/symfony1": "dev-master",
+		"propel/sf-propel-o-r-m-plugin": "dev-master",
+		"twig/twig": "1.15.*@dev",
+        "henrikbjorn/sf-twig-plugin": "dev-master"
+    },
+	"scripts": {
+        "post-install-cmd": "php lib/vendor/symfony/symfony1/data/bin/symfony generate:project web --orm=Propel --installer=./plugins/sfPhastPlugin/config/installer.php"
     }
 }
