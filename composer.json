@@ -11,5 +11,11 @@
         "branch-alias": {
             "dev-master": "0.1-dev"
         }
+    },
+	"scripts": {
+        "post-update-cmd": [
+            "php symfony plugin:publish-assets"
+        ]
     }
+}
 }
