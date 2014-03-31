@@ -15,6 +15,9 @@
 	"scripts": {
         "post-update-cmd": [
             "php symfony plugin:publish-assets"
+        ],
+		"post-create-project-cmd": [
+            "php symfony plugin:publish-assets"
         ]
     }
 }
