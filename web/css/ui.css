@@ -1,0 +1,284 @@
+#phast-blackout{
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, .5);
+}
+
+
+.phast-crop-edit{
+	position: absolute;
+	margin: 0 0 0 -20px;
+	background-image: url(../iconset/silk/pencil.png);
+	width: 20px;
+	height: 20px;
+	background-position: 50% 50%;
+	background-color: rgba(0, 0, 0, .5);
+	transition: background-color .5s ease;
+}
+.phast-crop-edit:hover{
+	background-color: rgba(0, 0, 0, .7);
+}
+.phast-crop{
+	overflow: auto;
+	padding: 5px;
+	border: 1px dotted #4682B4;
+	margin-top: 10px;
+	white-space: nowrap;
+	font-size: 0;
+	background-image: url(../images/ps-bg.png);
+	background-repeat: repeat; 
+}
+.phast-crop-preview{
+	overflow: hidden;
+	width: 0;
+	height: 0;
+}
+.phast-crop-preview,
+.phast-crop-thumbnail{
+	display: inline-block;
+	vertical-align: top;
+	border: 1px solid black;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 1);
+}
+.phast-crop-original{
+	margin: 0 0 0 5px;	
+	display: inline-block;
+	vertical-align: top;
+	border: 1px solid black;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 1);
+}
+
+.phast-ui dl + dl{
+	margin-top: 7px;
+}
+.phast-ui dl > dt{
+	color: #4682b4;
+	font-weight: bold;
+	margin-bottom: 3px;
+}
+
+.phast-ui dl + dl{
+	margin-top: 7px;
+}
+.phast-ui dl > dt{
+	color: #4682b4;
+	font-weight: bold;
+	margin-bottom: 3px;
+}
+
+::-webkit-input-placeholder  { color: white; }
+input:-moz-placeholder { color: white; }
+
+.phast-ui input[type="radio"],
+.phast-ui input[type="checkbox"]{
+	padding: 0;
+	margin: 0 5px 0 0;
+}
+.phast-ui input[type="radio"]{
+	vertical-align: -17%;
+}
+.phast-ui input[type="checkbox"]{
+	vertical-align: -20%;
+}
+
+.phast-ui input[type="text"],
+.phast-ui input[type="password"],
+.phast-ui textarea,
+.phast-ui select{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	width: 100%;
+	padding: 3px 5px;
+	border: 1px solid #666;
+	color: #666;
+	background-color: white;
+	border: 1px solid #aaacb2;
+	font-family: inherit;
+	font-size: 100%;
+}
+.phast-ui input[type="text"]:hover, .phast-ui input[type="text"]:focus,
+.phast-ui input[type="password"]:hover, .phast-ui input[type="password"]:focus,
+.phast-ui textarea:hover, .phast-ui textarea:focus,
+.phast-ui select:hover, .phast-ui select:focus{
+	color: black;
+}
+.phast-ui input[type="text"]:focus,
+.phast-ui input[type="password"]:focus,
+.phast-ui textarea:focus,
+.phast-ui select:focus{
+	/* border-color: black; */
+	box-shadow: 0 0 3px #ccc;
+}
+
+.phast-ui select option{
+	background-color: white;
+	color: #666;
+	padding: 0 7px;
+}
+.phast-ui select option:nth-child(odd){
+	background-color: #F9F9F9;
+}
+
+.phast-ui textarea{
+	resize: vertical;
+	height: 70px;
+}
+.phast-ui select{
+	padding: 2px 5px;	
+}
+
+.phast-ui-button{
+	position: relative;
+	display: inline-block;
+	border: none;
+	margin: 0;
+	padding: 0;
+	font-family: inherit;
+	font-size: 100%;
+	text-shadow: none;
+	color: #737373;
+	background: none;
+	background-color: #F0F0EE;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+}
+a.phast-ui-button{
+	text-decoration: none;
+}
+button.phast-ui-button{
+	cursor: pointer;
+	-webkit-border-fit: lines;
+}
+button.phast-ui-button::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+.phast-ui-button:hover{
+	background-color: #FFFACD;
+	color: black;
+}
+
+.phast-ui .icon-delete{ background-image: url(/sfPhastPlugin/icons/delete.png) !important; }
+.phast-ui .icon-edit{ background-image: url(/sfPhastPlugin/icons/edit.png) !important; }
+.phast-ui .icon-add{ background-image: url(/sfPhastPlugin/icons/add.png) !important; }
+.phast-ui .icon-cancel{ background-image: url(/sfPhastPlugin/icons/cancel.png) !important; }
+.phast-ui .icon-cancel-diff{ background-image: url(/sfPhastPlugin/icons/cancel_diff.png) !important; }
+
+.phast-ui .icon-image{ background-image: url(/sfPhastPlugin/icons/image.png) !important; }
+.phast-ui .icon-image-add{ background-image: url(/sfPhastPlugin/icons/image_add.png) !important; }
+
+.phast-ui .icon-folder{ background-image: url(/sfPhastPlugin/icons/folder.png) !important; }
+.phast-ui .icon-folder-add{ background-image: url(/sfPhastPlugin/icons/folder_add.png) !important; }
+.phast-ui .icon-user{ background-image: url(/sfPhastPlugin/icons/user.png) !important; }
+.phast-ui .icon-user-suit{ background-image: url(/sfPhastPlugin/icons/user_suit.png) !important; }
+.phast-ui .icon-user-red{ background-image: url(/sfPhastPlugin/icons/user_red.png) !important; }
+.phast-ui .icon-user-gray{ background-image: url(/sfPhastPlugin/icons/user_gray.png) !important; }
+.phast-ui .icon-component{ background-image: url(/sfPhastPlugin/icons/component.png) !important; }
+.phast-ui .icon-project-screen{ background-image: url(/sfPhastPlugin/icons/project_screen.png) !important; }
+.phast-ui .icon-brick{ background-image: url(/sfPhastPlugin/icons/brick.png) !important; }
+.phast-ui .icon-add-brick{	background-image: url(/sfPhastPlugin/icons/add_brick.png) !important; }
+.phast-ui .icon-folder-brick{	background-image: url(/sfPhastPlugin/icons/folder_brick.png) !important; }
+.phast-ui .icon-application{ background-image: url(/sfPhastPlugin/icons/application.png) !important; }
+.phast-ui .icon-lightning{ background-image: url(/sfPhastPlugin/icons/lightning.png) !important; }
+.phast-ui .icon-add-lightning{ background-image: url(/sfPhastPlugin/icons/add_lightning.png) !important; }
+.phast-ui .icon-application-form{ background-image: url(/sfPhastPlugin/icons/application_form.png) !important; }
+.phast-ui .icon-application-form-add{ background-image: url(/sfPhastPlugin/icons/application_form_add.png) !important; }
+.phast-ui .icon-application-double{ background-image: url(/sfPhastPlugin/icons/application_double.png) !important; }
+
+.phast-ui .icon-ok{ background-image: url(/sfPhastPlugin/icons/ok.png) !important; }
+.phast-ui .icon-ok-disabled{ background-image: url(/sfPhastPlugin/icons/ok-disable.png) !important; }
+
+.phast-ui .icon-user-add{ background-image: url(/sfPhastPlugin/icons/user_add.png) !important; }
+.phast-ui .icon-user-folder{ background-image: url(/sfPhastPlugin/icons/folder_user.png) !important; }
+.phast-ui .icon-group-user{ background-image: url(/sfPhastPlugin/icons/user_group.png) !important; }
+.phast-ui .icon-group-user-add{ background-image: url(/sfPhastPlugin/icons/group_add.png) !important; }
+
+.phast-ui .icon-page{ background-image: url(/sfPhastPlugin/icons/page.png) !important; }
+.phast-ui .icon-list{ background-image: url(/sfPhastPlugin/icons/list.png) !important; }
+.phast-ui .icon-page-folder{ background-image: url(/sfPhastPlugin/icons/folder_page.png) !important; }
+.phast-ui .icon-page-add{ background-image: url(/sfPhastPlugin/icons/page_add.png) !important; }
+
+.phast-ui .icon-page-link{ background-image: url(/sfPhastPlugin/icons/page_link.png) !important; }
+
+.phast-ui .icon-tag{ background-image: url(/sfPhastPlugin/icons/tag_blue.png) !important; }
+.phast-ui .icon-add-tag{ background-image: url(/sfPhastPlugin/icons/tag_blue_add.png) !important; }
+
+.phast-ui .icon-arrow-up{ background-image: url(/sfPhastPlugin/icons/arrow_up.png) !important; }
+.phast-ui .icon-arrow-right{ background-image: url(/sfPhastPlugin/icons/arrow_right.png) !important; }
+.phast-ui .icon-arrow-bottom{ background-image: url(/sfPhastPlugin/icons/arrow_bottom.png) !important; }
+.phast-ui .icon-arrow-left{ background-image: url(/sfPhastPlugin/icons/arrow_left.png) !important; }
+
+.phast-ui .icon-plugin{ background-image: url(/sfPhastPlugin/icons/plugin.png) !important; }
+.phast-ui .icon-plugin-add{ background-image: url(/sfPhastPlugin/icons/plugin_add.png) !important; }
+
+.phast-ui .icon-user-comment{ background-image: url(/sfPhastPlugin/icons/user_comment.png) !important; }
+.phast-ui .icon-comments{ background-image: url(/sfPhastPlugin/icons/comments.png) !important; }
+.phast-ui .icon-comment{ background-image: url(/sfPhastPlugin/icons/comment.png) !important; }
+.phast-ui .icon-comment-add{ background-image: url(/sfPhastPlugin/icons/comment_add.png) !important; }
+
+.phast-ui .icon-bell{ background-image: url(/sfPhastPlugin/icons/bell.png) !important; }
+.phast-ui .icon-bell[rel='0']{background-image: url(/sfPhastPlugin/icons/bell-opacity.png) !important;}
+.phast-ui .icon-bell-add{ background-image: url(/sfPhastPlugin/icons/bell_add.png) !important; }
+
+.phast-ui .icon-visible{ background-image: url(/sfPhastPlugin/icons/eye.png) !important; }
+.phast-ui .icon-hidden{ background-image: url(/sfPhastPlugin/icons/eye-disable.png) !important; }
+
+.phast-ui .icon-review{ background-image: url(/sfPhastPlugin/icons/review.png) !important; }
+.phast-ui .icon-review-done{ background-image: url(/sfPhastPlugin/icons/review_done.png) !important; }
+
+.phast-ui .icon-bug{ background-image: url(/sfPhastPlugin/icons/bug.png) !important; }
+.phast-ui .icon-bug-add{ background-image: url(/sfPhastPlugin/icons/bug_add.png) !important; }
+
+.phast-ui .icon-newspaper{ background-image: url(/sfPhastPlugin/icons/newspaper.png) !important; }
+.phast-ui .icon-newspaper-add{ background-image: url(/sfPhastPlugin/icons/newspaper_add.png) !important; }
+
+.phast-ui .icon-phone{ background-image: url(/sfPhastPlugin/icons/phone.png) !important; }
+.phast-ui .icon-phone-disabled{ background-image: url(/sfPhastPlugin/icons/phone-disabled.png) !important; }
+
+.phast-ui .icon-email{ background-image: url(/sfPhastPlugin/icons/email.png) !important; }
+.phast-ui .icon-email-disabled{ background-image: url(/sfPhastPlugin/icons/email-disabled.png) !important; }
+.phast-ui .icon-help{ background-image: url(/sfPhastPlugin/icons/help.png) !important; }
+.phast-ui .icon-help[rel='0']{ opacity: 0.5 !important; }
+
+.phast-ui .icon-reload{ background-image: url(/sfPhastPlugin/icons/reload.png) !important; }
+.phast-ui .icon-clear{ background-image: url(/sfPhastPlugin/icons/clear.png) !important; }
+
+.phast-ui .icon-building{ background-image: url(/sfPhastPlugin/icons/building.png) !important; }
+
+.phast-ui .icon-key{ background-image: url(/sfPhastPlugin/icons/key.png) !important; }
+.phast-ui .icon-key-add{ background-image: url(/sfPhastPlugin/icons/key_add.png) !important; }
+
+.phast-ui .icon-play{ background-image: url(/sfPhastPlugin/icons/play.png) !important; }
+.phast-ui .icon-earth{ background-image: url(/sfPhastPlugin/icons/earth.png) !important; }
+.phast-ui .icon-green{ background-image: url(/sfPhastPlugin/icons/green.png) !important; }
+
+.phast-ui .icon-film{ background-image: url(/sfPhastPlugin/icons/film.png) !important; }
+.phast-ui .icon-film-add{ background-image: url(/sfPhastPlugin/icons/film_add.png) !important; }
+.phast-ui .icon-film-link{ background-image: url(/sfPhastPlugin/icons/film_link.png) !important; }
+.phast-ui .icon-film-go{ background-image: url(/sfPhastPlugin/icons/film_go.png) !important; }
+
+.phast-ui .icon-application-side-tree{ background-image: url(/sfPhastPlugin/icons/application_side_tree.png) !important; }
+
+.phast-ui .icon-chart-organisation{ background-image: url(/sfPhastPlugin/icons/chart_organisation.png) !important; }
+.phast-ui .icon-chart-organisation-add{ background-image: url(/sfPhastPlugin/icons/chart_organisation_add.png) !important; }
+
+.phast-ui .icon-hourglass{ background-image: url(/sfPhastPlugin/icons/hourglass.png) !important; }
+.phast-ui .icon-time{ background-image: url(/sfPhastPlugin/icons/time.png) !important; }
+
+.phast-ui .icon-none-icon{background-image: none!important; padding-left: 0 !important; }
+
+.phast-ui .icon-loading{ background-image: url(/sfPhastPlugin/icons/loading_f.gif) !important; }
+
+.phast-ui .opacity-50{
+	opacity: 0.5;
+}
+.phast-ui .icon-none{
+    background-image: none;
+    padding-left: 0 !important;
+}

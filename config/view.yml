@@ -1,0 +1,13 @@
+default:
+  http_metas:
+    content-type: text/html
+
+  metas:
+    viewport: width=device-width, initial-scale=1.0
+
+  stylesheets: []
+
+  javascripts: []
+
+  has_layout:     true
+  layout:         layout

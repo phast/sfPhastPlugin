@@ -1,0 +1,17 @@
+prod:
+  .settings:
+    logging_enabled:        false
+
+dev:
+  .settings:
+    error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
+    web_debug:              true
+    cache:                  false
+    no_script_name:         false
+    etag:                   false
+
+all:
+  .settings:
+    csrf_secret:            f085699f1bc5a3c94d4669513fd01167aa52fdc3
+    standard_helpers:       [Partial, Cache]
+    escaping_strategy: false

@@ -1,0 +1,26 @@
+<?php
+
+if('backend' == sfConfig::get('sf_app')):
+
+echo '
+root:
+  url: /
+  param:
+    module: sfPhastAdmin
+    action: index
+
+index:
+  url: /admin/
+  param:
+    module: sfPhastAdmin
+    action: index
+
+module:
+  url: /admin/:module/:action/
+  param:
+    action: index
+';
+
+endif;
+
+?>

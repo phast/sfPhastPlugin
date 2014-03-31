@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        {{ phast_ui_asset() }}
+
+        {{ include_http_metas() }}
+        {{ include_metas() }}
+        {{ include_title() }}
+        {{ include_stylesheets() }}
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+        {{ include_javascripts() }}
+
+        {{ phast_ui_render() }}
+
+    </head>
+    <body>
+    {% if sf_user.hasCredential('cp_access') %}
+
+        <div id="layout">
+
+            <header id="header">
+
+                <aside>
+                    <a href="/">Перейти на сайт</a>
+                    <a href="#remodule" id="remodule">Обновить модули</a>
+                    <a href="#signout" id="signout">Выход</a>
+                </aside>
+
+                <nav>
+                    {% for key, module in modules %}
+                        {% if not(module.hidden) or not(module.credential and sf_user.hasCredential(module.credential)) %}
+                            <a href="/admin/{{ key }}/" class="{{ sf_context.getModuleName == key ? 'active' }}">{{ module.title }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </nav>
+
+            </header>
+
+
+            <section id="content">
+                {{ sf_content }}
+            </section>
+
+        </div>
+
+        <script>
+            $('#remodule').on('click', function () {
+                $$.ajax('/admin/sfPhastAdmin/remodule/')
+                        .complete(function () {
+                            document.location.reload();
+                        });
+                return false;
+            });
+
+            $('#signout').on('click', function () {
+                $$.ajax('/admin/sfPhastAdmin/signout/')
+                        .complete(function () {
+                            document.location.reload();
+                        });
+                return false;
+            });
+
+            $('#regionSwitcher > select').on('change', function () {
+                $$.ajax('/admin/sfPhastAdmin/regionSwitch/', {region: $(this).val()})
+                        .complete(function () {
+                            document.location.reload();
+                        });
+                return false;
+            });
+
+        </script>
+
+    {% endif %}
+    </body>
+</html>

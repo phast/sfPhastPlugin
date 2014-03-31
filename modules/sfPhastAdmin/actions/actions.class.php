@@ -16,6 +16,8 @@ class sfPhastAdminActions extends sfActions{
 
 	public function executeAuth(sfPhastRequest $request){
 
+        $this->aa = '<b>dfgdfg</b>';
+
 		$user = $this->context['user'];
 
 		$box = new sfPhastBox('SignIn');
@@ -24,7 +26,7 @@ class sfPhastAdminActions extends sfActions{
 		$box->setTemplate(
 			'
 				{#section Авторизация}
-				{username:text, Логин
+				{key:text, Логин
 					@required Введите логин
 				}
 				{password:password, Пароль
@@ -40,9 +42,9 @@ class sfPhastAdminActions extends sfActions{
 
 			if($response->error()) return;
 
-			if($userObject = $user->verify($request['username'], $request['password'])){
-				if(!$userObject->getVisible() || !in_array('cp_access', $userObject->getPermissions())) return $response->error('У вас нет доступа в панель управления');
-				$user->authorize($userObject);
+			if($sign = $user->verify($request['key'], $request['password'])){
+				//if(!$userObject->getVisible() || !in_array('cp_access', $userObject->getPermissions())) return $response->error('У вас нет доступа в панель управления');
+                $sign->authorize();
 			}else{
 				return $response->error('Неверный логин или пароль');
 			}
@@ -71,12 +73,12 @@ class sfPhastAdminActions extends sfActions{
 	public function executeIconset(){
         $sections = [];
 
-        $files = sfFinder::type('file')->name('*.png')->in(sfConfig::get('sf_web_dir') . '/phast/iconset');
+        $files = sfFinder::type('file')->name('*.png')->in(sfConfig::get('sf_web_dir') . '/sfPhastPlugin/iconset');
         foreach($files as $file){
 			$file = explode('/', $file);
 			array_splice($file, 0, -2);
 			$name = str_replace('_', '-', substr($file[1], 0, -4));
-			$filename = '/phast/iconset/' . implode('/', $file);
+			$filename = '/sfPhastPlugin/iconset/' . implode('/', $file);
 
             preg_match('/^(\w+)/', $name, $match);
 

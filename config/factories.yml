@@ -1,6 +1,33 @@
+prod:
+  logger:
+    class:   sfNoLogger
+    param:
+      level:   err
+      loggers: ~
+
 all:
+  storage:
+    param:
+      session_name: __utnz
+      session_cookie_domain: .<?php echo sfConfig::get('host') . "\n"; ?>
+
+  view_cache_manager:
+    class: sfViewCacheManager
+    param:
+      cache_key_use_vary_headers: true
+      cache_key_use_host_name:    true
+
+  routing:
+    class: <?php echo ('backend' == sfConfig::get('sf_app') ? 'sfPhastBackendRouting' : 'sfPhastFrontendRouting') . "\n" ?>
+    param:
+      generate_shortest_url:            true
+      extra_parameters_as_query_string: true
+
   request:
     class: sfPhastRequest
+
+  response:
+    class: sfPhastWebResponse
 
   user:
     class: sfPhastUser
