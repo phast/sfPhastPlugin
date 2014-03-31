@@ -14,6 +14,12 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                     break;
                 case 'user_sign':
                     $table->setBaseClass('PhastUserSign');
+                    break;  
+				case 'image':
+                    $table->setBaseClass('PhastImage');
+                    break;        
+				case 'page':
+                    $table->setBaseClass('PhastPage');
                     break;
 
             }
