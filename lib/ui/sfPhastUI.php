@@ -59,16 +59,16 @@ class sfPhastUI
     public static function asset(){
         $response = sfContext::getInstance()->getResponse();
         $javascripts = [
-            'jquery/jquery.min.js',
-            'jquery/jquery.populate.js',
-            'jquery/jquery.populate.js',
-            'jquery/jquery.form.js',
-            'jquery/jquery.tablednd.js',
-            'jquery/jquery-ui.custom.min.js',
-            'jquery/jquery.ui.datepicker-ru.js',
-            'jquery/jquery.Jcrop.min.js',
-            'tinymce/tiny_mce.js?1',
-            'tinymce/jquery.tinymce.js',
+            '/sfPhastPlugin/js/jquery/jquery.min.js',
+            '/sfPhastPlugin/js/jquery/jquery.populate.js',
+            '/sfPhastPlugin/js/jquery/jquery.populate.js',
+            '/sfPhastPlugin/js/jquery/jquery.form.js',
+            '/sfPhastPlugin/js/jquery/jquery.tablednd.js',
+            '/sfPhastPlugin/js/jquery/jquery-ui.custom.min.js',
+            '/sfPhastPlugin/js/jquery/jquery.ui.datepicker-ru.js',
+            '/sfPhastPlugin/js/jquery/jquery.Jcrop.min.js',
+            '/sfPhastPlugin/js/tinymce/tiny_mce.js?1',
+            '/sfPhastPlugin/js/tinymce/jquery.tinymce.js',
             '/sfPhastPlugin/js/phast.js',
         ];
         $stylesheets = [
@@ -77,8 +77,8 @@ class sfPhastUI
             '/sfPhastPlugin/css/list.css',
             '/sfPhastPlugin/css/box.css',
             '/sfPhastPlugin/css/icon.css',
-            'jquery-ui/smoothness.css',
-            'jquery.Jcrop.min.css',
+            '/sfPhastPlugin/css/jquery-ui/smoothness.css',
+            '/sfPhastPlugin/css/jquery.Jcrop.min.css',
         ];
 
         foreach($javascripts as $javascript){
