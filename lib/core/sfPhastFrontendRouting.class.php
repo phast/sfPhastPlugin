@@ -31,7 +31,7 @@ class sfPhastFrontendRouting extends sfPatternRouting
 			$keys[] = '/';
 		}
 
-        $pages = (new PageQuery)->forRouting($keys)->find()->getData();
+        $pages = (new PhastPageQuery)->forRouting($keys)->find()->getData();
 		usort($pages, function($a, $b) {
 			$a = $a->getURI();
 			$b = $b->getURI();
