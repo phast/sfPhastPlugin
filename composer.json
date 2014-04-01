@@ -8,10 +8,7 @@
 		"propel/sf-propel-o-r-m-plugin": "1.5.*@dev"
     },
 	"scripts": {
-        "post-update-cmd": [
-            "php symfony plugin:publish-assets"
-        ],
-		"post-install-cmd": [
+        "post-package-update": [
             "php symfony plugin:publish-assets"
         ]
     }
