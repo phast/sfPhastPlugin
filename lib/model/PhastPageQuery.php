@@ -1,7 +1,7 @@
 <?php
 
 
-class PhastPageQuery extends BaseObject
+class PhastPageQuery extends PageQuery
 {
 
     public function forProd(){
