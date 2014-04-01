@@ -11,7 +11,7 @@
         "post-update-cmd": [
             "php symfony plugin:publish-assets"
         ],
-		"post-create-project-cmd": [
+		"post-install-cmd": [
             "php symfony plugin:publish-assets"
         ]
     }
