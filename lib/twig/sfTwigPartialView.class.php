@@ -8,7 +8,7 @@
  * @subpackage view
  * @author     Henrik Bjornskov <henrik@bearwoods.dk>
  */
-class sfTwigPartialView extends sfPhastTwigView
+class sfTwigPartialView extends sfTwigView
 {
     protected $partialVars = array();
 

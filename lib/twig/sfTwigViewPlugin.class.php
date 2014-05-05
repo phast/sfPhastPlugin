@@ -7,7 +7,7 @@
  * @subpackage view
  * @author     Henrik Bjornskov <henrik@bearwoods.dk>
  */
-class sfPhastTwigView extends sfPHPView
+class sfTwigView extends sfPHPView
 {
     protected $twig = null;
     protected $loader = null;
