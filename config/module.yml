@@ -1,4 +1,4 @@
 all:
-  view_class: sfPhastTwig
-  partial_view_class: sfPhastTwig
+  view_class: sfTwig
+  partial_view_class: sfTwig
   sf_twig_extensions: [twig]
