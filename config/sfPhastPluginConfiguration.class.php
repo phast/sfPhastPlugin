@@ -15,7 +15,7 @@ class sfPhastPluginConfiguration extends sfPluginConfiguration
         $helpers[] = 'Phast';
 
         sfConfig::set('sf_standard_helpers', $helpers);
-        sfConfig::set('mod_global_partial_view_class', 'sfPhastTwig');
+        sfConfig::set('mod_global_partial_view_class', 'sfTwig');
 
         require_once sfConfig::get('sf_twig_lib_dir') . '/Twig/Autoloader.php';
         Twig_Autoloader::register();
