@@ -19,8 +19,12 @@ class sfPhastMailing{
 			$transport->setExtraParams(null);
 		}
 		if(isset($parameters['attach']) && is_array($parameters['attach'])){
-            foreach($parameters['attach'] as $path){
-                $mail->attach(Swift_Attachment::fromPath($path));
+            foreach($parameters['attach'] as $key => $value){
+                $mail->attach(
+					is_integer($key)
+						? Swift_Attachment::fromPath($value)
+						: Swift_Attachment::fromPath($key)->setFilename($value)
+				);
             }
         }
         $mail = $mailer->compose($from, $recipient, $subject, $body);
