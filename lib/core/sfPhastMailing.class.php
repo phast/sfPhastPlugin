@@ -18,6 +18,11 @@ class sfPhastMailing{
         if(($transport = $mailer->getTransport()) instanceOf Swift_MailTransport){
 			$transport->setExtraParams(null);
 		}
+		if(isset($parameters['attach']) && is_array($parameters['attach'])){
+            foreach($parameters['attach'] as $path){
+                $mail->attach(Swift_Attachment::fromPath($path));
+            }
+        }
         $mail = $mailer->compose($from, $recipient, $subject, $body);
         return $mailer->send($mail);
     }
