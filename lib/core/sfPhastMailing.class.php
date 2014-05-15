@@ -15,7 +15,9 @@ class sfPhastMailing{
         $context = sfContext::getInstance();
 
         $mailer = $context->getMailer();
-        $mailer->getTransport()->setExtraParams(null);
+        if(($transport = $mailer->getTransport()) instanceOf Swift_MailTransport){
+			$transport->setExtraParams(null);
+		}
         $mail = $mailer->compose($from, $recipient, $subject, $body);
         return $mailer->send($mail);
     }
