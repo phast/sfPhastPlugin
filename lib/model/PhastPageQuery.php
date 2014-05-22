@@ -16,10 +16,10 @@ class PhastPageQuery extends PageQuery
         return $this;
     }
 
-    public function forRetrieveByRoute($uri, $pattern, $requirements){
+    public function forRetrieveByRoute($uri, $pattern = null, $requirements = null){
         $this
             ->filterByUri($uri)
-            ->filterByRoutePattern('?', $pattern)
+            ->filterByRoutePattern($pattern)
             ->filterByRouteRequirements($requirements);
 
         return $this;
