@@ -64,7 +64,7 @@ EOF;
 protected \$holderObject;
 public function getHolder(){
 	if(\$this->holderObject !== null) return \$this->holderObject;
-	return \$this->holderObject = HolderPeer::retrieveFor(\$this);
+	return \$this->holderObject = PhastHolderPeer::retrieveFor(\$this);
 }
 ";
 
