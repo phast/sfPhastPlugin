@@ -20,6 +20,9 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                     break;        
 				case 'page':
                     $table->setBaseClass('PhastPage');
+                    break;		
+				case 'holder':
+                    $table->setBaseClass('PhastHolder');
                     break;
 
             }
