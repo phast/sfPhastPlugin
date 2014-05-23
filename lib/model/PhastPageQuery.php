@@ -4,6 +4,20 @@
 class PhastPageQuery extends PageQuery
 {
 
+    public static function create($modelAlias = null, $criteria = null)
+    {
+        if ($criteria instanceof PageQuery) {
+            return $criteria;
+        }
+        $query = new PhastPageQuery(null, null, $modelAlias);
+
+        if ($criteria instanceof Criteria) {
+            $query->mergeWith($criteria);
+        }
+
+        return $query;
+    }
+
     public function forProd(){
         $this->filterByVisible(1);
         $this->orderByPosition();
