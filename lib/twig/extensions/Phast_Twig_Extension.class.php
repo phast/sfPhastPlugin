@@ -9,6 +9,7 @@ class Phast_Twig_Extension extends Twig_Extension
             'phast_ui_asset' => new Twig_Function_Function(['sfPhastUI', 'asset']),
             'geturl' => new Twig_Function_Function('geturl'),
             'getpartial' => new Twig_Function_Function(['sfPhastUtils', 'getpartial']),
+            'func' => new Twig_Function_Function([$this, 'func']),
         );
     }
 
@@ -24,5 +25,10 @@ class Phast_Twig_Extension extends Twig_Extension
     {
         return 'phast';
     }
+
+    public function func($callable) {
+        return call_user_func_array($callable, func_get_args());
+    }
 }
+
 
