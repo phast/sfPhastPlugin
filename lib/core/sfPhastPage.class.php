@@ -25,7 +25,7 @@ class sfPhastPage{
     }
 
     public function getMenuPages($uri){
-        return PagePeer::retrieveByURI($uri)
+        return PhastPagePeer::retrieveByURI($uri)
             ->getChildren(1, PageQuery::create()->forProd());
     }
 
