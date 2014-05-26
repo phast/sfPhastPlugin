@@ -1,9 +1,10 @@
 /**
- * @todo Нужно хорошенько разобраца с прецессом открывания, закрывания, загрузки и т.д. (BOX)
- * @todo хочу переименовать "renderRows"
+ * Phast UI client
+ * @author Pavel Bondarovich <p.bondarovich@gmail.com>
+ * 
+ * @see $$.Box
+ * @see $$.List
  */
-
-
 $.fn.reverse = [].reverse;
 $.fn.serializeJSON = function(){
 	var json = {};
@@ -83,6 +84,15 @@ $.fn.serializeJSON = function(){
 
             }
 
+        },
+        morph: function(n, u1, u234, u10, prepend){
+            n = parseInt(n);
+            n = Math.abs(n) % 100;
+            if (n>10 && n<20) return (prepend ? n+prepend : '') + u10;
+            n = n % 10;
+            if (n>1 && n<5) return (prepend ? n+prepend : '') + u234;
+            if (n==1) return (prepend ? n+prepend : '') + u1;
+            return (prepend ? n+prepend : '') + u10;
         }
 	});
 
