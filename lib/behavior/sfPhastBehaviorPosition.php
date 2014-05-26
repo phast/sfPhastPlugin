@@ -54,11 +54,11 @@ EOF;
 		$script = '';
 
 
-		if($description = $this->getTable()->getDescription()){
-			preg_match_all('/~([\w\.]+)/', $description, $matches, PREG_SET_ORDER);
-			foreach($matches as $match){
+		//if($description = $this->getTable()->getDescription()){
+		//	preg_match_all('/~([\w\.]+)/', $description, $matches, PREG_SET_ORDER);
+			//foreach($matches as $match){
 
-				if('holder' == $match[1]){
+				//if('holder' == $match[1]){
 
 					$script .= "
 protected \$holderObject;
@@ -68,10 +68,10 @@ public function getHolder(){
 }
 ";
 
-				}
+				//}
 
-			}
-		}
+			//}
+		//}
 
 		if($this->getTable()->hasColumn($this->column)){
 
