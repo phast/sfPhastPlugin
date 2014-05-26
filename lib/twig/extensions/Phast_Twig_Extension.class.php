@@ -27,7 +27,9 @@ class Phast_Twig_Extension extends Twig_Extension
     }
 
     public function func($callable) {
-        return call_user_func_array($callable, func_get_args());
+        $params = func_get_args();
+        array_shift($params);
+        return call_user_func_array($callable,$params);
     }
 }
 
