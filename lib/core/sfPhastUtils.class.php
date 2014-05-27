@@ -37,6 +37,15 @@ class sfPhastUtils{
         return preg_replace('/\s+/u', $break, trim($string));
     }
 
+    public static function morph($n, $f1, $f2, $f5) {
+        $n = abs(intval($n)) % 100;
+        if ($n>10 && $n<20) return $f5;
+        $n = $n % 10;
+        if ($n>1 && $n<5) return $f2;
+        if ($n==1) return $f1;
+        return $f5;
+    }
+
     public static function encrypt($content){
         $td = mcrypt_module_open('des', '', 'ecb', '');
         $key = substr(sfConfig::get('app_encrypt_key'), 0, mcrypt_enc_get_key_size($td));

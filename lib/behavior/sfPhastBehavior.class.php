@@ -23,6 +23,12 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                     break;		
 				case 'holder':
                     $table->setBaseClass('PhastHolder');
+                    foreach($table->getForeignTableNames() as $rel){
+                        $this
+                            ->getDatabase()
+                            ->getTable($rel)
+                            ->setDescription('~holder');
+                    }
                     break;
 
             }
