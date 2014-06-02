@@ -41,7 +41,7 @@ class sfPhastUIWidget{
         }
 
         sfContext::getInstance()->getConfiguration()->loadHelpers('Asset');
-        use_javascript('jquery/jquery.damnUploader.js', 'last');
+        use_javascript('/sfPhastPlugin/js/jquery/jquery.damnUploader.js', 'last');
 
 		$widget = new sfPhastList('WidgetList');
 		$widget->addControl(array('caption' => 'Добавить файл', 'icon' => 'silk-drive-add', 'action' => '&WidgetFile'));
