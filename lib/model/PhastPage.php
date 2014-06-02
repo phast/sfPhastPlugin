@@ -66,6 +66,7 @@ class PhastPage extends BaseObject
     }
 
     public function getURL(){
+    	if(!$this->uri) return '';
         return $this->uri[0] == '^' ? mb_substr($this->uri, 1) : $this->uri;
     }
 
