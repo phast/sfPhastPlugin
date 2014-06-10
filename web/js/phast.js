@@ -394,7 +394,15 @@ $.fn.serializeJSON = function(){
 					});
 
 					filtersNode.find('div.phast-box-calendar').each(function(){
-
+						$(this).find('> input').datepicker(
+							{
+								dateFormat: 'd MM yy',
+								numberOfMonths: 3,
+								showOn: 'button',
+								buttonImage: '/sfPhastPlugin/icons/date.png',
+								buttonImageOnly: true
+							}
+						);
 					});
 
 				},
