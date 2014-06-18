@@ -15,7 +15,17 @@ class PhastUser extends BaseObject{
     }
 
     public function getCredentials(){
-        return ['cp_access'];
+        return UserCredentialQuery::create()
+                ->useUserCredentialRelQuery()
+                ->useUserGroupQuery()
+                ->useUserGroupRelQuery()
+                ->filterByUserId($this->id)
+                ->endUse()
+                ->endUse()
+                ->endUse()
+                ->select('Name')
+                ->find()
+                ->toArray();
     }
 
 }
