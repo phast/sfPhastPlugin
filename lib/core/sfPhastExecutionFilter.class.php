@@ -57,9 +57,8 @@ class sfPhastExecutionFilter extends sfExecutionFilter
         $user = $action->getUser();
 
         $action->modules = sfPhastAdmin::getModules();
-        $action->asd = 'asd';
-
-        if(!$user->hasCredential('cp_access')){
+        
+        if($user->hasCredential('cp_access')){
             ($action->getModuleName() == 'sfPhastAdmin' && $action->getActionName() == 'auth') or $action->forward('sfPhastAdmin', 'auth');
 
         }else if($action->getModuleName() != 'sfPhastAdmin'){
