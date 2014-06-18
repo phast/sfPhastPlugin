@@ -128,7 +128,9 @@ class sfPhastRequest extends sfWebRequest
 	{
 		if ($pk = $this->getParameter($name)) {
 			$peer = $table . 'Peer';
-			return $peer::retrieveByPK($pk);
+			$pk = explode(',', $pk);
+            		if(isset($pk[1])) return $peer::retrieveByPK($pk[0], $pk[1]);
+            		return $peer::retrieveByPK($pk[0]);
 		} else if ($allowEmpty) {
 			return new $table();
 		}
