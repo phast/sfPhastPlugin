@@ -39,6 +39,10 @@ class sfPhastPage{
     public function getChain(){
         return $this->chain;
     }
+	
+    public function getSetting(){
+        return call_user_func_array(['SettingPeer', 'retrieveByName'], func_get_args());
+    }
 
     public function __call($method, $args)
     {
