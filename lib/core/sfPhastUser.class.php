@@ -11,8 +11,7 @@ class sfPhastUser extends sfBasicSecurityUser
 	{
 		parent::initialize($dispatcher, $storage, $options);
 
-        /*
-		if(!$this->isAuthenticated()){
+ 		if(!$this->isAuthenticated()){
 			$cookie_id = base_convert(sfContext::getInstance()->getRequest()->getCookie('__utna'), 32, 16);
 			$cookie_hash = sfContext::getInstance()->getRequest()->getCookie('__utnb');
 
@@ -24,8 +23,7 @@ class sfPhastUser extends sfBasicSecurityUser
                 }
 			}
 		}
-        */
-
+  
         if($this->isAuthenticated()){
             if($this->storage->read(self::CREDENTIALS_CHECK_NAMESPACE) < time() - 60){
                 $this->storage->write(self::CREDENTIALS_CHECK_NAMESPACE, time());
@@ -106,7 +104,7 @@ class sfPhastUser extends sfBasicSecurityUser
 			$host = '.' . sfConfig::get('host');
 			$response = sfContext::getInstance()->getResponse();
 			$request =  sfContext::getInstance()->getRequest();
-			sfContext::getInstance()->getResponse()->setCookie('__utna', base_convert($session->getId(), 16, 36), time() + 315360000, '/', $host);
+			sfContext::getInstance()->getResponse()->setCookie('__utna', base_convert($session->getId(), 16, 32), time() + 315360000, '/', $host);
 			sfContext::getInstance()->getResponse()->setCookie('__utnb', $session->getHash(), time() + 315360000, '/', $host);
 		}
 
