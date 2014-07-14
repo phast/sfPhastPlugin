@@ -1,6 +1,6 @@
 <?php
 
-class sfPhastPage{
+class sfPhastPage implements ArrayAccess{
 
     protected static $instance;
 
@@ -48,8 +48,20 @@ class sfPhastPage{
         return call_user_func_array([$this->page, $method], $args);
     }
 	
-    public function __get($var){
-        return $this->action->getVar($var);
+    public function offsetGet($var){
+        return $this->action->getVarHolder()->get($var);
+    }
+
+    public function offsetExists($var){
+        return $this->action->getVarHolder()->has($var);
+    }
+
+    public function offsetSet($var, $value){
+        return $this->action->getVarHolder()->set($var, $value);
+    }
+
+    public function offsetUnset($var){
+        return $this->action->getVarHolder()->remove($var);
     }
 
 }
