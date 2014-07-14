@@ -44,9 +44,12 @@ class sfPhastPage{
         return call_user_func_array(['SettingPeer', 'retrieveByName'], func_get_args());
     }
 
-    public function __call($method, $args)
-    {
+    public function __call($method, $args){
         return call_user_func_array([$this->page, $method], $args);
+    }
+	
+    public function __get($var){
+        return $this->action->getVar($var);
     }
 
 }
