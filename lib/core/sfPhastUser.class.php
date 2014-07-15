@@ -17,7 +17,7 @@ class sfPhastUser extends sfBasicSecurityUser
 
 			if($cookie_id && $cookie_hash){
                 if($session = UserSessionQuery::create()->filterById($cookie_id)->filterByHash($cookie_hash)->findOne()){
-                    $this->authorize($session->getUserSign());
+                    $this->authorize($session);
                 }else{
                     $this->terminate();
                 }
@@ -80,14 +80,17 @@ class sfPhastUser extends sfBasicSecurityUser
      * @param bool $update Update session
      * @return UserSession
      */
-    public function authorize(UserSign $sign, $remember = true, $update = false){
+    public function authorize($sign, $remember = true, $update = false){
 
-        if(!$session = UserSessionQuery::create()->filterByUserSign($sign)->findOne()){
+		if($sign instanceof UserSession){
+			$session = $sign;
+			$sign = $session->getUserSign();
+		}else{
             $session = new UserSession();
             $session->setUserId($sign->getUserId());
             $session->setUserSign($sign);
         }
-
+	
         if($session->isNew() or $update){
             $session->setHash($this->generateHash(true));
         }
