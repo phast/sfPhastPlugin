@@ -45,7 +45,7 @@ class sfPhastMailing{
             $view = new sfTwigView($context, '', '', '');
             $view->setExtension('.twig');
             $view->setTemplate(sfConfig::get('sf_lib_dir') . '/mailing/templates/' . $template . '.twig');
-            $view->getParameterHolder()->add($parameters);
+            $view->getAttributeHolder()->add($parameters);
             if($decorator){
                 $view->setDecoratorTemplate('_' . $decorator);
                 $view->setDecoratorDirectory(sfConfig::get('sf_lib_dir') . '/mailing/templates');
