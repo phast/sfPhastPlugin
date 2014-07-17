@@ -68,7 +68,7 @@ class sfPhastMailing{
         $message->setFrom($from);
         $message->setTo($recipient);
         $message->setSubject($subject);
-        $message->setBody(self::render($template));
+        $message->setBody(self::render($template, parameters));
         $message->setPriority($priority);
         $message->save();
 
