@@ -42,7 +42,7 @@ class PhastImage extends BaseObject
                 $thumb->loadFile($this->getSource());
                 $thumb->save($filepath);
             }
-            if(!$this->getVirtualColumn('isTemp')) $this->setUpdatedAt(time())->save();
+            if(!$this->hasVirtualColumn('isTemp')) $this->setUpdatedAt(time())->save();
         }
 
         return $webpath . $filename . '?_=' . base_convert($this->updated_at, 16, 36);
