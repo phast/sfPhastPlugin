@@ -113,6 +113,12 @@ class sfPhastUtils{
         $date = getdate($timestamp);
         if($format == 'full'){
             return "{$date['mday']} {$months[$date['mon']]} {$date['year']} ({$weeks[$date['wday']]})";
+		}else if($format == 'active'){
+            if($timestamp > time() - 120) return 'Только что';
+            if($timestamp > time() - 3600) return 'Менее часа назад';
+            if(date('d.m.Y', $timestamp) == date('d.m.Y')) return 'Сегодня в ' . date('H:i', $timestamp);
+            if(date('d.m.Y', $timestamp) == date('d.m.Y', time()-86400)) return 'Вчера в ' . date('H:i', $timestamp);
+            return "{$date['mday']} {$months[$date['mon']]} {$date['year']} в " . date('H:i', $timestamp);
         }else if($format == 'simple'){
             return "{$date['mday']} {$months[$date['mon']]} {$date['year']}";
         }else if($format == 'simpleY'){
