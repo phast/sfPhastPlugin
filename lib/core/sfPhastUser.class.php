@@ -3,7 +3,7 @@
 class sfPhastUser extends sfBasicSecurityUser
 {
 	const USERID_NAMESPACE = 'symfony/user/sfUser/userid';
-	const USERSINGID_NAMESPACE = 'symfony/user/sfUser/signid';
+	const USERSIGNID_NAMESPACE = 'symfony/user/sfUser/signid';
 	const AUTHTIME_NAMESPACE = 'symfony/user/sfUser/authtime';
 	const CREDENTIALS_CHECK_NAMESPACE = 'symfony/user/sfUser/credentialCheck';
 	protected $user;
@@ -104,7 +104,7 @@ class sfPhastUser extends sfBasicSecurityUser
 
 		$this->terminate();
 		$this->storage->write(self::USERID_NAMESPACE, $sign->getUserId());
-		$this->storage->write(self::USERSINGID_NAMESPACE, $sign->getId());
+		$this->storage->write(self::USERSIGNID_NAMESPACE, $sign->getId());
 		$this->storage->write(self::CREDENTIALS_CHECK_NAMESPACE, time());
 		$this->setAuthenticated(true);
 		$this->addCredentials($this->getObjectModel()->getCredentials());
