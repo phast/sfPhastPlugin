@@ -46,6 +46,10 @@ class sfPhastUser extends sfBasicSecurityUser
 		}
 
 	}
+	
+	public function getSign(){
+		return UserSignQuery::create()->findOneById($this->storage->read(self::USERSIGNID_NAMESPACE));
+	}
 
 	public function generatePassword($password, $salt){
 		return hash('sha256', sha1($salt.$password) . sfConfig::get('sf_user_password_salt'));
