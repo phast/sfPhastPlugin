@@ -25,7 +25,7 @@
                         node = nodes[i];
                         replacement = new tinymce.html.Node('img', 1);
                         replacement.attr({
-                            src : '/js/tinymce/themes/advanced/img/trans.gif',
+                            src : '/sfPhastPlugin/js/tinymce/themes/advanced/img/trans.gif',
                             class: 'mceItemWidget',
                             'data-id': node.attr('data-id'),
                             'data-type': node.attr('data-type')
