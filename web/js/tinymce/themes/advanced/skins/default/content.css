@@ -39,7 +39,7 @@ font[face=mceinline] {font-family:inherit !important}
 
 .mceItemWidget {
 	border: 1px dotted #cc0000; 
-	background-image: url("/phast/iconset/silk/page-white.png");
+	background-image: url("/sfPhastPlugin/iconset/silk/page-white.png");
 	background-position: center; 
 	background-repeat: no-repeat; 
 	background-color:#ffffcc;  
@@ -47,19 +47,19 @@ font[face=mceinline] {font-family:inherit !important}
 	height: 50px;
 }
 .mceItemWidget[data-type="image"]{
-	background-image: url("/phast/iconset/silk/image.png");
+	background-image: url("/sfPhastPlugin/iconset/silk/image.png");
 }
 .mceItemWidget[data-type="video"]{
-	background-image: url("/phast/iconset/silk/film.png");
+	background-image: url("/sfPhastPlugin/iconset/silk/film.png");
 }
 .mceItemWidget[data-type="file"]{
-	background-image: url("/phast/iconset/silk/drive.png");
+	background-image: url("/sfPhastPlugin/iconset/silk/drive.png");
 }
 .mceItemWidget[data-type="gallery"]{
-	background-image: url("/phast/iconset/silk/images.png");
+	background-image: url("/sfPhastPlugin/iconset/silk/images.png");
 }
 .mceItemWidget[data-type="content"]{
-	background-image: url("/phast/iconset/silk/layout.png");
+	background-image: url("/sfPhastPlugin/iconset/silk/layout.png");
 }
 
 .mceItemMedia {border:1px dotted #cc0000; background-position:center; background-repeat:no-repeat; background-color:#ffffcc}
