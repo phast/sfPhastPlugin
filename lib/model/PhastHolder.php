@@ -15,7 +15,7 @@ class PhastHolder extends BaseObject
     }
 
     public function getObject(){
-        $map = PhastHolderPeer::getTableMap();
+        $map = HolderPeer::getTableMap();
         foreach($map->getColumns() as $column){
             /**
              * @param ColumnMap $column
