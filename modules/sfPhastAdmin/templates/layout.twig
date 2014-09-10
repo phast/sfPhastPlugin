@@ -30,7 +30,7 @@
 
                 <nav>
                     {% for key, module in modules %}
-                        {% if not(module.hidden) or not(module.credential) or sf_user.hasCredential(module.credential) %}
+                        {% if not(module.hidden) and (not(module.credential) or sf_user.hasCredential(module.credential)) %}
                             <a href="/admin/{{ key }}/" class="{{ sf_context.getModuleName == key ? 'active' }}">{{ module.title }}</a>
                         {% endif %}
                     {% endfor %}
