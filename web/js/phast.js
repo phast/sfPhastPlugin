@@ -980,6 +980,8 @@ $.fn.serializeJSON = function(){
 
 				render: function(){
 
+					execute('beforeRender');
+				
                     if(root.uri){
                         var params = [];
                         $.each(root.uri, function(i, part){
