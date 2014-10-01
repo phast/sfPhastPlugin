@@ -6,6 +6,10 @@ class sfPhastUIWidget{
     protected static $options;
 	public static function initialize($options = []){
 
+        if(!isset($options['widgets'])){
+            $options['widgets'] = ['image', 'gallery', 'video', 'file'];
+        }
+
         static::$options = $options;
 
 		/**
@@ -44,11 +48,32 @@ class sfPhastUIWidget{
         use_javascript('/sfPhastPlugin/js/jquery/jquery.damnUploader.js', 'last');
 
 		$widget = new sfPhastList('WidgetList');
-		$widget->addControl(array('caption' => 'Добавить файл', 'icon' => 'silk-drive-add', 'action' => '&WidgetFile'));
-		$widget->addControl(array('caption' => 'Добавить видео', 'icon' => 'film-add', 'action' => '&WidgetVideo'));
-		$widget->addControl(array('caption' => 'Добавить изображение', 'icon' => 'image-add', 'action' => '&WidgetImage'));
-		$widget->addControl(array('caption' => 'Добавить фотогалерею', 'icon' => 'silk-images', 'action' => '&WidgetGallery'));
-		//$widget->addControl(array('caption' => 'Добавить блок контента', 'icon' => 'silk-layout-add', 'action' => '&WidgetContent'));
+
+        foreach($options['widgets'] as $widgetName){
+            switch($widgetName){
+                case 'image':
+                    $widget->addControl(array('caption' => 'Добавить изображение', 'icon' => 'image-add', 'action' => '&WidgetImage'));
+                    break;
+
+                case 'gallery':
+                    $widget->addControl(array('caption' => 'Добавить фотогалерею', 'icon' => 'silk-images', 'action' => '&WidgetGallery'));
+                    break;
+
+                case 'video':
+                    $widget->addControl(array('caption' => 'Добавить видео', 'icon' => 'film-add', 'action' => '&WidgetVideo'));
+                    break;
+
+                case 'file':
+                    $widget->addControl(array('caption' => 'Добавить файл', 'icon' => 'silk-drive-add', 'action' => '&WidgetFile'));
+                    break;
+
+                case 'content':
+                    $widget->addControl(array('caption' => 'Добавить блок контента', 'icon' => 'silk-layout-add', 'action' => '&WidgetContent'));
+                    break;
+
+            }
+        }
+
 		$widget->setColumns('Виджет', 'Идентификатор', '.');
 		$widget->setLayout('
             {Widget
