@@ -25,6 +25,15 @@ class sfPhastUtils{
         return $view->render();
     }
 
+    public static function getcomponent($componentName, $vars = array())
+    {
+        $sep = strpos($componentName, '/');
+        $moduleName   = substr($componentName, 0, $sep);
+        $componentName = substr($componentName, $sep + 1);
+
+        return get_component($moduleName, $componentName, $vars);
+    }
+
     public static function geturl($page, $absolute = false){
         return ($absolute ? '' . sfContext::getInstance()->getRequest()->getUriPrefix() : '') . sfConfig::get("app_url_$page", $page);
     }

@@ -9,6 +9,7 @@ class Phast_Twig_Extension extends Twig_Extension
             'phast_ui_asset' => new Twig_Function_Function(['sfPhastUI', 'asset']),
             'geturl' => new Twig_Function_Function('geturl'),
             'getpartial' => new Twig_Function_Function(['sfPhastUtils', 'getpartial']),
+            'getcomponent' => new Twig_Function_Function(['sfPhastUtils', 'getcomponent']),
             'func' => new Twig_Function_Function([$this, 'func']),
         );
     }
