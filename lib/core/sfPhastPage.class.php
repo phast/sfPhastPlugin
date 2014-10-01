@@ -17,6 +17,10 @@ class sfPhastPage implements ArrayAccess{
         static::$instance = $this;
     }
 
+    public function setPage(Page $page){
+        $this->page = $page;
+    }
+
     /**
      * @return sfPhastPage
      */
