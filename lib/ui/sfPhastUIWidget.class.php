@@ -74,7 +74,7 @@ class sfPhastUIWidget{
             }
         }
 
-		$widget->setColumns('Виджет', 'Идентификатор', '.');
+		$widget->setColumns('Виджет', '', '.');
 		$widget->setLayout('
             {Widget
                 @fields id, type:getType, file_id, video_id, image_id, gallery_id, content_id
