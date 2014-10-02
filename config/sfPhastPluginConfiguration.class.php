@@ -4,6 +4,11 @@ class sfPhastPluginConfiguration extends sfPluginConfiguration
 {
 	public function initialize()
 	{
+        sfConfig::set('app_sfImageTransformPlugin_mime_type', [
+            'auto_detect' => true,
+            'library' => 'gd_mime_type'
+        ]);
+
 		if('backend' == sfConfig::get('sf_app')){
 			$modules = sfConfig::get('sf_enabled_modules', array());
 			$modules[] = 'sfPhastAdmin';
