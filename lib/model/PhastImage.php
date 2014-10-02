@@ -53,8 +53,16 @@ class PhastImage extends BaseObject
         return '<img src="'.$src.'" alt="'.$this->getTitle().'">';
     }
 
-    public function getWidgetPreviewTag(){
+    public function getWidgetTag(){
         return $this->getTag(
+            $this->width > 0 ? $this->width : null,
+            $this->height > 0 ? $this->height : null,
+            $this->width > 0 && $this->height > 0 ? null : true
+        );
+    }
+
+    public function getWidgetUri(){
+        return $this->getURI(
             $this->width > 0 ? $this->width : null,
             $this->height > 0 ? $this->height : null,
             $this->width > 0 && $this->height > 0 ? null : true

@@ -268,7 +268,7 @@ class sfPhastUIWidget{
             }
 
             {file:file, Изображение
-                @receive $item->getWidgetPreviewTag()
+                @receive $item->getWidgetTag()
                 @render on
                 '.
 
