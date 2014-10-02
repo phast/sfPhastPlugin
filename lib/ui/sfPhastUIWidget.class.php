@@ -647,8 +647,8 @@ class sfPhastUIWidget{
             {#section Видео
                 @button Default
             }
-			{title, Название}
 			{url, Ссылка на видео}
+			{title, Название}
 			{width, Ширина}
 			{height, Высота}
 			{autoplay:checkbox, Автостарт}
@@ -680,6 +680,8 @@ class sfPhastUIWidget{
 				$response['width'] = 600;
 				$response['height'] = 400;
 			}
+
+            $response->placeholder('title', 'автоматически');
 
 		});
 		$widgetVideo->setSave(function(sfPhastRequest $request, $response) use ($user){
