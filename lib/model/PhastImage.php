@@ -54,7 +54,11 @@ class PhastImage extends BaseObject
     }
 
     public function getWidgetPreviewTag(){
-        return $this->getTag($this->width, $this->height);
+        return $this->getTag(
+            $this->width > 0 ? $this->width : null,
+            $this->height > 0 ? $this->height : null,
+            $this->width > 0 && $this->height > 0 ? null : true
+        );
     }
 
     public function getTitleCaption(){

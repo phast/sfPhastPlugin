@@ -270,13 +270,32 @@ class sfPhastUIWidget{
             {file:file, Изображение
                 @receive $item->getWidgetPreviewTag()
                 @render on
+                '.
+
+                    (isset($options['image']['crop']) && $options['image']['crop']
+                        ? ("@crop id\n@croptype " . implode("\n@croptype ", $options['image']['crop']))
+                        : ''
+                    )
+
+                .'
+            }
+
+
+            {width, Ограничение ширины
+                @notice в пикселях
+            }
+            {height, Ограничение высоты
+                @notice в пикселях
+            }
+            {fullsize:checkbox, С возможностью просмотра оригинала}
+
+            {#section Дополнительные параметры
+                @button Default
             }
 
             {title, Название}
             {content:textarea, Описание}
-            {width, Ширина (в пикселях)}
-            {height, Высота (в пикселях)}
-            {fullsize:checkbox, С возможностью просмотра оригинала}
+
             {#button Default}
         ');
 		$widgetImage->setReceive(function($request, $response){
@@ -291,10 +310,14 @@ class sfPhastUIWidget{
 					return $response->notfound();
 				}
 			}else{
-				$response['width'] = 100;
-				$response['height'] = 100;
-				$response['fullsize'] = true;
+				$response['fullsize'] = false;
 			}
+
+            $response->placeholder('width', 'без ограничений');
+            $response->placeholder('height', 'без ограничений');
+
+            $response['width'] = $response['width'] ? $response['width'] : '';
+            $response['height'] = $response['height'] ? $response['height'] : '';
 
 		});
 		$widgetImage->setSave(function(sfPhastRequest $request, $response) use ($user){
@@ -791,8 +814,14 @@ class sfPhastUIWidget{
             {image:file, Изображение
                 @render return box.data.image;
                 @hidden on
-                @crop image_id
-                @croptype Большое изображение, 900, 500
+                '.
+
+                (isset($options['gallery']['crop']) && $options['gallery']['crop']
+                    ? ("@crop image_id\n@croptype " . implode("\n@croptype ", $options['gallery']['crop']))
+                    : ''
+                )
+
+                .'
             }
 
 			{#button Default}
