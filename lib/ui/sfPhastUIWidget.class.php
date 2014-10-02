@@ -102,7 +102,7 @@ class sfPhastUIWidget{
                 :paste_action{
                     var ed = tinymce.EditorManager.activeEditor;
                     var img = ed.dom.create("img", {
-                        src : "/js/tinymce/themes/advanced/img/trans.gif",
+                        src : "/sfPhastPlugin/js/tinymce/themes/advanced/img/trans.gif",
                         "class" : "mceItemWidget",
                         "data-id": item.$pk ,
                         "data-type": item.type
@@ -116,7 +116,7 @@ class sfPhastUIWidget{
                 :paste_action2{
                     var ed = tinymce.EditorManager.activeEditor;
                     var img = ed.dom.create("img", {
-                        src : "/js/tinymce/themes/advanced/img/trans.gif",
+                        src : "/sfPhastPlugin/js/tinymce/themes/advanced/img/trans.gif",
                         "class" : "mceItemWidget",
                         "data-id": item.$pk ,
                         "data-type": item.type

@@ -28,7 +28,8 @@
                             src : '/sfPhastPlugin/js/tinymce/themes/advanced/img/trans.gif',
                             class: 'mceItemWidget',
                             'data-id': node.attr('data-id'),
-                            'data-type': node.attr('data-type')
+                            'data-type': node.attr('data-type'),
+                            'style': node.attr('style') || ''
                         });
 
                         node.replace(replacement);
@@ -49,7 +50,8 @@
                             replacement.append(value);
                             replacement.attr({
                                 'data-id': node.attr('data-id'),
-                                'data-type': node.attr('data-type')
+                                'data-type': node.attr('data-type'),
+                                'style': node.attr('style') || ''
                             });
                             node.replace(replacement);
                         }
