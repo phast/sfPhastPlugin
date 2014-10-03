@@ -9,7 +9,8 @@ class sfPhastMailing{
      * @param array $parameters
      */
     public static function send($recipient, $subject, $template, $parameters = []){
-        $from = isset($parameters['from']) ? $parameters['from'] : sfConfig::get('app_mailing_from');
+        $from = self::processAddress(isset($parameters['from']) ? $parameters['from'] : sfConfig::get('app_mailing_from'));
+        $recipient = self::processAddress($recipient);
         $body = self::render($template, $parameters);
 
         $context = sfContext::getInstance();
@@ -60,26 +61,53 @@ class sfPhastMailing{
     }
 
     public static function push($recipient, $subject, $template, $parameters = []){
-        $from = isset($parameters['from']) ? $parameters['from'] : sfConfig::get('app_mailing_from');
+        $from = self::processAddress(isset($parameters['from']) ? $parameters['from'] : sfConfig::get('app_mailing_from'), true);
         $priority = isset($parameters['priority']) ? $parameters['priority'] : MailingMessage::PRIORITY_NORMAL;
 
-        $message = new MailingMessage();
-        $message->setMode(1);
-        $message->setFrom($from);
-        $message->setTo($recipient);
-        $message->setSubject($subject);
-        $message->setBody(self::render($template, $parameters));
-        $message->setPriority($priority);
-        $message->save();
 
-        return $message;
+        if(is_array($recipient) && count($recipient) > 1){
+            foreach($recipient as $email => $title){
+                self::push([$email => $title], $subject, $template, $parameters);
+            }
+
+        }else{
+
+            $recipient = self::processAddress($recipient, true);
+
+            $message = new MailingMessage();
+            $message->setMode(1);
+            $message->setFrom($from);
+            $message->setTo($recipient);
+            $message->setSubject($subject);
+            $message->setBody(self::render($template, $parameters));
+            $message->setPriority($priority);
+            $message->save();
+
+            if(isset($parameters['priority']) && $parameters['priority'] == MailingMessage::PRIORITY_INSTANT){
+                $message->send();
+            }
+
+        }
+
     }
 
     public static function pushAndSend($recipient, $subject, $template, $parameters = []){
         $parameters['priority'] = MailingMessage::PRIORITY_INSTANT;
-        $message = self::push($recipient, $subject, $template, $parameters);
-        $message->send();
+        self::push($recipient, $subject, $template, $parameters);
     }
 
+    protected static function processAddress($address, $pack = false){
+        return true === $pack
+            ? (is_array($address)
+                ? $address[key($address)] .' <'. key($address) .'>'
+                : $address
+            )
+            : (is_array($address)
+                ? $address
+                : preg_match('#^([^<]+)\s<([^>]+)>$#ui', $address, $match)
+                    ? [$match[2] => $match[1]]
+                    : $address
+            );
+    }
 
 }
