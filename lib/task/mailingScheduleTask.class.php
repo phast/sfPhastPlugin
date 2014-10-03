@@ -40,8 +40,11 @@ EOF;
             $task->setStartedAt($next);
             $task->save();
 
-            $this->log('+ Task ' . $schedule->getComposer() . ' on ' . $next->format('d.m.Y H:i'));
+            $this->log('+ Task #' .  $task->getId() . ' ' . $schedule->getComposer());
         }
+
+        $this->log('');
+
 
         foreach(MailingTaskQuery::create()->findByStatus(MailingTask::STATUS_WAITING) as $task){
             $result = $task->execute() ? 'success' : 'fail';
