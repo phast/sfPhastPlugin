@@ -6,7 +6,7 @@ class mailingScheduleTask extends sfBaseTask
     {
         $this->addOptions(array(
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'frontend'),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'prod'),
             new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'propel'),
         ));
 
@@ -25,7 +25,7 @@ EOF;
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
         $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
-        sfContext::createInstance($this->configuration)->dispatch();
+        sfContext::createInstance($this->configuration);
 
         foreach(MailingScheduleQuery::create()->find() as $schedule){
             if(!$schedule->isDue()) continue;
@@ -34,19 +34,18 @@ EOF;
 
             if(MailingTaskQuery::create()->findOneByStartedAt($next)) continue;
 
-            print 'CreateTask: ' . $schedule->getComposer() . ' on ' . $next->format('d.m.Y H:i') . "\n";
-
             $task = new MailingTask();
             $task->setMailingSchedule($schedule);
             $task->setStatus(MailingTask::STATUS_WAITING);
             $task->setStartedAt($next);
             $task->save();
+
+            $this->log('+ Task ' . $schedule->getComposer() . ' on ' . $next->format('d.m.Y H:i'));
         }
 
         foreach(MailingTaskQuery::create()->findByStatus(MailingTask::STATUS_WAITING) as $task){
-            print "Task #{$task->getId()} execute: ";
-            print $task->execute() ? 'success' : 'fail';
-            print "\n";
+            $result = $task->execute() ? 'success' : 'fail';
+            $this->log('>> Executing task #' . $task->getId() . ' ' . $result);
         }
 
     }

@@ -7,7 +7,7 @@ class mailingSendTask extends sfBaseTask
 
         $this->addOptions(array(
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'frontend'),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'prod'),
             new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'propel'),
         ));
 
@@ -27,7 +27,6 @@ EOF;
         $databaseManager = new sfDatabaseManager($this->configuration);
         $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
         sfContext::createInstance($this->configuration);
-
 
         $pks = [];
         $messages = [];
@@ -64,7 +63,7 @@ EOF;
             }
 
             $this->log('');
-            $this->log("Success:{$success}, Error: {$error}");
+            $this->log("Success: {$success}, Error: {$error}");
 
         }else{
             $this->log('No messages');

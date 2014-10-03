@@ -61,7 +61,7 @@ class sfPhastMailing{
     }
 
     public static function push($recipient, $subject, $template, $parameters = []){
-        $from = self::processAddress(isset($parameters['from']) ? $parameters['from'] : sfConfig::get('app_mailing_from'), true);
+        $from = self::processAddress(isset($parameters['from']) ? $parameters['from'] : '', true);
         $priority = isset($parameters['priority']) ? $parameters['priority'] : MailingMessage::PRIORITY_NORMAL;
 
 
@@ -75,7 +75,7 @@ class sfPhastMailing{
             $recipient = self::processAddress($recipient, true);
 
             $message = new MailingMessage();
-            $message->setMode(1);
+            $message->setMode(isset($parameters['mode']) ? $parameters['mode'] : MailingMessage::MODE_EMAIL);
             $message->setFrom($from);
             $message->setTo($recipient);
             $message->setSubject($subject);
@@ -94,6 +94,20 @@ class sfPhastMailing{
     public static function pushAndSend($recipient, $subject, $template, $parameters = []){
         $parameters['priority'] = MailingMessage::PRIORITY_INSTANT;
         self::push($recipient, $subject, $template, $parameters);
+    }
+
+    public static function sendSms($phone, $message, $parameters = []){
+        return true;
+    }
+
+    public static function pushSms($phone, $message, $parameters = []){
+        $parameters['mode'] = MailingMessage::MODE_SMS;
+        self::push($phone, '', $message, $parameters);
+    }
+
+    public static function pushSmsAndSend($phone, $message, $parameters = []){
+        $parameters['mode'] = MailingMessage::MODE_SMS;
+        self::push($phone, '', $message, $parameters);
     }
 
     protected static function processAddress($address, $pack = false){
