@@ -471,6 +471,8 @@ class sfPhastListPattern
 
         if(is_array($item)){
             $output = $item;
+            if(!isset($output['$pk'])) $output['$pk'] = '%';
+
         }else{
             $output = array();
 
