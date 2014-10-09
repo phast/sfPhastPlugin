@@ -105,8 +105,8 @@ class sfPhastUtils{
     public static function strtotime($str){
         if($result = strtotime($str)) return $result;
         $months = array('..','января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря');
-        preg_match("/(\d{1,2})\040*(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\040*(\d{2,4})/i", $str, $matches);
-        if($matches) return strtotime($matches[3].'-'.array_search($matches[2], $months).'-'.$matches[1]);
+        preg_match("/(\d{1,2})\040*(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\040*(\d{2,4}) *([\d:]+)?/i", $str, $matches);
+        if($matches) return strtotime($matches[3].'-'.array_search($matches[2], $months).'-'.$matches[1] . (isset($matches[4]) ? ' ' . $matches[4] : ''));
         return;
     }
 
