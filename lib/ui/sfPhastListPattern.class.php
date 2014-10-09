@@ -50,7 +50,7 @@ class sfPhastListPattern
 		$this->tableQuery = $this->table . 'Query';
         if('%' == $table[0]){
             $table = substr($table, 1);
-            $this->custom = function(){return [];};
+            $this->custom = function(){return [[]];};
         }else{
             if (!$this->tableMap = call_user_func(array($this->tablePeer, 'getTableMap')))
                 throw new sfPhastException(sprintf('TableMap для таблицы %s отсутствует', $this->table));
