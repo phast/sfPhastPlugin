@@ -4,7 +4,8 @@ class sfPhastMailingComposer{
 
     protected
         $task,
-        $schedule
+        $schedule,
+        $subscribers = []
     ;
 
     public function __construct(MailingTask $task){
