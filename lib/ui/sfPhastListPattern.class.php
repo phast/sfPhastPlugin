@@ -431,7 +431,7 @@ class sfPhastListPattern
 
 	public function getMask($rel, $relId)
 	{
-		return $mask = $rel ? "{$this->getAlias()} {$rel->getRelPattern()->getAlias()} {$relId}" : "{$this->getAlias()} .";
+		return $mask = $rel && $rel->getColumn() === null ? "{$this->getAlias()} {$rel->getRelPattern()->getAlias()} %" : ($rel ? "{$this->getAlias()} {$rel->getRelPattern()->getAlias()} {$relId}" : "{$this->getAlias()} .");
 	}
 
 	public function getData()
