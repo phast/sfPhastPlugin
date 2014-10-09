@@ -440,7 +440,7 @@ $.fn.serializeJSON = function(){
 						if(pattern.relations)
 							if(!pattern.flex || (list.opened[mask + ' ' + item.$pk]))
 								$.each(pattern.relations, function(x, rel){
-									list.runPattern(list.pattern(rel.target), rel, item[rel.source_field], level + 1);
+									list.runPattern(list.pattern(rel.target), rel, rel.source_field == '%' ? '%' : item[rel.source_field], level + 1);
 								});
 					});
 
@@ -735,11 +735,16 @@ $.fn.serializeJSON = function(){
 
 					if(this.relations)
 						$.each(this.relations, function(x, rel){
-							attributes[rel.source_field] = item[rel.source_field];
+                            if(rel.source_field != '%'){
+                                attributes[rel.source_field] = item[rel.source_field];
+                            }
 						});
 
-					if(relation)
-						attributes[relation.target_field] = item[relation.target_field];
+					if(relation){
+                        if(relation.target_field != '%') {
+                            attributes[relation.target_field] = item[relation.target_field];
+                        }
+                    }
 
 					$.each(attributes, function(key, value){
 						output += ' data-' + key + '="' + value + '"';

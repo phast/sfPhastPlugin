@@ -12,41 +12,67 @@ class sfPhastListPatternRelation{
 	;
 
 	public function __construct(sfPhastListPattern $pattern, $rel){
-		if (!preg_match('/^([\w\d_]+)\.([A-Z_]+)$/', $rel, $match))
+		if (!preg_match('/^([\w\d_]+)\.([A-Z_]+|%)$/', $rel, $match))
 			throw new sfPhastException(sprintf('Relation » Неверный формат %s', $rel));
 
-		$column = $pattern->getTableMap()->getColumn(strtolower($match[2]));
+        if($match[2] == '%'){
+            $this->pattern = $pattern;
+            $this->column = null;
+            $this->relPatternAlias = $match[1];
+            $this->relColumn = null;
+            $this->pattern->setIndependent(false);
 
-		if (!$column->getRelatedColumnName())
-			throw new sfPhastException(sprintf('Relation » Поле %s не имеет связей', $column->getName()));
+        }else{
+            $column = $pattern->getTableMap()->getColumn(strtolower($match[2]));
 
-		$pattern->setField($column->getName());
+            if (!$column->getRelatedColumnName())
+                throw new sfPhastException(sprintf('Relation » Поле %s не имеет связей', $column->getName()));
 
-	    $this->pattern = $pattern;
-		$this->column = $column;
-		$this->relPatternAlias = $match[1];
-		$this->relColumn = $this->column->getRelatedColumn();
-		if($this->pattern->getAlias() === $match[1]){
-			$this->recursive = true;
-			$this->pattern->setRecursiveRelation($this);
-		}else{
-			$this->pattern->setIndependent(false);
-		}
+            $pattern->setField($column->getName());
+
+            $this->pattern = $pattern;
+            $this->column = $column;
+            $this->relPatternAlias = $match[1];
+            $this->relColumn = $this->column->getRelatedColumn();
+            if($this->pattern->getAlias() === $match[1]){
+                $this->recursive = true;
+                $this->pattern->setRecursiveRelation($this);
+            }else{
+                $this->pattern->setIndependent(false);
+            }
+        }
+
+
 	}
 
 	public function fix(){
 
-		$relTableName = $this->column->getRelatedTable()->getPhpname();
-		if(!$relPattern = $this->pattern->getList()->getPattern($this->relPatternAlias))
-			throw new sfPhastException(sprintf('FixRelations » Паттерн %s не найден', $this->relPatternAlias));
+        if($this->column === null) {
 
-		if($relPattern->getTable() !== $relTableName)
-			throw new sfPhastException(sprintf('Relation » Паттерн %s не содержит поле %s.%s ', $relPattern->getAlias(), $relTableName, $this->column->getName()));
 
-		$relPattern->setField($this->relColumn->getName());
-		$relPattern->attachRelation($this);
+            $this->pattern->getList()->getPattern($this->relPatternAlias);
 
-		$this->relPattern = $relPattern;
+            if(!$relPattern = $this->pattern->getList()->getPattern($this->relPatternAlias))
+                throw new sfPhastException(sprintf('FixRelations » Паттерн %s не найден', $this->relPatternAlias));
+
+            $this->relPattern = $relPattern;
+            $relPattern->attachRelation($this);
+
+        }else{
+            $relTableName = $this->column->getRelatedTable()->getPhpname();
+            if(!$relPattern = $this->pattern->getList()->getPattern($this->relPatternAlias))
+                throw new sfPhastException(sprintf('FixRelations » Паттерн %s не найден', $this->relPatternAlias));
+
+            if($relPattern->getTable() !== $relTableName)
+                throw new sfPhastException(sprintf('Relation » Паттерн %s не содержит поле %s.%s ', $relPattern->getAlias(), $relTableName, $this->column->getName()));
+
+            $relPattern->setField($this->relColumn->getName());
+            $relPattern->attachRelation($this);
+
+            $this->relPattern = $relPattern;
+        }
+
+
 	}
 
 	public function getRecursive(){

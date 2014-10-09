@@ -376,14 +376,16 @@ class sfPhastListPattern
 	public function loadData($rel = null, $relId = null, $level = 0)
 	{
 
+        $mask = $this->getMask($rel, $relId);
+
         if($this->custom){
             $closure = $this->custom;
             $items = $closure($this, $rel, $relId, $level);
+
         }else{
             $c = new $this->tableQuery;
             $criteriaResult = null;
 
-            $mask = $this->getMask($rel, $relId);
 
             if (!$rel && $this->haveRecursiveRelation())
                 $rel = $this->getRecursiveRelation();
@@ -394,17 +396,17 @@ class sfPhastListPattern
             }
 
             if ($rel && (!$criteriaResult || !$criteriaResult & static::CRITERIA_RESET_RELATION)) {
-                $c->addAnd(
-                    $rel->getColumn()->getFullyQualifiedName(),
-                    $relId,
-                    $relId === null ? Criteria::ISNULL : Criteria::EQUAL
-                );
+                if($rel->getColumn() !== null)
+                    $c->addAnd(
+                        $rel->getColumn()->getFullyQualifiedName(),
+                        $relId,
+                        $relId === null ? Criteria::ISNULL : Criteria::EQUAL
+                    );
             }
 
             if ($this->tableMap->hasColumn('position')) {
                 $c->addAscendingOrderByColumn($this->tableMap->getColumn('position')->getFullyQualifiedName());
             }
-
 
             if ($this->getLimit()) {
                 $items = $c->paginate(($page = $this->list->getPage($mask)) ? $page : 1, $this->getLimit());
@@ -422,7 +424,7 @@ class sfPhastListPattern
 				continue;
 
 			foreach ($this->getAttachedRelations() as $relation)
-				$relation->getPattern()->loadData($relation, $item->getByName($relation->getRelColumn()->getPhpName()), $level+1);
+                $relation->getPattern()->loadData($relation, $relation->getRelColumn() ? $item->getByName($relation->getRelColumn()->getPhpName()) : null, $level+1);
 		}
 
 	}
@@ -444,14 +446,22 @@ class sfPhastListPattern
 
 	protected function pushData($item, $rel, $relId, $level)
 	{
-        $nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
+        if($rel && $rel->getColumn() === null){
+            $nodeName = $rel->getRelPatternAlias() . ' %';
+        }else{
+            $nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
+        }
         if (!isset($this->data[$nodeName])) $this->data[$nodeName] = array();
         return $this->data[$nodeName][] = $this->decorateData($item, $rel, $relId, $level);
 	}
 
 	protected function pushPages($total, $rel, $relId)
 	{
-		$nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
+        if($rel && $rel->getColumn() === null){
+            $nodeName = $rel->getRelPatternAlias() . ' %';
+        }else{
+            $nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
+        }
 		if ($total > 1) $this->data[$nodeName]['pages'] = $total;
 	}
 
@@ -493,9 +503,9 @@ class sfPhastListPattern
 		foreach ($this->attachedRelations as $rel)
 			$relationMap[] = "{
 				source: '{$rel->getRelPattern()->getAlias()}',
-				source_field: '" . strtolower($rel->getRelColumn()->getName()) . "',
+				source_field: '" . strtolower($rel->getRelColumn() ? $rel->getRelColumn()->getName() : '%') . "',
 				target: '{$rel->getPattern()->getAlias()}',
-				target_field: '" . strtolower($rel->getColumn()->getName()) . "'
+				target_field: '" . strtolower($rel->getColumn() ? $rel->getColumn()->getName() : '%') . "'
 			}";
 		$relationMap = implode(', ', $relationMap);
 
