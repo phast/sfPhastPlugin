@@ -811,7 +811,7 @@ $.fn.serializeJSON = function(){
 			return '<a href="#'+action+'" class="phast-list-action icon-'+icon+' ' + (caption !== null && caption !== undefined ? 'with-caption' : '') + '" data-action="'+action+'" '+(hint?'title="'+hint+'"':'')+'>' + (caption !== null ? caption||'' : '') + '</a>';
 		},
 		iconCaption: function(icon, caption, hint){
-			return '<div class="phast-list-iconcaption icon-'+icon+'" '+(hint?'title="'+hint+'"':'')+'>' + (caption !== null ? caption||'' : '') + '</div>';
+			return '<div class="phast-list-iconcaption '+(caption === null ?'without-caption':'')+' icon-'+icon+'" '+(hint?'title="'+hint+'"':'')+'>' + (caption !== null ? caption||'' : '') + '</div>';
 		},
         noticeLine: function(content, hint){
             return '<span class="notice" '+(hint?'title="'+hint+'"':'')+'>' + (content !== null ? content : '') + '</span>';
