@@ -9,7 +9,7 @@ class sfPhastMailing{
      * @param array $parameters
      */
     public static function send($recipient, $subject, $template, $parameters = []){
-        $from = self::processAddress(isset($parameters['from']) ? $parameters['from'] : sfConfig::get('app_mailing_from'));
+        $from = self::processAddress((isset($parameters['from']) && $parameters['from']) ? $parameters['from'] : sfConfig::get('app_mailing_from'));
         $recipient = self::processAddress($recipient);
         $body = self::render($template, $parameters);
 
