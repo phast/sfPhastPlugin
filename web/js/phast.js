@@ -657,6 +657,8 @@ $.fn.serializeJSON = function(){
 						var node = $(this),
 							success = 'icon-' + node.data('success'),
 							fail = 'icon-' + node.data('fail'),
+							successCaption = node.data('success-caption'),
+							failCaption = node.data('fail-caption'),
 							action = node.data('action'),
 							row = node.closest('tr'),
 							pattern = list.pattern(row.data('pattern')),
@@ -666,10 +668,12 @@ $.fn.serializeJSON = function(){
 						if(node.hasClass(success)){
 							node.addClass(fail);
 							node.removeClass(success);
+                            node.html(failCaption);
 						}else{
 							node.removeClass(fail);
 							node.addClass(success);
-						}
+                            node.html(successCaption);
+                        }
 
 						pattern.request(action, item.$pk);
 
@@ -805,7 +809,7 @@ $.fn.serializeJSON = function(){
 			return new List(this.model[id], options);
 		},
 		toggleButton: function(action, condition, success, fail, success_caption, fail_caption){
-			return '<a href="#'+action+'" class="phast-list-toggle '+(success_caption !== undefined ? 'with-caption' : '')+' icon-'+(condition ? success : fail)+'" data-action="'+action+'" data-success="'+success+'" data-fail="'+fail+'">'+(condition ? (success_caption||'') : (fail_caption||''))+'</a>';
+			return '<a href="#'+action+'" class="phast-list-toggle '+(success_caption !== undefined ? 'with-caption' : '')+' icon-'+(condition ? success : fail)+'" data-action="'+action+'" data-success="'+success+'" data-fail="'+fail+'" data-success-caption="'+(success_caption||'')+'" data-fail-caption="'+(fail_caption||'')+'">'+(condition ? (success_caption||'') : (fail_caption||''))+'</a>';
 		},
 		actionButton: function(action, icon, caption, hint){
 			return '<a href="#'+action+'" class="phast-list-action icon-'+icon+' ' + (caption !== null && caption !== undefined ? 'with-caption' : '') + '" data-action="'+action+'" '+(hint?'title="'+hint+'"':'')+'>' + (caption !== null ? caption||'' : '') + '</a>';
