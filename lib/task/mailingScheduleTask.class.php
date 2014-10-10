@@ -32,7 +32,7 @@ EOF;
 
             $next = $schedule->getNextRunDate(false);
 
-            if(MailingTaskQuery::create()->findOneByStartedAt($next)) continue;
+            if(MailingTaskQuery::create()->filterByStartedAt($next)->filterByMailingSchedule($schedule)->findOne()) continue;
 
             $task = new MailingTask();
             $task->setMailingSchedule($schedule);
