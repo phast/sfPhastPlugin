@@ -804,8 +804,8 @@ $.fn.serializeJSON = function(){
 
 			return new List(this.model[id], options);
 		},
-		toggleButton: function(action, condition, success, fail){
-			return '<a href="#'+action+'" class="phast-list-toggle icon-'+(condition ? success : fail)+'" data-action="'+action+'" data-success="'+success+'" data-fail="'+fail+'"></a>';
+		toggleButton: function(action, condition, success, fail, success_caption, fail_caption){
+			return '<a href="#'+action+'" class="phast-list-toggle '+(success_caption !== undefined ? 'with-caption' : '')+' icon-'+(condition ? success : fail)+'" data-action="'+action+'" data-success="'+success+'" data-fail="'+fail+'">'+(condition ? (success_caption||'') : (fail_caption||''))+'</a>';
 		},
 		actionButton: function(action, icon, caption, hint){
 			return '<a href="#'+action+'" class="phast-list-action icon-'+icon+' ' + (caption !== null && caption !== undefined ? 'with-caption' : '') + '" data-action="'+action+'" '+(hint?'title="'+hint+'"':'')+'>' + (caption !== null ? caption||'' : '') + '</a>';
