@@ -988,6 +988,10 @@ $.fn.serializeJSON = function(){
 				},
 
 				render: function(){
+					if(root.$beforeRender)
+						root.$beforeRender.call(root, root, rootNode);
+
+					execute('beforeRender');
 
 					execute('beforeRender');
 				
