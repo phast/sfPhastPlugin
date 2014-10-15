@@ -10,7 +10,15 @@ class sfPhastUser extends sfBasicSecurityUser
 
 	public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = array())
 	{
+
 		parent::initialize($dispatcher, $storage, $options);
+
+        $options = array_merge(
+            [
+                'check_credentials' => true
+            ],
+            $options
+        );
 
  		if(!$this->isAuthenticated()){
 			$cookie_id = base_convert(sfContext::getInstance()->getRequest()->getCookie('__utna'), 32, 16);
@@ -24,18 +32,26 @@ class sfPhastUser extends sfBasicSecurityUser
                 }
 			}
 		}
-  
+
+        if($options['check_credentials']){
+            $this->checkCredentials();
+        }
+
+    }
+
+    protected function checkCredentials($force = false){
         if($this->isAuthenticated()){
-            if($this->storage->read(self::CREDENTIALS_CHECK_NAMESPACE) < time() - 60){
+            if($force || $this->storage->read(self::CREDENTIALS_CHECK_NAMESPACE) < time() - 60){
                 $this->storage->write(self::CREDENTIALS_CHECK_NAMESPACE, time());
                 $this->clearCredentials();
                 $this->addCredentials($this->getObjectModel()->getCredentials());
             }
         }
+    }
 
-
-	}
-
+    /**
+     * @return User
+     */
 	public function getObjectModel(){
 		if(!$this->isAuthenticated()) return;
 		$object = $this->user ? $this->user : $this->user = UserPeer::retrieveByPK($this->storage->read(self::USERID_NAMESPACE));
