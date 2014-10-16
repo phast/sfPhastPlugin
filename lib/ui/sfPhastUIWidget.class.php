@@ -22,6 +22,41 @@ class sfPhastUIWidget{
 		$request = $action->getRequest();
 		$user = $action->getUser();
 
+
+        if($request->isTrigger('fileBrowserUpload', 'post')){
+            if($request->hasFile('file')){
+                try{
+                    $path = sfConfig::get('sf_upload_dir') . '/assets';
+                    $upload = new sfPhastUpload('file');
+                    $upload->path($path);
+
+                    $file = pathinfo($request->getFiles('file')['name']);
+                    for($i = 0; true; $i++){
+                        if($i){
+                            $filename = sfPhastUtils::transliterate($file['filename']) . '('. $i .').' . $file['extension'];
+                        }else{
+                            $filename = sfPhastUtils::transliterate($file['filename']) . '.' . $file['extension'];
+                        }
+
+                        if(file_exists($path .'/'. $filename)){
+                            continue;
+                        }else{
+                            break;
+                        }
+                    }
+
+                    $upload->setFilename($filename);
+                    $upload->deny(['php']);
+                    $upload->save();
+                }
+                catch (Exception $e){
+                    die($e->getMessage());
+                }
+            }
+            die('success');
+        }
+
+
         if($request->isTrigger('widgetGalleryUpload', 'post')){
             if($gallery = GalleryQuery::create()->findOneById($request['widgetGalleryUpload'])){
                 if($request->hasFile('image')){
@@ -1002,6 +1037,122 @@ class sfPhastUIWidget{
                 'w' => $request['w'],
                 'h' => $request['h'],
             ]);
+        });
+
+    }
+
+    public static function PhastFileBrowserInitialize(){
+
+        (new sfPhastBox(
+        //----------------------------------
+            'PhastFileBrowser'
+        //----------------------------------
+        ))
+        ->setTemplate('
+            {#section Менеджер файлов
+                @button Close
+            }
+
+            {#list PhastFileBrowserList
+                @ignorePk true
+                @autoload true
+            }
+
+            {#button Close}
+        ');
+
+
+        (new sfPhastList(
+        //----------------------------------
+            'PhastFileBrowserList'
+        //----------------------------------
+        ))
+        ->addControl(['caption' => 'Загрузить файл', 'icon' => 'silk-add', 'action' => '
+            var $input = $("<input type=\"file\">"),
+                $loader,
+                total = 0,
+                loaded = 0,
+                startTimer;
+
+            $input.damnUploader({
+                url: "?fileBrowserUpload",
+                fieldName:  "file",
+                onSelect: function(file) {
+                    if(!$loader){
+                        $loader = node.after("<b style=\"margin-left:10px;\">Загрузка...</b>").next("b")
+                    }
+                    total++;
+                    $input.duAdd({
+                        file: file,
+                        onComplete: function(successfully, data, errorCode) {
+                            loaded++;
+                            $loader.text("Загрузка " + loaded + "/" + total);
+                        }
+                    });
+
+                    clearTimeout(startTimer);
+                    startTimer = setTimeout(function(){
+                        $input.duStart();
+                    }, 100);
+
+                    return false;
+                },
+                onAllComplete: function() {
+                    $input.remove();
+                    $loader.remove();
+                    list.load();
+                }
+            }).click();
+
+        '])
+        ->setColumns('Название', '.')
+        ->setLayout('
+            {%File
+                @template filename, :delete
+                @icon fatcow-document-yellow
+                @action{
+                    list.box.filebrowser.win.document.forms[0].elements[list.box.filebrowser.field].value = "/uploads/assets/" + item.filename;
+                    list.box.close();
+                }
+
+                :delete{
+                    return $$.List.actionButton(":deleteAction", "silk-delete");
+                }
+
+                :deleteAction{
+                    if(confirm("Удалить файл «"+item.filename+"»?"))
+                    pattern.request("delete", item.filename, {
+                        success: function(){
+                            list.load();
+                        }
+                    });
+                }
+            }
+        ')
+        ->getPattern('File')
+        ->setCustom(function(){
+
+            $finder = new sfFinder();
+            $files = $finder->in(sfConfig::get('sf_upload_dir') . '/assets');
+
+            $output = [];
+            foreach($files as $path){
+                $output[] = [
+                    'filename' => basename($path)
+                ];
+            }
+
+            return $output;
+        })
+        ->setHandler('delete', function($pattern, $request){
+            if(
+                $filename = preg_replace('/(^\.+|[\/\\\\])/', '', $request['$pk'])
+                and file_exists($filepath = sfConfig::get('sf_upload_dir') . '/assets/' . $filename))
+            {
+                unlink($filepath);
+                return ['success' => 1];
+            }
+            return ['error' => 'Файл не найден'];
         });
 
     }

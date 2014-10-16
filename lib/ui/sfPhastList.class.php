@@ -384,7 +384,7 @@ class sfPhastList extends ArrayObject
 			if($this->hasPattern($request['$pattern'])){
 
 				$pattern = $this->getPattern($request['$pattern']);
-				return $pattern->handle($action, $request, $request->getItem($pattern->getTable(), false, '$pk'));
+				return $pattern->handle($action, $request, $pattern->isCustom() ? null : $request->getItem($pattern->getTable(), false, '$pk'));
 			}
 
 			return array('error' => 'Pattern не найден');

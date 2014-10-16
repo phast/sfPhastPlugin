@@ -22,6 +22,7 @@ class sfPhastUI
 		static::$request = sfContext::getInstance()->getRequest();
 		static::$stack = new SplStack();
 
+        sfPhastUIWidget::PhastFileBrowserInitialize();
         sfPhastUIWidget::PhastCropInitialize();
 	}
 

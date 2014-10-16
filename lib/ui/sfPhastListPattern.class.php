@@ -238,6 +238,10 @@ class sfPhastListPattern
 		return $this;
 	}
 
+    public function isCustom(){
+        return !!$this->custom;
+    }
+
     public function setCustom(Closure $closure)
     {
         $this->custom = $closure;

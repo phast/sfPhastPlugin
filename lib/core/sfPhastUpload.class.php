@@ -51,7 +51,11 @@ class sfPhastUpload{
     }
 
     public function save(){
-        return $this->filename = $this->clean()->save();
+        return $this->filename = $this->clean()->save($this->filename);
+    }
+
+    public function setFilename($filename){
+        $this->filename = $filename;
     }
 
     public function getFilename(){
