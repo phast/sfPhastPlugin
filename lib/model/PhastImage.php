@@ -84,6 +84,7 @@ class PhastImage extends BaseObject
         $image = new static();
         $image->setPath($upload->getWebPath());
         $image->setFilename($upload->getFilename());
+        $image->setOriginalFilename($upload->getOriginalFilename());
         $image->setMime($upload->getType());
         $image->save();
         return $image;
@@ -94,6 +95,7 @@ class PhastImage extends BaseObject
         $image->cleanSource();
         $image->setPath($upload->getWebPath());
         $image->setFilename($upload->getFilename());
+        $image->setOriginalFilename($upload->getOriginalFilename());
         $image->setMime($upload->getType());
         $image->save();
         return $image;

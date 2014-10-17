@@ -62,6 +62,10 @@ class sfPhastUpload{
         return $this->filename;
     }
 
+    public function getOriginalFilename(){
+        return $this->requestFile['name'];
+    }
+
     /**
      * return sfValidatedFile
      */
