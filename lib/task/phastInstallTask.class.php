@@ -27,7 +27,6 @@ EOF;
 
         $this->log('');
         $this->log('Phast CMS installation');
-        $this->runTask('phast:database');
 
         $this->log('');
         $this->log('Configure project');
@@ -36,6 +35,12 @@ EOF;
 
         $this->log('');
         $this->log('Configure admin user');
+        $this->log('');
+
+
+        $this->runTask('phast:database');
+
+
 
         $username = $this->ask('username (= admin):', 'QUESTION', 'admin');
         $this->log('');
