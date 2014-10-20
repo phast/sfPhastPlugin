@@ -30,6 +30,9 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                 case 'mailing_schedule':
                     $table->setBaseClass('PhastMailingSchedule');
                     break;
+                case 'mailing_broadcast':
+                    $table->setBaseClass('PhastMailingBroadcast');
+                    break;
 				case 'image':
                     $table->setBaseClass('PhastImage');
                     break;        
