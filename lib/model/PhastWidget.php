@@ -1,6 +1,6 @@
 <?php
 
-class PhastHolder extends BaseObject 
+class PhastWidget extends BaseObject
 {
 
     protected $phastSettings = array(
