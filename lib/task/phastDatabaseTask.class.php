@@ -24,7 +24,6 @@ EOF;
     protected function execute($arguments = array(), $options = array())
     {
 
-        $this->log('');
         $this->log('Configure database');
 
         $validator = new sfValidatorString();
@@ -80,10 +79,7 @@ all:
 EOT
         );
 
-        $this->log('');
         $this->runTask('cc');
-        $this->log('');
-
 
     }
 }

@@ -29,6 +29,36 @@ EOF;
         $this->runTask('phast:database');
         $this->runTask('propel:build-sql');
         $this->runTask('propel:insert-sql');
+        $this->runTask('propel:build-model');
+
+
+        $this->log('Configure admin user');
+
+        $validator = new sfValidatorString();
+
+        $username = $this->ask('username (= admin):', 'QUESTION', 'admin');
+        $this->log('');
+        $password = $this->askAndValidate('password:', $validator);
+        $salt = md5(uniqid(mt_rand(), true));
+        $this->log('');
+        $this->log('>> Write to config/factories.yml');
+
+        file_put_contents(sfConfig::get('sf_config_dir') . '/factories.yml',
+<<<"EOT"
+all:
+  user:
+    param:
+      salt: "$salt"
+EOT
+        );
+
+        $this->log(sprintf('>> Create user %s', $username));
+        $this->runTask('phast:create-user', [
+            'username' => $username,
+            'password' => $password,
+            'groups' => ['admin'],
+        ]);
+
         $this->log('');
         $this->log('Installation is successfully completed');
 
