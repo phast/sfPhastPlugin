@@ -32,9 +32,20 @@ EOF;
         $this->runTask('propel:build-model');
         $this->runTask('propel:data-load');
 
+        $validator = new sfValidatorString();
+
+        $this->log('');
+        $this->log('Configure project');
+        $host = $this->askAndValidate('host:', $validator);
+
+        $this->log('>> Write to config/app.yml');
+        $filepath = sfConfig::get('sf_config_dir') . '/app.yml';
+        file_put_contents($filepath, preg_replace('/project\.dev/', $host, file_get_contents($filepath)));
+
+
+        $this->log('');
         $this->log('Configure admin user');
 
-        $validator = new sfValidatorString();
 
         $username = $this->ask('username (= admin):', 'QUESTION', 'admin');
         $this->log('');
@@ -45,7 +56,6 @@ EOF;
 
         $this->log('>> Write to config/factories.yml');
         $filepath = sfConfig::get('sf_config_dir') . '/factories.yml';
-
         file_put_contents($filepath, preg_replace('/#token#/', $salt, file_get_contents($filepath)));
 
         $this->log(sprintf('>> Create user %s', $username));
