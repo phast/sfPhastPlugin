@@ -1,5 +1,7 @@
 <?php
 
+use \PhastUserGroupSectionPeer as Section;
+
 class PhastUserGroupSection extends BaseObject{
 
     public function getAssignCaption(){
