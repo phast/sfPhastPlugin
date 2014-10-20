@@ -21,6 +21,9 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                 case 'user_session':
                     $table->setBaseClass('PhastUserSession');
                     break;
+                case 'user_group':
+                    $table->setBaseClass('PhastUserGroup');
+                    break;
 				case 'image':
                     $table->setBaseClass('PhastImage');
                     break;        

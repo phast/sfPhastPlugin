@@ -98,6 +98,19 @@ class PhastUser extends BaseObject{
 
     }
 
+    /**
+     * @param $section UserGroupSection|string
+     */
+    public function assignGroup($section){
+        if(is_string($section)){
+            if(!$section = UserGroupSectionQuery::create()->findOneByName($sectionName = $section)){
+                throw new sfPhastException(spintf('UserGroupSection "%s" not found', $sectionName));
+            }
+            return $this->assignGroup($section);
+        }
+        $section->assign($this);
+    }
+
     public function getCreatedDate(){
         return sfPhastUtils::date('simple', $this->getCreatedAt(null)->getTimestamp()) . ' ' .date('H:i');
     }
