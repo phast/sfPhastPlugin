@@ -30,7 +30,7 @@ EOF;
         $this->runTask('propel:build-sql');
         $this->runTask('propel:insert-sql');
         $this->runTask('propel:build-model');
-
+        $this->runTask('propel:data-load');
 
         $this->log('Configure admin user');
 
