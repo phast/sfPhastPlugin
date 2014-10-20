@@ -98,7 +98,6 @@ class PhastUser extends BaseObject{
 
     }
 
-
     public function getCreatedDate(){
         return sfPhastUtils::date('simple', $this->getCreatedAt(null)->getTimestamp()) . ' ' .date('H:i');
     }
