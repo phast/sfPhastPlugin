@@ -126,11 +126,10 @@ class sfPhastUser extends sfBasicSecurityUser
 		$this->addCredentials($this->getObjectModel()->getCredentials());
 
 		if($remember){
-			$host = '.' . sfConfig::get('host');
+			$host = '.' . sfConfig::get('app_host', sfConfig::get('host'));
 			$response = sfContext::getInstance()->getResponse();
-			$request =  sfContext::getInstance()->getRequest();
-			sfContext::getInstance()->getResponse()->setCookie('__utna', base_convert($session->getId(), 16, 32), time() + 315360000, '/', $host);
-			sfContext::getInstance()->getResponse()->setCookie('__utnb', $session->getHash(), time() + 315360000, '/', $host);
+            $response->setCookie('__utna', base_convert($session->getId(), 16, 32), time() + 315360000, '/', $host);
+            $response->setCookie('__utnb', $session->getHash(), time() + 315360000, '/', $host);
 		}
 
         return $session;
@@ -138,9 +137,8 @@ class sfPhastUser extends sfBasicSecurityUser
 
 	public function terminate(){
 		$this->setAuthenticated(false);
-		$host = '.' . sfConfig::get('host');
+        $host = '.' . sfConfig::get('app_host', sfConfig::get('host'));
 		$response = sfContext::getInstance()->getResponse();
-		$request =  sfContext::getInstance()->getRequest();
 		$response->setCookie('__utna', '', time()-1, '/', $host);
 		$response->setCookie('__utnb', '', time()-1, '/', $host);
 	}

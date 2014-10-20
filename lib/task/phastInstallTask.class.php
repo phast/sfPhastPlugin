@@ -39,8 +39,8 @@ EOF;
         $username = $this->ask('username (= admin):', 'QUESTION', 'admin');
         $this->log('');
         $password = $this->askAndValidate('password:', $validator);
-        $salt = md5(uniqid(mt_rand(), true));
         $this->log('');
+        $salt = md5(uniqid(mt_rand(), true));
 
         $this->runTask('phast:database');
 

@@ -9,7 +9,7 @@ all:
   storage:
     param:
       session_name: __utnz
-      session_cookie_domain: .<?php echo sfConfig::get('host') . "\n"; ?>
+      session_cookie_domain: .<?php echo sfConfig::get('app_host', sfConfig::get('host')) . "\n"; ?>
 
   view_cache_manager:
     class: sfViewCacheManager
