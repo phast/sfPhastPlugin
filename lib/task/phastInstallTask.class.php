@@ -27,6 +27,7 @@ EOF;
         $this->log('');
         $this->log('Phast CMS installation');
         $this->runTask('phast:database');
+        $this->runTask('propel:build-sql');
         $this->runTask('propel:insert-sql');
         $this->log('');
         $this->log('Installation is successfully completed');
