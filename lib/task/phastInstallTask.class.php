@@ -41,16 +41,12 @@ EOF;
         $password = $this->askAndValidate('password:', $validator);
         $salt = md5(uniqid(mt_rand(), true));
         $this->log('');
-        $this->log('>> Write to config/factories.yml');
 
-        file_put_contents(sfConfig::get('sf_config_dir') . '/factories.yml',
-<<<"EOT"
-all:
-  user:
-    param:
-      salt: "$salt"
-EOT
-        );
+
+        $this->log('>> Write to config/factories.yml');
+        $filepath = sfConfig::get('sf_config_dir') . '/factories.yml';
+
+        file_put_contents($filepath, preg_replace('/#token#/', $salt, file_get_contents($filepath)));
 
         $this->log(sprintf('>> Create user %s', $username));
         $this->runTask('phast:create-user', [
