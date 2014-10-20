@@ -35,16 +35,14 @@ EOF;
 
         $this->log('');
         $this->log('Configure admin user');
-        $this->log('');
-
-
-        $this->runTask('phast:database');
 
         $username = $this->ask('username (= admin):', 'QUESTION', 'admin');
         $this->log('');
         $password = $this->askAndValidate('password:', $validator);
         $salt = md5(uniqid(mt_rand(), true));
         $this->log('');
+
+        $this->runTask('phast:database');
 
         $this->runTask('propel:build-sql');
         $this->runTask('propel:insert-sql');
