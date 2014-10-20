@@ -40,8 +40,6 @@ EOF;
 
         $this->runTask('phast:database');
 
-
-
         $username = $this->ask('username (= admin):', 'QUESTION', 'admin');
         $this->log('');
         $password = $this->askAndValidate('password:', $validator);
