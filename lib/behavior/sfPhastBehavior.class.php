@@ -9,6 +9,9 @@ class sfPhastBehavior extends SfPropelBehaviorBase
     {
         foreach ($this->getDatabase()->getTables() as $table) {
             switch($table->getName()){
+                case 'widget':
+                    $table->setBaseClass('PhastWidget');
+                    break;
                 case 'user':
                     $table->setBaseClass('PhastUser');
                     break;
