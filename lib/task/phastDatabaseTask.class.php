@@ -39,10 +39,6 @@ EOF;
         $password = $this->askAndValidate('password:', $validator);
 
         $this->log('');
-        $this->log('>> Write to config/databases.yml');
-        $this->log(sprintf('   %s:host=%s;dbname=%s', $adapter, $host, $dbname));
-        $this->log(sprintf('   username: %s', $username));
-        $this->log(sprintf('   password: %s', password));
 
         file_put_contents(sfConfig::get('sf_config_dir') . '/databases.yml',
 <<<"EOT"

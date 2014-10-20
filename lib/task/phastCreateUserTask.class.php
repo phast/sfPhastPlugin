@@ -29,6 +29,7 @@ EOF;
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
         $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
+        sfContext::createInstance($this->configuration);
 
         $user = new User();
         $user->setName($arguments['username']);

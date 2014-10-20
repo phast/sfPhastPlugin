@@ -37,15 +37,16 @@ EOF;
         $this->log('');
         $this->log('Configure project');
         $host = $this->askAndValidate('host:', $validator);
+        $projectName = $this->askAndValidate('project name:', $validator);
 
-        $this->log('>> Write to config/app.yml');
         $filepath = sfConfig::get('sf_config_dir') . '/app.yml';
-        file_put_contents($filepath, preg_replace('/project\.dev/', $host, file_get_contents($filepath)));
-
+        $appConfig = file_get_contents($filepath);
+        $appConfig = preg_replace('/project\.dev/', $host, $appConfig);
+        $appConfig = preg_replace('/Project Name/', $projectName, $appConfig);
+        file_put_contents($filepath, $appConfig);
 
         $this->log('');
         $this->log('Configure admin user');
-
 
         $username = $this->ask('username (= admin):', 'QUESTION', 'admin');
         $this->log('');
@@ -54,11 +55,9 @@ EOF;
         $this->log('');
 
 
-        $this->log('>> Write to config/factories.yml');
         $filepath = sfConfig::get('sf_config_dir') . '/factories.yml';
         file_put_contents($filepath, preg_replace('/#token#/', $salt, file_get_contents($filepath)));
 
-        $this->log(sprintf('>> Create user %s', $username));
         $this->runTask('phast:create-user', [
             'username' => $username,
             'password' => $password,
