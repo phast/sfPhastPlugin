@@ -23,27 +23,16 @@ EOF;
 
     protected function execute($arguments = array(), $options = array())
     {
+        $validator = new sfValidatorString();
 
         $this->log('');
         $this->log('Phast CMS installation');
         $this->runTask('phast:database');
-        $this->runTask('propel:build-sql');
-        $this->runTask('propel:insert-sql');
-        $this->runTask('propel:build-model');
-        $this->runTask('propel:data-load');
-
-        $validator = new sfValidatorString();
 
         $this->log('');
         $this->log('Configure project');
         $host = $this->askAndValidate('host:', $validator);
         $projectName = $this->askAndValidate('project name:', $validator);
-
-        $filepath = sfConfig::get('sf_config_dir') . '/app.yml';
-        $appConfig = file_get_contents($filepath);
-        $appConfig = preg_replace('/project\.dev/', $host, $appConfig);
-        $appConfig = preg_replace('/Project Name/', $projectName, $appConfig);
-        file_put_contents($filepath, $appConfig);
 
         $this->log('');
         $this->log('Configure admin user');
@@ -54,6 +43,17 @@ EOF;
         $salt = md5(uniqid(mt_rand(), true));
         $this->log('');
 
+        $this->runTask('propel:build-sql');
+        $this->runTask('propel:insert-sql');
+        $this->runTask('propel:build-model');
+        $this->runTask('propel:data-load');
+
+
+        $filepath = sfConfig::get('sf_config_dir') . '/app.yml';
+        $appConfig = file_get_contents($filepath);
+        $appConfig = preg_replace('/project\.dev/', $host, $appConfig);
+        $appConfig = preg_replace('/Project Name/', $projectName, $appConfig);
+        file_put_contents($filepath, $appConfig);
 
         $filepath = sfConfig::get('sf_config_dir') . '/factories.yml';
         file_put_contents($filepath, preg_replace('/#token#/', $salt, file_get_contents($filepath)));
