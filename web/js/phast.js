@@ -1504,3 +1504,41 @@ $.fn.serializeJSON = function(){
 
 })(window);
 
+function transliterate(string){
+    var map = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
+        'е': 'e', 'ё': 'e', 'ж': 'j', 'з': 'z', 'и': 'i',
+        'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
+        'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+        'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch',
+        'ш': 'sh', 'щ': 'sch', 'ъ': 'y', 'ы': 'yi', 'ь': '',
+        'э': 'e', 'ю': 'yu', 'я': 'ya'
+    };
+
+    string = string.toLowerCase();
+    string = string.replace(/[а-яё]/g, function(str){
+        return map[str] || str;
+    });
+
+    string = string.replace(/[ \/\.]/g, '-');
+    string = string.replace(/([_-])+/g, '$1');
+    string = string.replace(/(^[\s_-]*|[\s_-]*$|[^\w_-])/g, '');
+
+    return string;
+}
+
+function transliterateHandler(node){
+    var $title = node.find(".phast-box-field-title input"),
+        $uri = node.find(".phast-box-field-uri input"),
+        uriVal = $uri.val();
+
+    $title.on("keyup", function(){
+        if(!uriVal){
+            $uri.val(transliterate($title.val()));
+        }
+    });
+
+    $uri.on("keyup", function(){
+        uriVal = $uri.val();
+    });
+}
