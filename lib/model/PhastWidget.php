@@ -62,13 +62,13 @@ class PhastWidget extends BaseObject
                 return $this->getGalleryHtml($options);
 
             case 'image':
-                return $this->getImageHtml();
+                return $this->getImageHtml($options);
 
             case 'file':
-                return $this->getFileHtml();
+                return $this->getFileHtml($options);
 
             case 'video':
-                return $this->getVideoHtml();
+                return $this->getVideoHtml($options);
 
         }
 
