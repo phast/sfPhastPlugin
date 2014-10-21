@@ -28,6 +28,7 @@ class PhastWidget extends BaseObject
     }
 
     public function getImageHtml($object, $options){
+        $output = '';
         if($object->getFullsize()) $output .= '<a target="_blank" href="'.$object->getURI().'" rel="prettyPhoto['.$this->getHolderId().']" class="widget-image-link" title="'.$object->getTitle().'">';
         $output .= '<img class="widget-image" src="'. $object->getWidgetUri() .'" style="'. $options['style'] .'">';
         if($object->getFullsize()) $output .= '</a>';
@@ -35,7 +36,7 @@ class PhastWidget extends BaseObject
     }
 
     public function getFileHtml($object, $options){
-        $output .= '
+        $output = '
 					<div class="widget-file" style="'. $options['style'] .'">
 					    <a class="widget-file widget-file-'.$object->getExtensionStyle().'" href="'.$object->getFile().'">'.
             $object->getTitle().
@@ -54,7 +55,6 @@ class PhastWidget extends BaseObject
 
         $object = $this->getObject();
         $type = $this->getType();
-        $output = '';
 
         switch($type){
 
