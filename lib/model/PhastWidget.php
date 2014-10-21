@@ -23,18 +23,18 @@ class PhastWidget extends BaseObject
         return 'undefined';
     }
 
-    public function getGalleryHtml($options){
+    public function getGalleryHtml($object, $options){
         return '';
     }
 
-    public function getImageHtml($options){
+    public function getImageHtml($object, $options){
         if($object->getFullsize()) $output .= '<a target="_blank" href="'.$object->getURI().'" rel="prettyPhoto['.$this->getHolderId().']" class="widget-image-link" title="'.$object->getTitle().'">';
         $output .= '<img class="widget-image" src="'. $object->getWidgetUri() .'" style="'. $options['style'] .'">';
         if($object->getFullsize()) $output .= '</a>';
         return $output;
     }
 
-    public function getFileHtml($options){
+    public function getFileHtml($object, $options){
         $output .= '
 					<div class="widget-file" style="'. $options['style'] .'">
 					    <a class="widget-file widget-file-'.$object->getExtensionStyle().'" href="'.$object->getFile().'">'.
@@ -45,7 +45,7 @@ class PhastWidget extends BaseObject
         return $output;
     }
 
-    public function getVideoHtml(){
+    public function getVideoHtml($object, $options){
         return '<div class="widget-video" style="'. $options['style'] .'">'.$object->getCode().'</div>';
     }
 
@@ -59,16 +59,16 @@ class PhastWidget extends BaseObject
         switch($type){
 
             case 'gallery':
-                return $this->getGalleryHtml($options);
+                return $this->getGalleryHtml($object, $options);
 
             case 'image':
-                return $this->getImageHtml($options);
+                return $this->getImageHtml($object, $options);
 
             case 'file':
-                return $this->getFileHtml($options);
+                return $this->getFileHtml($object, $options);
 
             case 'video':
-                return $this->getVideoHtml($options);
+                return $this->getVideoHtml($object, $options);
 
         }
 
