@@ -4,6 +4,7 @@ class sfPhastUser extends sfBasicSecurityUser
 {
 	const USERID_NAMESPACE = 'symfony/user/sfUser/userid';
 	const USERSIGNID_NAMESPACE = 'symfony/user/sfUser/signid';
+	const USERSESSIONID_NAMESPACE = 'symfony/user/sfUser/sessionid';
 	const AUTHTIME_NAMESPACE = 'symfony/user/sfUser/authtime';
 	const CREDENTIALS_CHECK_NAMESPACE = 'symfony/user/sfUser/credentialCheck';
 	protected $user;
@@ -63,7 +64,11 @@ class sfPhastUser extends sfBasicSecurityUser
 		}
 
 	}
-	
+
+	public function getSession(){
+		return UserSessionQuery::create()->findOneById($this->storage->read(self::USERSESSIONID_NAMESPACE));
+	}
+
 	public function getSign(){
 		return UserSignQuery::create()->findOneById($this->storage->read(self::USERSIGNID_NAMESPACE));
 	}
@@ -73,11 +78,7 @@ class sfPhastUser extends sfBasicSecurityUser
 	}
 
 	public function generateHash($md5 = false){
-		$hash = '';
-		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHI JKLMNOPRQSTUVWXYZ0123456789";
-		$numberChars = strlen($chars) - 1;
-		for($i = 0; $i < 32; $i++) $hash .= $chars[mt_rand(0, $numberChars)];
-		return $md5 ? md5($hash . sfConfig::get('sf_user_password_salt')) : $hash;
+        return sfPhastUtils::generateHash($md5);
 	}
 
     /**
@@ -121,6 +122,7 @@ class sfPhastUser extends sfBasicSecurityUser
 		$this->terminate();
 		$this->storage->write(self::USERID_NAMESPACE, $sign->getUserId());
 		$this->storage->write(self::USERSIGNID_NAMESPACE, $sign->getId());
+		$this->storage->write(self::USERSESSIONID_NAMESPACE, $session->getId());
 		$this->storage->write(self::CREDENTIALS_CHECK_NAMESPACE, time());
 		$this->setAuthenticated(true);
 		$this->addCredentials($this->getObjectModel()->getCredentials());

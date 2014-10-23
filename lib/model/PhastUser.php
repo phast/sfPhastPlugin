@@ -115,4 +115,12 @@ class PhastUser extends BaseObject{
         return sfPhastUtils::date('simple', $this->getCreatedAt(null)->getTimestamp()) . ' ' .date('H:i');
     }
 
+    public function getAccessKey(){
+        if(!$this->access_key){
+            $this->setAccessKey(base_convert($this->getId(), 16, 32) . sfPhastUtils::generateHash(true));
+            $this->save();
+        }
+        return $this->access_key;
+    }
+
 }

@@ -3,6 +3,14 @@
 
 class sfPhastUtils{
 
+    public static function generateHash($md5 = false){
+        $hash = '';
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHI JKLMNOPRQSTUVWXYZ0123456789";
+        $numberChars = strlen($chars) - 1;
+        for($i = 0; $i < 32; $i++) $hash .= $chars[mt_rand(0, $numberChars)];
+        return $md5 ? md5($hash . sfConfig::get('sf_user_password_salt')) : $hash;
+    }
+
     public static function getpartial($templateName, $vars = array())
     {
         $context = sfContext::getInstance();
