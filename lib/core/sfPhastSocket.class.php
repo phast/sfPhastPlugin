@@ -20,8 +20,8 @@ class sfPhastSocket{
         return null !== static::$instance ? static::$instance : static::$instance = new static();
     }
 
-    public static function send(){
-
+    public static function send($event, $data, $user = null){
+        return static::getInstance()->emit($event, $data, $user);
     }
 
     public function emit($event, $data, $user = null){
