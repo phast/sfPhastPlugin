@@ -27,10 +27,13 @@ class sfPhastSocket{
     public function emit($event, $data, $user = null){
         $ch = curl_init();
 
-        $data['$event'] = $event;
+        $fields = [
+            'd' => json_encode($data),
+            'e' => $event
+        ];
 
         if($user and $user instanceof User){
-            $data['$accessKey'] = $user->getAccessKey();
+            $fields['a'] = $user->getAccessKey();
         }
 
         curl_setopt($ch, CURLOPT_URL, 'http://' . $this->host);
@@ -38,7 +41,7 @@ class sfPhastSocket{
         curl_setopt($ch, CURLINFO_HEADER_OUT, false);
         curl_setopt($ch, CURLOPT_PORT, $this->port);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
 
