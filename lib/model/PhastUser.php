@@ -116,11 +116,11 @@ class PhastUser extends BaseObject{
     }
 
     public function getAccessKey(){
-        if(!$this->access_key){
-            $this->setAccessKey(base_convert($this->getId(), 16, 32) . sfPhastUtils::generateHash(true));
+        if(!$this->getAccess()){
+            $this->setAccess(base_convert($this->getId(), 16, 32) . sfPhastUtils::generateHash(true));
             $this->save();
         }
-        return $this->access_key;
+        return $this->getAccess();
     }
 
 }
