@@ -368,26 +368,9 @@ class sfPhastUIWidget{
 
 			if(!$response->error()){
 
-                if($request->hasFile('logo_image')){
-                    try{
-                        $upload = new sfPhastUpload('logo_image');
-                        $upload->path(sfConfig::get('sf_upload_dir') . '/article/logo');
-                        $upload->type('web_images');
-                        $upload->save();
-                        if($item->getLogoImageId()){
-                            $item->getImageRelatedByLogoImageId()->updateFromUpload($upload);
-                        }else{
-                            $item->setLogoImageId(Image::createFromUpload($upload)->getId());
-                        }
-                    }
-                    catch (Exception $e){
-                        return $response->error($e->getMessage());
-                    }
-                }
-
 				$uploadImage = function($object) use ($holder, $user){
                     $upload = new sfPhastUpload('file');
-                    $upload->path(sfConfig::get('sf_upload_dir') . '/' . (isset(static::$options['prefix']) ? static::$options['prefix'] : 'widget') . '/article/logo');
+                    $upload->path(sfConfig::get('sf_upload_dir') . '/' . (isset(static::$options['prefix']) ? static::$options['prefix'] : 'widget') . '/image');
                     $upload->type('web_images');
                     $upload->save();
                     $object->updateFromUpload($upload);
