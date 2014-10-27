@@ -53,7 +53,6 @@ EOF;
 
 		$script = '';
 
-
 		if($description = $this->getTable()->getDescription()){
 			preg_match_all('/~([\w\.]+)/', $description, $matches, PREG_SET_ORDER);
 			foreach($matches as $match){
