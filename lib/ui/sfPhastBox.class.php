@@ -249,6 +249,7 @@ class sfPhastBox
 	{
 
 		$template = $this->template;
+		$template = preg_replace('/\{#widgets}/', "{#list WidgetList\n@caption Список виджетов\n@ignorePk true\n}", $template);
 		$template = preg_replace_callback('/\{#section\s*([^\n\r]+)((?:\s*(?:#\s*)?[@:]? *[\w\d_]+ *[^\n\r]+)?)\s*\}/', array($this, 'renderSection'), $template);
 		$template = preg_replace_callback('/\{#button\s*([\w\d_]+)\}/', array($this, 'renderButton'), $template);
 		$template = preg_replace_callback('/\{#list *([\w\d_]+)' . sfPhastUI::REGEX_ATTRIBUTES_GENERAL_TEMPLATE . '\}/s', array($this, 'renderList'), $template);
