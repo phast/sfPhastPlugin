@@ -1448,7 +1448,7 @@ $.fn.serializeJSON = function(){
             force_br_newlines : false,
             force_p_newlines : true,
 
-            content_css : "/css/tinymce.css_=" + time
+            content_css : "/css/tinymce.css?_=" + time
         },
 
         link: {
@@ -1476,7 +1476,7 @@ $.fn.serializeJSON = function(){
             force_br_newlines : false,
             force_p_newlines : true,
 
-            content_css : "/css/tinymce.css_=" + time
+            content_css : "/css/tinymce.css?_=" + time
 
         }
     };
