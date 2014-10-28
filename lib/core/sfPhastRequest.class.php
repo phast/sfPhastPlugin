@@ -10,7 +10,6 @@ class sfPhastRequest extends sfWebRequest
 		$this->box = $box;
 	}
 
-
 	public function autofill($item, $ignore = array())
 	{
 		$table = get_class($item);

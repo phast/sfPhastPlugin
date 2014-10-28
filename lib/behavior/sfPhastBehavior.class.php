@@ -111,6 +111,17 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                             return '';
                         }
                     }";
+            $script .= "public function upload{$prefix}Image(\$request, \$uploadPath){
+                        \$upload = new sfPhastUpload(\$request);
+                        \$upload->path(sfConfig::get('sf_upload_dir') . \$uploadPath);
+                        \$upload->type('web_images');
+                        \$upload->save();
+                        if (\$this->get{$prefix}ImageId()) {
+                            \$this->{$method}()->updateFromUpload(\$upload);
+                        } else {
+                            \$this->set{$prefix}ImageId(Image::createFromUpload(\$upload)->getId());
+                        }
+                    }";
         }
 
 

@@ -42,6 +42,14 @@ class sfPhastUIResponse extends ArrayObject
         if($this->error()) throw new sfPhastException('');
     }
 
+    public function save($request, $item){
+        $this->check();
+        $request->autofill($item);
+        $item->save();
+        $this->pk($item);
+        return $item;
+    }
+
 	public function notfound($message = 'Элемент не найден'){
 		$this['$notfound'] = 1;
 		$this->error($message);
