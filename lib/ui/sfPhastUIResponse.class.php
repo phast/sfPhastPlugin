@@ -47,7 +47,6 @@ class sfPhastUIResponse extends ArrayObject
         $request->autofill($item);
         $item->save();
         $this->pk($item);
-        return $item;
     }
 
 	public function notfound($message = 'Элемент не найден'){
