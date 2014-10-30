@@ -593,9 +593,7 @@ class sfPhastUIWidget{
             {#section Фотогалерея
                 @button Default
             }
-            {title, Название
-                @required Укажите название
-            }
+            {title, Название}
             {content:textarea, Описание}
 
             {#list WidgetGalleryList

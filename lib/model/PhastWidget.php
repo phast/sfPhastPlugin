@@ -24,13 +24,25 @@ class PhastWidget extends BaseObject
     }
 
     public function getGalleryHtml($object, $options){
-        return '';
+        $output = '';
+        $output .= '<div class="widget-gallery" style="'. $options['style'] .'">';
+        $criteria = GalleryRelQuery::create()->filterByVisible(true)->orderByPosition();
+        foreach($object->getGalleryRels($criteria) as $rel){
+            $output .= '<div class="widget-gallery-image">';
+            $output .= '<a href="'.$rel->getImageUri().'" rel="image[gallery-'.$this->getId().']" class="widget-gallery-image-link">';
+            $output .= '<img src="'. $rel->getImageUri(180, 130) .'" alt="'. $rel->getTitle() .'">';
+            $output .= '</a>';
+            $output .= '</div>';
+        }
+        $output .= '</div>';
+
+        return $output;
     }
 
     public function getImageHtml($object, $options){
         $output = '';
-        if($object->getFullsize()) $output .= '<a target="_blank" href="'.$object->getURI().'" rel="prettyPhoto['.$this->getHolderId().']" class="widget-image-link" title="'.$object->getTitle().'">';
-        $output .= '<img class="widget-image" src="'. $object->getWidgetUri() .'" style="'. $options['style'] .'">';
+        if($object->getFullsize()) $output .= '<a href="'.$object->getURI().'" rel="image" class="widget-image-link">';
+        $output .= '<img class="widget-image" src="'. $object->getWidgetUri() .'" style="'. $options['style'] .'" alt="'.$object->getTitle().'">';
         if($object->getFullsize()) $output .= '</a>';
         return $output;
     }
