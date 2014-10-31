@@ -83,14 +83,22 @@ class sfPhastBehavior extends SfPropelBehaviorBase
         $script = '';
 
         $imageColumns = [];
+        $dateColumns = [];
         foreach ($this->getTable()->getColumns() as $column) {
+            /** @var $column Column */
             if (preg_match('/^(\w+)?ImageId$/', $column->getPhpName(), $match)) {
                 $prefix = isset($match[1]) ? $match[1] : '';
                 $imageColumns[] = [
                     'column' => $column,
                     'prefix' => $prefix
                 ];
+            }else if (preg_match('/^(\w+)?At$/', $column->getPhpName(), $match)) {
+                $dateColumns[$match[1]] = $column;
             }
+        }
+
+        foreach($dateColumns as $prefix => $column){
+            $script .= "public function get{$prefix}Date(\$mode = 'simple'){return sfPhastUtils::date(\$mode, \$this->get{$prefix}At())}\n";
         }
 
         foreach ($imageColumns as $column) {
