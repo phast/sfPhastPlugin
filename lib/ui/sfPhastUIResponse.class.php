@@ -122,10 +122,12 @@ class sfPhastUIResponse extends ArrayObject
                 }
                 continue;
 
-            }else if($field->getAttribute('recieve')){
+            }else if($field->getAttribute('custom')){
 	            $closure = create_function('$item', 'return ' . $field->getAttribute('recieve') . ';');
 	            $this[$key] = $closure($item);
-
+            }else if($field->getAttribute('recieve')){
+                $expression = new Symfony\Component\ExpressionLanguage\ExpressionLanguage();
+                $this[$key] = $expression->evaluate($field->getAttribute('recieve'), ['item' => $item]);
             }else if($tableMap->hasColumn($key)){
 
 				$column = $tableMap->getColumn($key);
