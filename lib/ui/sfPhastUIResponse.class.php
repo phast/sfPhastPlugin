@@ -122,8 +122,8 @@ class sfPhastUIResponse extends ArrayObject
                 }
                 continue;
 
-            }else if($field->getAttribute('custom')){
-	            $closure = create_function('$item', 'return ' . $field->getAttribute('custom') . ';');
+            }else if($field->getAttribute('recieve')){
+	            $closure = create_function('$item', 'return ' . $field->getAttribute('recieve') . ';');
 	            $this[$key] = $closure($item);
 
             }else if($tableMap->hasColumn($key)){
