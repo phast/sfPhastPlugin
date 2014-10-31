@@ -98,7 +98,7 @@ class sfPhastBehavior extends SfPropelBehaviorBase
         }
 
         foreach($dateColumns as $prefix => $column){
-            $script .= "public function get{$prefix}Date(\$mode = 'simple'){return sfPhastUtils::date(\$mode, \$this->get{$prefix}At())}\n";
+            $script .= "public function get{$prefix}Date(\$mode = 'simple'){return sfPhastUtils::date(\$mode, strtotime(\$this->get{$prefix}At()))}\n";
         }
 
         foreach ($imageColumns as $column) {
