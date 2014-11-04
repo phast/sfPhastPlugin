@@ -32,6 +32,12 @@ class sfPhastExecutionFilter extends sfExecutionFilter
 			$appControl->beforeExecute($request, $action);
 		}
 
+        $actionStack = $this->context->getActionStack();
+        if(($actionStackSize = $actionStack->getSize()) > 1){
+            $lastAction = $actionStack->getEntry($actionStackSize-2)->getActionInstance();
+            $action->getVarHolder()->add($lastAction->getVarHolder()->getAll());
+        }
+
 		$appControl->preExecute($request, $action);
 		$action->preExecute();
 
