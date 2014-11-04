@@ -69,13 +69,3 @@ class sfPhastPage implements ArrayAccess{
     }
 
 }
-
-function geturl($page, $absolute = false){
-    return sfPhastUtils::geturl($page, $absolute);
-}
-
-function error($message, $context = null){
-    $exception = new sfPhastException($message);
-    $exception->setContext($context);
-    throw $exception;
-}

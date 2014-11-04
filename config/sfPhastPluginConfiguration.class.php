@@ -41,3 +41,13 @@ function debug($data){
     $data = print_r($data, true);
     print PHP_SAPI == 'cli' ? $data : "<pre>{$data}</pre>";
 }
+
+function geturl($page, $absolute = false){
+    return sfPhastUtils::geturl($page, $absolute);
+}
+
+function error($message, $context = null){
+    $exception = new sfPhastException($message);
+    $exception->setContext($context);
+    throw $exception;
+}

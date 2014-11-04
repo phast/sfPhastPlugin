@@ -43,7 +43,16 @@ class sfPhastUtils{
     }
 
     public static function geturl($page, $absolute = false){
-        return ($absolute ? '' . sfContext::getInstance()->getRequest()->getUriPrefix() : '') . sfConfig::get("app_url_$page", $page);
+        if($absolute){
+            $prefix = sfContext::getInstance()->getRequest()->getUriPrefix();
+
+            if($prefix == 'http://'){
+                $prefix .= sfConfig::get('host');
+            }
+        }else{
+            $prefix = '';
+        }
+        return $prefix . sfConfig::get("app_url_$page", $page);
     }
 
     public static  function getlines($string){

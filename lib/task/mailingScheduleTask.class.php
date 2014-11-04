@@ -27,6 +27,10 @@ EOF;
         $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
         sfContext::createInstance($this->configuration);
 
+        print ProjectQuery::create()->findOne()->getUrl(true);
+        exit;
+
+
         foreach(MailingScheduleQuery::create()->find() as $schedule){
             if(!$schedule->isDue()) continue;
 
