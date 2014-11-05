@@ -34,6 +34,8 @@ class sfPhastSocket{
 
         if($user and $user instanceof User){
             $fields['a'] = $user->getAccessKey();
+        }else if(is_string($user)){
+            $fields['r'] = $user;
         }
 
         curl_setopt($ch, CURLOPT_URL, 'http://' . $this->host);
