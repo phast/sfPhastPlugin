@@ -105,6 +105,9 @@ class sfPhastBehavior extends SfPropelBehaviorBase
             $prefix = $column['prefix'];
             $column = $column['column'];
             $method = count($imageColumns) > 1 ? "getImageRelatedBy{$column->getPhpName()}" : 'getImage';
+            $script .= "public function get{$prefix}ImageObject(){
+                            return \$this->{$method}();
+                    }";
             $script .= "public function get{$prefix}ImageTag(\$width = null, \$height = null, \$scale = null, \$inflate = null){
                         if(\$image = \$this->{$method}()){
                             return \$image->getTag(\$width, \$height, \$scale, \$inflate);
