@@ -396,7 +396,12 @@ $.fn.serializeJSON = function(){
                     });
 
                     filtersNode.on('submit', function(){
-                        $.extend(list.parameters, filtersNode.serializeJSON());
+                        var parameters = {};
+                        filtersNode.find('input[type="checkbox"], input[type="radio"]').each(function(){
+                            parameters[$(this).prop('name').replace(/\[\w+\]$/, '')] = '';
+                        });
+
+                        $.extend(list.parameters, parameters, filtersNode.serializeJSON());
                         list.load();
                         return false;
                     });
