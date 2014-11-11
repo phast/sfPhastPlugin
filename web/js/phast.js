@@ -383,6 +383,14 @@ $.fn.serializeJSON = function(){
                         filtersNode.submit();
                     });
 
+                    filtersNode.on('change', 'input[type="radio"]', function(){
+                        filtersNode.submit();
+                    });
+
+                    filtersNode.on('change', 'input[type="checkbox"]', function(){
+                        filtersNode.submit();
+                    });
+
                     filtersNode.on('click', 'button.phast-filters-reset', function(){
                         filtersNode.resetForm().submit();
                     });
