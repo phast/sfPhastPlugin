@@ -10,6 +10,7 @@ class sfPhastUtils{
                 $exception = new sfPhastFormException();
                 throw $exception->setErrors(static::$errors);
             }
+            return;
         }
 
         static::$errors[$context] = $message;
