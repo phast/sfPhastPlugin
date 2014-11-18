@@ -141,4 +141,50 @@ class sfPhastRequest extends sfWebRequest
         return !empty($file['tmp_name']);
     }
 
+    public function extract($fields){
+        if(is_string($fields)) $fields = explode(',', $fields);
+        $result = [];
+
+        foreach($fields as $field){
+            $field = explode(':', $field);
+            $type = isset($field[1]) ? trim($field[1]) : 'text';
+            $field = trim($field[0]);
+            $value = $this->getParameter($field);
+
+            switch($type){
+                case 'trim':
+                case 'html':
+                case 'text':
+                case 'textarea':
+                    $value = trim($value);
+                    break;
+            }
+
+            switch($type){
+                case 'textarea':
+                case 'text':
+                    $value = htmlspecialchars($value, ENT_QUOTES);
+                    break;
+                case 'int':
+                case 'integer':
+                    $value = (int) $value;
+                    break;
+                case 'float':
+                    $value = (float) $value;
+                    break;
+                case 'bool':
+                case 'boolean':
+                    $value = !!$value;
+                    break;
+                case 'date':
+                    $value = strtotime($value);
+                    break;
+            }
+
+            $result[$field] = $value;
+        }
+
+        return $result;
+    }
+
 }

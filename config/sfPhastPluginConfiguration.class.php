@@ -46,8 +46,14 @@ function geturl($page, $absolute = false){
     return sfPhastUtils::geturl($page, $absolute);
 }
 
-function error($message, $context = null){
-    $exception = new sfPhastException($message);
-    $exception->setContext($context);
-    throw $exception;
+function error($context = null, $message = null){
+    return sfPhastUtils::error($context, $message);
+}
+
+function flushError($context = null, $message = null){
+    if($context){
+        sfPhastUtils::error($context, $message);
+    }
+
+    return sfPhastUtils::error();
 }

@@ -3,6 +3,18 @@
 
 class sfPhastUtils{
 
+    protected static $errors = [];
+    public static function error($context = null, $message = null){
+        if(null === $context){
+            if(static::$errors){
+                $exception = new sfPhastFormException();
+                throw $exception->setErrors(static::$errors);
+            }
+        }
+
+        static::$errors[$context] = $message;
+    }
+
     public static function generateHash($md5 = false){
         $hash = '';
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHI JKLMNOPRQSTUVWXYZ0123456789";

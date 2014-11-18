@@ -41,8 +41,13 @@ class sfPhastExecutionFilter extends sfExecutionFilter
 		$appControl->preExecute($request, $action);
 		$action->preExecute();
 
-		$viewName = $action->execute($request);
-		$action->postExecute();
+        try{
+            $viewName = $action->execute($request);
+        } catch (sfPhastFormException $e){
+            $viewName = ['error' => $e->getErrors()];
+        }
+
+        $action->postExecute();
 		$appControl->postExecute($request, $action, $viewName);
 		$appControl->afterExecute($request, $action, $viewName);
 
@@ -52,7 +57,6 @@ class sfPhastExecutionFilter extends sfExecutionFilter
 
 		if($request->isXmlHttpRequest() && is_array($viewName)){
 			$response = $this->context['response'];
-			//$response->setContentType('text/json');
 			$response->setContent(json_encode($viewName));
 			return sfView::NONE;
 		}

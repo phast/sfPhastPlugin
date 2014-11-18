@@ -16,3 +16,18 @@ class sfPhastException extends sfException
     }
 
 }
+
+class sfPhastFormException extends sfException
+{
+    protected $errors = [];
+    public function setErrors($errors){
+        $this->errors = $errors;
+        return $this;
+    }
+
+    public function getErrors(){
+        return $this->errors;
+    }
+
+}
+
