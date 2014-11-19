@@ -52,6 +52,10 @@ function error($context = null, $message = null){
 
 function flushError($context = null, $message = null){
     if($context){
+        if(null === $message){
+            $message = $context;
+            $context = '#';
+        }
         sfPhastUtils::error($context, $message);
     }
 
