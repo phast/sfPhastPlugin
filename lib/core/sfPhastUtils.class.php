@@ -142,8 +142,11 @@ class sfPhastUtils{
 
     public static function date($format = null, $timestamp = null){
         if(is_int($format)){
+            if(is_string($timestamp)){
+                $formatHolder = $timestamp;
+            }
             $timestamp = $format;
-            $format = null;
+            $format = isset($formatHolder) ? $formatHolder : null;
         }
         if(!$timestamp) $timestamp = time();
         if(!$format) $format = 'simple';

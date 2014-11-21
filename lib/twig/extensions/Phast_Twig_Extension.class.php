@@ -17,6 +17,7 @@ class Phast_Twig_Extension extends Twig_Extension
     public function getFilters()
     {
         return array(
+            'phast_date' => new Twig_Filter_Function(['sfPhastUtils', 'date']),
             'morph' => new Twig_Filter_Function(['sfPhastUtils', 'morph']),
             'break_words' => new Twig_Filter_Function(['sfPhastUtils', 'break_words']),
             'getlines' => new Twig_Filter_Function(['sfPhastUtils', 'getlines']),
