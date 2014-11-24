@@ -179,6 +179,8 @@ class sfPhastRequest extends sfWebRequest
                 case 'date':
                     $value = strtotime($value);
                     break;
+                case 'array':
+                    $value = is_array($value) ? $value : [];
             }
 
             $result[$field] = $value;
