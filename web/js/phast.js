@@ -376,6 +376,12 @@ $.fn.serializeJSON = function(){
 
                     Phast.populateSelect(filtersNode, list.data);
 
+                    if(list.data.$placeholder){
+                        $.each(list.data.$placeholder, function(field, value){
+                            filtersNode.find('[name="'+field+'"]').attr('placeholder', value);
+                        });
+                    }
+
                     if(list.parameters)
                         filtersNode.populate(list.parameters);
 
