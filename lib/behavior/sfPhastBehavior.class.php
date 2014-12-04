@@ -81,6 +81,7 @@ class sfPhastBehavior extends SfPropelBehaviorBase
         }
 
         $script = '';
+        $script .= 'protected $cache = [];';
 
         $imageColumns = [];
         $dateColumns = [];
