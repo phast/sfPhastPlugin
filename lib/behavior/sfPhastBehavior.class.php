@@ -81,7 +81,16 @@ class sfPhastBehavior extends SfPropelBehaviorBase
         }
 
         $script = '';
-        $script .= 'protected $cache = [];';
+        $script .= 'protected $cached = [];';
+        $script .= 'protected function cache($key, Closure $closure){
+
+                        if(array_key_exists($key, $this->cached)){
+                            return $this->cached[$key];
+                        }
+
+                        return $this->cached[$key] = $closure();
+                    }
+        ';
 
         $imageColumns = [];
         $dateColumns = [];
