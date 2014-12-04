@@ -21,6 +21,7 @@ class sfPhastPluginConfiguration extends sfPluginConfiguration
 
         sfConfig::set('sf_standard_helpers', $helpers);
         sfConfig::set('mod_global_partial_view_class', 'sfTwig');
+        sfConfig::set('sf_propel_generator_path', sfConfig::get('sf_root_dir') . '/lib/vendor/propel/propel1/generator/lib');
 
         require_once sfConfig::get('sf_twig_lib_dir') . '/Twig/Autoloader.php';
         Twig_Autoloader::register();
