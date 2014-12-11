@@ -119,7 +119,7 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                             return \$this->{$method}();
                     }";
             $script .= "public function get{$prefix}ImageTag(\$width = null, \$height = null, \$scale = null, \$inflate = null){
-                        if(\$image = \$this->{$method}()){
+                        if(\$image = \$this->get{$prefix}ImageObject()){
                             return \$image->getTag(\$width, \$height, \$scale, \$inflate);
                         }else{
                             return '';
