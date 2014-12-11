@@ -126,7 +126,7 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                         }
                     }";
             $script .= "public function get{$prefix}ImageUri(\$width = null, \$height = null, \$scale = null, \$inflate = null){
-                        if(\$image = \$this->{$method}()){
+                        if(\$image = \$this->get{$prefix}ImageObject()){
                             return \$image->getUri(\$width, \$height, \$scale, \$inflate);
                         }else{
                             return '';
@@ -138,7 +138,7 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                         \$upload->type('web_images');
                         \$upload->save();
                         if (\$this->get{$prefix}ImageId()) {
-                            \$this->{$method}()->updateFromUpload(\$upload);
+                            \$this->get{$prefix}ImageObject()->updateFromUpload(\$upload);
                         } else {
                             \$this->set{$prefix}ImageId(Image::createFromUpload(\$upload)->getId());
                         }
