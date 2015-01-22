@@ -4,7 +4,7 @@ class PhastHolder extends BaseObject
 {
 
     public function setObject($object){
-        $this->{'set'.get_class($object)}($object);
+        $this->{'set'.get_class($object).'Id'}($object->getId());
         $this->setCompleted(true);
         $this->save();
     }

@@ -12,7 +12,7 @@ class PhastHolderPeer extends BaseObject
              */
             if($relation = $column->getRelation()){
                 if($classname != $relation->getForeignTable()->getPhpName()) continue;
-                if($holder = HolderQuery::create()->{'filterBy'.$relation->getForeignTable()->getPhpName()}($object)->findOne()){
+                if($holder = HolderQuery::create()->{'filterBy'.$relation->getLocalColumns()[0]->getPhpName()}($object->{'get'.$relation->getForeignColumns()[0]->getPhpName()}())->findOne()){
                     return $holder;
                 }else{
                     return static::createFor($object);
