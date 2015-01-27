@@ -202,6 +202,12 @@ class sfPhastBoxField
 				}
 				break;
 
+            case 'gallery':
+                $guid = str_replace('.', '', uniqid('WidgetGalleryList', true));
+                $output .= "<input type=\"hidden\" name=\"{$name}\"><div class=\"{$guid}\"></div>";
+                $this->box->addSystemEvent('afterOpen', "this.attachList($$.List.create('WidgetGalleryList', {attach: this.getNode().find('div.{$guid}'), box: this, autoload: false, ignorePk: true, parameters: {}, makeParameters: function(parameters){parameters.gallery_id = box.data.$name}, wait: ''}));");
+                break;
+
 			case 'select':
 				if($multiple = $this->getAttribute('multiple')){
 					$multiple = "size=\"{$multiple}\" multiple";

@@ -606,7 +606,16 @@ class sfPhastBox
 				}else{
 					return $response->notfound();
 				}
-			}
+			}else{
+                foreach ($this->getFields() as $key => $field) {
+                    if('gallery' == $field->getType()){
+                        $gallery = new Gallery();
+                        $gallery->save();
+
+                        $response[$key] = $gallery->getId();
+                    }
+                }
+            }
 
 			if($verificate = $this->verificationAction){
 				$verificate($request, $response, $item);

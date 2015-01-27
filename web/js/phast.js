@@ -246,12 +246,16 @@ $.fn.serializeJSON = function(){
 
                     }
 
+                    if(list.makeParameters)
+                        list.makeParameters.call(this, list.parameters);
+
                     if(list.parameters)
                         $.extend(output.$parameters, list.parameters);
 
                     if(!filterRendered){
                         output.$renderFilters = 1;
                     }
+
 
                     return output;
                 },

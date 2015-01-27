@@ -25,6 +25,7 @@ class sfPhastRequest extends sfWebRequest
                 case 'text':
                 case 'textarea':
                 case 'textedit':
+                case 'gallery':
                     $item->setByName($column->getPhpName(), trim($this[$key]));
                     break;
 
@@ -38,7 +39,7 @@ class sfPhastRequest extends sfWebRequest
                     }
                     $item->setByName($column->getPhpName(), $time);
                     break;
-
+                
                 case 'select':
                 case 'choose':
                     if($field->getAttribute('multiple')) continue;
