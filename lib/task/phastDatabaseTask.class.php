@@ -36,7 +36,7 @@ EOF;
         $this->log('');
         $username = $this->askAndValidate('username:', $validator);
         $this->log('');
-        $password = $this->askAndValidate('password:', $validator);
+        $password = $this->ask('password:', 'QUESTION', '');
 
         $this->log('');
 
