@@ -39,6 +39,9 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                 case 'page':
                     $table->setBaseClass('PhastPage');
                     break;
+                case 'gallery_rel':
+                    $table->setBaseClass('PhastGalleryRel');
+                    break;
                 case 'holder':
                     $table->setBaseClass('PhastHolder');
                     foreach ($table->getForeignTableNames() as $rel) {
