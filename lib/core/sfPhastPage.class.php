@@ -29,8 +29,21 @@ class sfPhastPage implements ArrayAccess{
     }
 
     public function getMenuPages($uri){
-        return PhastPagePeer::retrieveByURI($uri)
-            ->getChildren(1, PhastPageQuery::create()->forProd());
+        $page = $uri instanceof Page ? $uri : PhastPagePeer::retrieveByURI($uri);
+        return $page->getChildren(1, PhastPageQuery::create()->forProd());
+    }
+
+    public function isContained(Page $page){
+        if($page->getUri()){
+            if($page->getUri()[0] == '^'){
+                return strpos($this->page->getUrl(), $page->getUrl()) === 0;
+            }else{
+                $parents = $this->page->getParents(Page::PARENT_PKS);
+                $parents[] = $this->page->getId();
+                return in_array($page->getId(), $parents);
+            }
+        }
+        return false;
     }
 
     public function addChain($name, $link = null){
