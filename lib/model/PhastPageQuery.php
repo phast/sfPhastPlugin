@@ -1,7 +1,7 @@
 <?php
 
 
-class PhastPageQuery extends PageQuery
+class PhastPageQuery extends ModelCriteria
 {
 
     public static function create($modelAlias = null, $criteria = null)
@@ -9,7 +9,7 @@ class PhastPageQuery extends PageQuery
         if ($criteria instanceof PageQuery) {
             return $criteria;
         }
-        $query = new PhastPageQuery(null, null, $modelAlias);
+        $query = new PageQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);

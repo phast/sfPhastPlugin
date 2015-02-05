@@ -30,7 +30,7 @@ class sfPhastPage implements ArrayAccess{
 
     public function getMenuPages($uri){
         $page = $uri instanceof Page ? $uri : PhastPagePeer::retrieveByURI($uri);
-        return $page->getChildren(1, PhastPageQuery::create()->forProd());
+        return $page->getChildren(1, PageQuery::create()->forProd());
     }
 
     public function isContained(Page $page){

@@ -1,6 +1,6 @@
 <?php
 
-use \PhastUserGroupSectionPeer as Section;
+use \UserGroupSectionPeer as Section;
 
 class PhastUserGroupSection extends BaseObject{
 

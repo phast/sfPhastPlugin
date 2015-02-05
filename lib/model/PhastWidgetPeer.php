@@ -1,7 +1,7 @@
 <?php
 
 
-class PhastWidgetPeer extends BaseObject
+class PhastWidgetPeer
 {
 
     public static function render($source, $field = 'content'){

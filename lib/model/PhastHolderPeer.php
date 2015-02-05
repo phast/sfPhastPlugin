@@ -1,6 +1,6 @@
 <?php
 
-class PhastHolderPeer extends BaseObject 
+class PhastHolderPeer
 {
 
     public static function retrieveFor($object){

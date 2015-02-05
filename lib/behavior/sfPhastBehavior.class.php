@@ -4,19 +4,33 @@
 class sfPhastBehavior extends SfPropelBehaviorBase
 {
 
+    protected $phastTables = [];
+
+
+    public function parentClass($builder){
+        $classname = preg_replace('/^Base/', '', $builder->getClassname());
+        if(in_array($classname, $this->phastTables)){
+            return 'Phast' . $classname;
+        };
+    }
 
     public function modifyDatabase()
     {
-        $phastTables = [];
+
         foreach((new sfFinder)->name('*.php')->in(__DIR__ . '/../model') as $path){
-            $phastTables[] = preg_replace('/^Phast|\.php$/', '', basename($path));
+            $this->phastTables[] = preg_replace('/^Phast|\.php$/', '', basename($path));
         }
 
-
         foreach ($this->getDatabase()->getTables() as $table) {
+/*
             if(in_array($table->getPhpName(), $phastTables)){
                 $table->setBaseClass('Phast' . $table->getPhpName());
             };
+
+            if(in_array($table->getPhpName() . 'Peer', $phastTables)){
+                $table->setBasePeer('Phast' . $table->getPhpName() . 'Peer');
+            };
+*/
 
             switch ($table->getName()) {
                 case 'holder':

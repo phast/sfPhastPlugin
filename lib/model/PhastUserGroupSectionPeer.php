@@ -1,6 +1,7 @@
 <?php
 
-class PhastUserGroupSectionPeer extends BasePeer{
+class PhastUserGroupSectionPeer
+{
 
     const ASSIGN_MODE_NONE = 0;
     const ASSIGN_MODE_FIRST = 1;

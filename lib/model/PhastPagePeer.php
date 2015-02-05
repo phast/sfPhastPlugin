@@ -1,15 +1,15 @@
 <?php
 
 
-class PhastPagePeer extends BaseObject
+class PhastPagePeer
 {
 
     public static function retrieveByURI($value){
-        return PhastPageQuery::create()->findOneByUri($value);
+        return PageQuery::create()->findOneByUri($value);
     }
 
     public static function retrieveByRoute($uri, $pattern, $requirements){
-        return (new PhastPageQuery)->forRetrieveByRoute($uri, $pattern, $requirements)->findOne();
+        return (new PageQuery)->forRetrieveByRoute($uri, $pattern, $requirements)->findOne();
     }
 
 }
