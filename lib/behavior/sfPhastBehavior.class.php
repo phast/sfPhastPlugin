@@ -7,43 +7,19 @@ class sfPhastBehavior extends SfPropelBehaviorBase
 
     public function modifyDatabase()
     {
+        $phastTables = [];
+        foreach((new sfFinder)->name('*.php')->in(__DIR__ . '/../model') as $path){
+            $phastTables[] = preg_replace('/^Phast|\.php$/', '', basename($path));
+        }
+
+
         foreach ($this->getDatabase()->getTables() as $table) {
+            if(in_array($table->getPhpName(), $phastTables)){
+                $table->setBaseClass('Phast' . $table->getPhpName());
+            };
+
             switch ($table->getName()) {
-                case 'widget':
-                    $table->setBaseClass('PhastWidget');
-                    break;
-                case 'user':
-                    $table->setBaseClass('PhastUser');
-                    break;
-                case 'user_sign':
-                    $table->setBaseClass('PhastUserSign');
-                    break;
-                case 'user_session':
-                    $table->setBaseClass('PhastUserSession');
-                    break;
-                case 'user_group':
-                    $table->setBaseClass('PhastUserGroup');
-                    break;
-                case 'user_group_section':
-                    $table->setBaseClass('PhastUserGroupSection');
-                    break;
-                case 'mailing_schedule':
-                    $table->setBaseClass('PhastMailingSchedule');
-                    break;
-                case 'mailing_broadcast':
-                    $table->setBaseClass('PhastMailingBroadcast');
-                    break;
-                case 'image':
-                    $table->setBaseClass('PhastImage');
-                    break;
-                case 'page':
-                    $table->setBaseClass('PhastPage');
-                    break;
-                case 'gallery_rel':
-                    $table->setBaseClass('PhastGalleryRel');
-                    break;
                 case 'holder':
-                    $table->setBaseClass('PhastHolder');
                     foreach ($table->getForeignTableNames() as $rel) {
                         $this
                             ->getDatabase()
