@@ -12,6 +12,9 @@ class sfPhastPluginConfiguration extends sfPluginConfiguration
 		if('backend' == sfConfig::get('sf_app')){
 			$modules = sfConfig::get('sf_enabled_modules', array());
 			$modules[] = 'sfPhastAdmin';
+			$modules[] = 'pages';
+			$modules[] = 'settings';
+			$modules[] = 'users';
 			sfConfig::set('sf_enabled_modules', $modules);
             sfConfig::set('sf_app_template_dir', sfConfig::get('sf_plugins_dir') . '/sfPhastPlugin/modules/sfPhastAdmin/templates');
         }
