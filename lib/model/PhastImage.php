@@ -3,10 +3,6 @@
 class PhastImage extends BaseObject
 {
 
-    protected $phastSettings = array(
-        'positionMask' => array('gallery_id')
-    );
-
     public function getSource(){
         return $this->filename ? sfConfig::get('sf_web_dir') . $this->path . '/' . $this->filename : '';
     }
