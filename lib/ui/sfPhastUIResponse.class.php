@@ -150,7 +150,13 @@ class sfPhastUIResponse extends ArrayObject
 						$this['phast_choose_' . $key] = $field->getAttribute('empty');
 					}
 
-				}else if('gallery' == $field->getType() && !$this[$key]){
+				}else if('content' == $field->getType() && !$this[$key]){
+                    $content = new Content();
+                    $content->save();
+
+                    $this[$key] = $content->getId();
+
+                }else if('gallery' == $field->getType() && !$this[$key]){
                     $gallery = new Gallery();
                     $gallery->save();
 

@@ -23,6 +23,10 @@ class sfPhastBoxField
 		$this->type = $type;
 		$this->label = $label;
 		$this->box = $box;
+
+        if($type == 'content'){
+            ContentPeer::initialize();
+        }
 	}
 
     public function addCropTypeFromLine($line){
@@ -201,6 +205,12 @@ class sfPhastBoxField
 
 				}
 				break;
+
+            case 'content':
+                $guid = str_replace('.', '', uniqid('WidgetContentList', true));
+                $output .= "<input type=\"hidden\" name=\"{$name}\"><div class=\"{$guid}\"></div>";
+                $this->box->addSystemEvent('afterOpen', "this.attachList($$.List.create('WidgetContentList', {attach: this.getNode().find('div.{$guid}'), box: this, autoload: false, ignorePk: true, parameters: {}, makeParameters: function(parameters){parameters.content_id = box.data.$name}, wait: ''}));");
+                break;
 
             case 'gallery':
                 $guid = str_replace('.', '', uniqid('WidgetGalleryList', true));
