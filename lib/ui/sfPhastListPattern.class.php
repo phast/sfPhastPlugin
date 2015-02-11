@@ -377,6 +377,36 @@ class sfPhastListPattern
 		return $this;
 	}
 
+    public function makeQuery($rel = null, $relId = null, $level = 0){
+
+        $c = new $this->tableQuery;
+        $criteriaResult = null;
+
+
+        if (!$rel && $this->haveRecursiveRelation())
+            $rel = $this->getRecursiveRelation();
+
+        if ($this->criteria) {
+            $closure = $this->criteria;
+            $criteriaResult = $closure($c, $this, $rel, $relId);
+        }
+
+        if ($rel && (!$criteriaResult || !$criteriaResult & static::CRITERIA_RESET_RELATION)) {
+            if($rel->getColumn() !== null)
+                $c->addAnd(
+                    $rel->getColumn()->getFullyQualifiedName(),
+                    $relId,
+                    $relId === null ? Criteria::ISNULL : Criteria::EQUAL
+                );
+        }
+
+        if ($this->tableMap->hasColumn('position')) {
+            $c->addAscendingOrderByColumn($this->tableMap->getColumn('position')->getFullyQualifiedName());
+        }
+
+        return $c;
+    }
+
 	public function loadData($rel = null, $relId = null, $level = 0)
 	{
 
@@ -387,30 +417,9 @@ class sfPhastListPattern
             $items = $closure($this, $rel, $relId, $level);
 
         }else{
-            $c = new $this->tableQuery;
-            $criteriaResult = null;
 
-
-            if (!$rel && $this->haveRecursiveRelation())
-                $rel = $this->getRecursiveRelation();
-
-            if ($this->criteria) {
-                $closure = $this->criteria;
-                $criteriaResult = $closure($c, $this, $rel, $relId);
-            }
-
-            if ($rel && (!$criteriaResult || !$criteriaResult & static::CRITERIA_RESET_RELATION)) {
-                if($rel->getColumn() !== null)
-                    $c->addAnd(
-                        $rel->getColumn()->getFullyQualifiedName(),
-                        $relId,
-                        $relId === null ? Criteria::ISNULL : Criteria::EQUAL
-                    );
-            }
-
-            if ($this->tableMap->hasColumn('position')) {
-                $c->addAscendingOrderByColumn($this->tableMap->getColumn('position')->getFullyQualifiedName());
-            }
+            $c = $this->makeQuery($rel, $relId, $level);
+            $mask = $this->getMask($rel, $relId);
 
             if ($this->getLimit()) {
                 $items = $c->paginate(($page = $this->list->getPage($mask)) ? $page : 1, $this->getLimit());
@@ -421,15 +430,33 @@ class sfPhastListPattern
         }
 
 
-		foreach ($items as $item) {
-			$data = $this->pushData($item, $rel, $relId, $level);
+        foreach ($items as $item) {
+            $data = $this->decorateData($item, $rel, $relId, $level);
 
-			if ($this->getFlex() && !$this->list->isOpened($mask . ' ' . $data['$pk']))
-				continue;
+            $hasChildren = false;
+            foreach ($this->getAttachedRelations() as $relation){
 
-			foreach ($this->getAttachedRelations() as $relation)
-                $relation->getPattern()->loadData($relation, $relation->getRelColumn() ? $item->getByName($relation->getRelColumn()->getPhpName()) : null, $level+1);
-		}
+                if($this->getFlex() && !$hasChildren){
+                    $c = $relation->getPattern()->makeQuery($relation, $item->getByName($relation->getRelColumn()->getPhpName()), $level+1);
+                    if($c->limit(1)->count()){
+                        $hasChildren = true;
+                    }else{
+                        continue;
+                    }
+
+                }
+
+                if ($this->getFlex() && (!$this->list->isOpened($mask . ' ' . $data['$pk'])))
+                    break;
+
+                $relation->getPattern()->loadData($relation, $item->getByName($relation->getRelColumn()->getPhpName()), $level+1);
+
+            }
+
+            if($hasChildren) $data['$hasChildren'] = 1;
+            $this->pushData($data, $rel, $relId);
+
+        }
 
 	}
 
@@ -448,16 +475,17 @@ class sfPhastListPattern
 		return !!$this->data;
 	}
 
-	protected function pushData($item, $rel, $relId, $level)
-	{
+    protected function pushData($data, $rel, $relId)
+    {
         if($rel && $rel->getColumn() === null){
             $nodeName = $rel->getRelPatternAlias() . ' %';
         }else{
             $nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
         }
+
         if (!isset($this->data[$nodeName])) $this->data[$nodeName] = array();
-        return $this->data[$nodeName][] = $this->decorateData($item, $rel, $relId, $level);
-	}
+        return $this->data[$nodeName][] = $data;
+    }
 
 	protected function pushPages($total, $rel, $relId)
 	{

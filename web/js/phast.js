@@ -509,7 +509,9 @@ $.fn.serializeJSON = function(){
                             output += '<div style="padding-left: ' + (level * 30) + 'px">';
                             output += '<i ' + (level > prelevel ? 'class="last"' : '') + '>' + new Array(level + 1).join('<i></i>') + '</i>';
                             if(pattern.flex){
-                                if(list.opened[mask]){
+                                if(!item.$hasChildren){
+                                    output += '<span class="no-children"></span>';
+                                }else if(list.opened[mask]){
                                     output += '<a href="#collapse" class="collapse"></a>';
                                 }else{
                                     output += '<a href="#expand" class="expand"></a>';
