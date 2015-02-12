@@ -25,6 +25,7 @@ class sfPhastRequest extends sfWebRequest
                 case 'text':
                 case 'textarea':
                 case 'textedit':
+                case 'content':
                 case 'gallery':
                     $item->setByName($column->getPhpName(), trim($this[$key]));
                     break;
