@@ -28,8 +28,8 @@ class sfPhastPage implements ArrayAccess{
         return static::$instance;
     }
 
-    public function getMenuPages($uri){
-        $page = $uri instanceof Page ? $uri : PhastPagePeer::retrieveByURI($uri);
+    public function getMenuPages($uri = null){
+        $page = $uri === null ? $this->page : ($uri instanceof Page ? $uri : PhastPagePeer::retrieveByURI($uri));
         return $page->getChildren(1, PageQuery::create()->forProd());
     }
 
