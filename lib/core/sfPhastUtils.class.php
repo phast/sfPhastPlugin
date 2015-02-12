@@ -113,6 +113,10 @@ class sfPhastUtils{
 
     public static function assignRels($values, $object, $rel_class, $source_method, $rel_method){
 
+        if($values === null){
+            $values = [];
+        }
+
         $values_ex = [];
         foreach($object->{'get' . $rel_class . 's'}() as $rel){
             if(in_array($rel->{'get' . $rel_method}(), $values)){
@@ -121,6 +125,7 @@ class sfPhastUtils{
                 $rel->delete();
             }
         }
+
         foreach(array_diff($values, $values_ex) as $id){
             $rel = new $rel_class();
             $rel->{'set' . $source_method}($object->getId());
