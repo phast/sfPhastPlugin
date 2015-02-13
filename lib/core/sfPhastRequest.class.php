@@ -40,7 +40,8 @@ class sfPhastRequest extends sfWebRequest
                     }
                     $item->setByName($column->getPhpName(), $time);
                     break;
-                
+
+                case 'radiogroup':
                 case 'select':
                 case 'choose':
                     if($field->getAttribute('multiple')) continue;
