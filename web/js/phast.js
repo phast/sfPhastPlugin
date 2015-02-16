@@ -1412,6 +1412,7 @@ $.fn.serializeJSON = function(){
     var file_browser_callback = function(field, url, type, win){
         $$.Box.create('PhastFileBrowser', {depth: 300000, filebrowser: {field: field, url: url, type: type, win: win}}).open();
     };
+
     var tinymceSettings = {
         default: {
             language : "ru",
@@ -1424,39 +1425,9 @@ $.fn.serializeJSON = function(){
             file_browser_callback : file_browser_callback,
 
             font_size_classes : "h",
-            theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,fontsizeselect,formatselect,|,cite,abbr,acronym,del,ins,|,styleprops,|,attribs,|,visualchars,nonbreaking,template,pagebreak",
-            theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,insertdate,inserttime,preview",
-            theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,widget,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-            theme_advanced_toolbar_location : "top",
-            theme_advanced_toolbar_align : "left",
-            theme_advanced_statusbar_location : "none",
-            theme_advanced_resizing : false,
 
-            fix_list_elements : true,
-            fix_table_elements : true,
-            fix_nesting : true,
-            convert_urls : false,
-            paste_remove_styles: true,
-
-            force_br_newlines : false,
-            force_p_newlines : true,
-
-            content_css : "/css/tinymce.css?_=" + time
-        },
-
-        edit: {
-            language : "ru",
-            theme : "advanced",
-            element_format : "html",
-            schema: "html5",
-            doctype: '<!DOCTYPE html>',
-            plugins : "widget,safari,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
-            dialog_type : "modal",
-            file_browser_callback : file_browser_callback,
-
-            font_size_classes : "h",
             theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,sub,sup,|,removeformat,charmap,|,formatselect,styleselect,|,nonbreaking",
-            theme_advanced_buttons2 : "tablecontrols,|,link,unlink,anchor,widget,media",
+            theme_advanced_buttons2 : "tablecontrols,|,bullist,numlist,|,link,unlink,anchor,widget,media",
             theme_advanced_buttons3 : "undo,redo,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,print,fullscreen,code",
             theme_advanced_toolbar_location : "top",
             theme_advanced_toolbar_align : "left",
@@ -1468,43 +1439,38 @@ $.fn.serializeJSON = function(){
             fix_nesting : true,
             convert_urls : false,
             paste_remove_styles: true,
-            keep_styles : false,
 
             force_br_newlines : false,
             force_p_newlines : true,
 
             content_css : "/css/tinymce.css?_=" + time
-        },
-
-        link: {
-            language : "ru",
-            theme : "advanced",
-            element_format : "html",
-            schema: "html5",
-            doctype: '<!DOCTYPE html>',
-            plugins : "paste,advlink",
-
-            theme_advanced_buttons1 : "bold,italic,underline,link,unlink,removeformat",
-            theme_advanced_buttons2 : "",
-            theme_advanced_buttons3 : "",
-            theme_advanced_toolbar_location : "top",
-            theme_advanced_toolbar_align : "left",
-            theme_advanced_statusbar_location : "none",
-            theme_advanced_resizing : false,
-
-            fix_list_elements : true,
-            fix_table_elements : true,
-            fix_nesting : true,
-            convert_urls : false,
-            paste_remove_styles: true,
-
-            force_br_newlines : false,
-            force_p_newlines : true,
-
-            content_css : "/css/tinymce.css?_=" + time
-
         }
+
     };
+
+
+    tinymceSettings.full = $.extend({}, tinymceSettings.default, {
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,fontsizeselect,formatselect,|,cite,abbr,acronym,del,ins,|,styleprops,|,attribs,|,visualchars,nonbreaking,template,pagebreak",
+        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,insertdate,inserttime,preview",
+        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,widget,media,advhr,|,print,|,ltr,rtl,|,fullscreen"
+    });
+
+
+
+    tinymceSettings.simple = $.extend({}, tinymceSettings.default, {
+        plugins : "paste,advlink",
+        theme_advanced_buttons1 : "bold,italic,underline,removeformat",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : ""
+    });
+
+    tinymceSettings.link = $.extend({}, tinymceSettings.simple, {
+        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,removeformat"
+    });
+
+    tinymceSettings.list = $.extend({}, tinymceSettings.simple, {
+        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,removeformat"
+    });
 
     $(function(){
         Box.blackout = $('<i id="phast-blackout"></i>').on('click', function(){Box.closeTop();}).appendTo('body');
