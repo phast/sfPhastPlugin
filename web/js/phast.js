@@ -1455,8 +1455,6 @@ $.fn.serializeJSON = function(){
         theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,widget,media,advhr,|,print,|,ltr,rtl,|,fullscreen"
     });
 
-
-
     tinymceSettings.simple = $.extend({}, tinymceSettings.default, {
         plugins : "paste,advlink",
         theme_advanced_buttons1 : "bold,italic,underline,removeformat",
