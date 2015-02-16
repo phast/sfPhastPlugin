@@ -1448,7 +1448,6 @@ $.fn.serializeJSON = function(){
 
     };
 
-
     tinymceSettings.full = $.extend({}, tinymceSettings.default, {
         theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,fontsizeselect,formatselect,|,cite,abbr,acronym,del,ins,|,styleprops,|,attribs,|,visualchars,nonbreaking,template,pagebreak",
         theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,insertdate,inserttime,preview",
