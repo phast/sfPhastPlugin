@@ -154,6 +154,8 @@ class sfPhastUIResponse extends ArrayObject
                     $content = new Content();
                     $content->save();
 
+                    die('sdsd');
+
                     $this[$key] = $content->getId();
 
                 }else if('gallery' == $field->getType() && !$this[$key]){

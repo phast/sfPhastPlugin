@@ -613,6 +613,12 @@ class sfPhastBox
                         $gallery->save();
 
                         $response[$key] = $gallery->getId();
+
+                    }else if('content' == $field->getType()){
+                        $content = new Content();
+                        $content->save();
+
+                        $response[$key] = $content->getId();
                     }
                 }
             }
