@@ -1465,8 +1465,8 @@ $.fn.serializeJSON = function(){
         theme_advanced_buttons1 : "bold,italic,underline,link,unlink,removeformat"
     });
 
-    tinymceSettings.list = $.extend({}, tinymceSettings.simple, {
-        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,removeformat"
+    tinymceSettings.text = $.extend({}, tinymceSettings.simple, {
+        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,|,formatselect,styleselect,|,removeformat"
     });
 
     $(function(){
