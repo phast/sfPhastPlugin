@@ -149,6 +149,22 @@ class settingsActions extends sfActions
         });
 
 		if($editConstructor){
+            $list
+                ->getPattern('Setting')
+                ->setHandler('clone', function($pattern, $request, $item){
+                    /** @var Setting $item */
+                    if(!$item)
+                        return array('error' => 'Элемент не найден');
+
+                    $setting = $item->copy(true);
+                    $setting->setTitle($setting->getTitle() . ' (копия)');
+                    $setting->setKey('');
+                    $setting->position(['after', $item]);
+                    $setting->save();
+                    return ['success' => true];
+                });
+
+
             if($devMode){
                 $list
                     ->addControl(['caption' => 'Добавить раздел', 'icon' => 'folder-add', 'action' => '&SettingSectionEditor'])
@@ -158,7 +174,13 @@ class settingsActions extends sfActions
                     ->addControl(['caption' => 'Добавить настройку', 'icon' => 'silk-cog-add', 'action' => '&SettingEditor'])
                     ->getList()
                     ->getPattern('Setting')
-                    ->addControl(['caption' => 'Управление настройкой', 'icon' => 'fatcow-setting-tools', 'action' => '&SettingEditor(pk:item.$pk)']);
+                    ->addControl(['caption' => 'Управление настройкой', 'icon' => 'fatcow-setting-tools', 'action' => '&SettingEditor(pk:item.$pk)'])
+                    ->addControl(['caption' => 'Дублировать настройку', 'icon' => 'silk-cog-go', 'action' => '
+                        pattern.request("clone", item.$pk, {success: function(){
+							list.load();
+						}});
+                    ']);
+
             }
 
             (new sfPhastBox(
