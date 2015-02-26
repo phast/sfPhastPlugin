@@ -6,6 +6,7 @@ class PhastPage extends BaseObject
 
     const PARENT_PKS = 2;
     const PARENT_REVERSE = 4;
+    const INCLUDE_SELF = 8;
 
     protected $phastSettings = array(
         'positionMask' => array('parent_id')
@@ -44,6 +45,9 @@ class PhastPage extends BaseObject
         if($mode & self::PARENT_PKS){
 
             $pks = explode('/', trim($this->path, '/'));
+            if($mode & self::INCLUDE_SELF){
+                $pks[] = $this->id;
+            }
             ~$mode & self::PARENT_REVERSE && $pks = array_reverse($pks);
 
             return $pks;
