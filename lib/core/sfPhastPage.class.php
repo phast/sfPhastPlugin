@@ -47,6 +47,8 @@ class sfPhastPage implements ArrayAccess{
     }
 
     public function addChain($name, $link = null){
+        $name = preg_replace('#\< *br */?\ *>#i', '', $name);
+
         $this->chain[] = [
             'name' => $name,
             'link' => $link
