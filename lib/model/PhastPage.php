@@ -6,10 +6,33 @@ class PhastPage extends BaseObject
 
     const PARENT_PKS = 2;
     const PARENT_REVERSE = 4;
+    const INCLUDE_SELF = 8;
 
     protected $phastSettings = array(
         'positionMask' => array('parent_id')
     );
+
+    protected $arrayRouteOptions;
+    public function getArrayRouteOptions(){
+
+        if(null !== $this->arrayRouteOptions){
+            return $this->arrayRouteOptions;
+        }
+
+        if($this->route_options){
+            if($route_options = (new sfYamlParser())->parse("parse: {{$this->route_options}}")){
+                return $this->arrayRouteOptions = $route_options['parse'];
+            }
+        }
+
+        return $this->arrayRouteOptions = [];
+    }
+
+    public function getRouteOption($key){
+        if($options = $this->getArrayRouteOptions() and array_key_exists($key, $options)){
+            return $options[$key];
+        }
+    }
 
     public function getParent(){
         return $this->getPageRelatedByParentId();
@@ -22,6 +45,9 @@ class PhastPage extends BaseObject
         if($mode & self::PARENT_PKS){
 
             $pks = explode('/', trim($this->path, '/'));
+            if($mode & self::INCLUDE_SELF){
+                $pks[] = $this->id;
+            }
             ~$mode & self::PARENT_REVERSE && $pks = array_reverse($pks);
 
             return $pks;
