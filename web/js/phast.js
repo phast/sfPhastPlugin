@@ -1469,6 +1469,10 @@ $.fn.serializeJSON = function(){
         theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,|,formatselect,styleselect,|,removeformat"
     });
 
+    tinymceSettings.image = $.extend({}, tinymceSettings.simple, {
+        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,image,|,formatselect,styleselect,|,removeformat"
+    });
+
     $(function(){
         Box.blackout = $('<i id="phast-blackout"></i>').on('click', function(){Box.closeTop();}).appendTo('body');
 
