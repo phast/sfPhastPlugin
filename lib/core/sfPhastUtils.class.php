@@ -278,4 +278,18 @@ class sfPhastUtils{
 EOF;
 	}
 
+    public static function camelize($lower_case_and_underscored_word)
+    {
+        $tmp = $lower_case_and_underscored_word;
+        $tmp = preg_replace_callback('#/(.?)#', function($match){
+            return "'::'" . strtoupper($match[2]);
+        }, $tmp);
+
+        $tmp = preg_replace_callback('/(^|_|-)+(.)/', function($match){
+            return strtoupper($match[2]);
+        }, $tmp);
+
+        return $tmp;
+    }
+
 }

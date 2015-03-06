@@ -178,19 +178,24 @@ class sfPhastBoxField
 			case 'password':
 			case 'checkbox':
 			case 'file':
+			case 'image':
+                $inputType = $this->type;
+                if($inputType == 'image'){
+                    $inputType = 'file';
+                }
                 $additional = '';
                 if($this->type == 'text' && $this->hasAttribute('autocomplete')){
                     $additional .= ' data-autocomplete="'.$this->getAttribute('autocomplete').'"';
                 }
 				if(!$this->getAttribute('hidden')){
                     if($this->type == 'checkbox') $output .= "<label>";
-                    $output .= "<input type=\"{$this->type}\" name=\"{$name}\" style=\"{$style}\" class=\"{$class}\"{$additional}>";
+                    $output .= "<input type=\"{$inputType}\" name=\"{$name}\" style=\"{$style}\" class=\"{$class}\"{$additional}>";
                     if($this->type == 'checkbox') $output .= " {$this->label}</label>";
                 }
-				if('file' == $this->type && $this->getAttribute('render')){
+				if('image' == $this->type || ('file' == $this->type && $this->getAttribute('render'))){
 					$guid = str_replace('.', '', uniqid($name, true));
 					$output .= "<div class=\"{$guid}\"></div>";
-                    $action = $this->getAttribute('render') == 'on' ? 'return value;' : $this->getAttribute('render');
+                    $action = ('image' == $this->type || $this->getAttribute('render') == 'on') ? 'return value;' : $this->getAttribute('render');
                     $crop = $this->getAttribute('crop') ? '<a href="#" class="phast-crop-edit"></a>' : '';
 					$this->box->addSystemEvent('afterRender', "node.find('.$guid').html(
 					    ((function(){var value = box.data.phast_file_{$name}||'';{$action}})()

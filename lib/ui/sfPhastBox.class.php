@@ -644,36 +644,37 @@ class sfPhastBox
 	{
 		$closure = $this->saveAction;
 
-		if($this->table){
-
-			if(!$item = $request->getItem($this->table, true)){
-				return $response->notfound();
-			}
-
-			if($verificate = $this->verificationAction){
-				$verificate($request, $response, $item);
-
-				if($response->error())
-					return;
-			}
-
-			if(!$closure){
-				if(!$response->error()){
-					$request->autofill($item);
-					$item->save();
-					$response->pk($item->getId());
-                    if($this->autoClose) $response->closeBox();
-				}
-			}
-
-		}else{
-			$item = null;
-		}
-
         try{
+            if($this->table){
+
+                if(!$item = $request->getItem($this->table, true)){
+                    return $response->notfound();
+                }
+
+                if($verificate = $this->verificationAction){
+                    $verificate($request, $response, $item);
+
+                    if($response->error())
+                        return;
+                }
+
+                if(!$closure){
+                    if(!$response->error()){
+                        $request->autofill($item);
+                        $item->save();
+                        $response->pk($item->getId());
+                        if($this->autoClose) $response->closeBox();
+                    }
+                }
+
+            }else{
+                $item = null;
+            }
+
+
 		    if($closure) $closure($request, $response, $item);
         }
-        catch(sfPhastException $e){
+        catch(Exception $e){
             return $e->getMessage() ? $response->error($e->getMessage()) : null;
         }
 

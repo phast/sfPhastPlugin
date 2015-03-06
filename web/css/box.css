@@ -59,7 +59,9 @@ html .phast-box-textedit{
 	width: auto;
 }
 
-.phast-box-type-field-file > dd > div{
+.phast-box-type-field-file > dd > div,
+.phast-box-type-field-image > dd > div
+{
 	margin-top: 5px;
 }
 

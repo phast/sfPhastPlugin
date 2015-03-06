@@ -17,9 +17,10 @@ class sfPhastRequest extends sfWebRequest
 		$tableMap = $tablePeer::getTableMap();
 
 		foreach ($this->box->getFields() as $key => $field) {
-			if (!$tableMap->hasColumn($key) || in_array($key, $ignore)) continue;
+            $column = $field->getType() == 'image' ? ($key . '_id') : $key;
+			if (!$tableMap->hasColumn($column) || in_array($key, $ignore)) continue;
             $key = strtolower($key);
-            $column = $tableMap->getColumn($key);
+            $column = $tableMap->getColumn($column);
 
             switch ($field->getType()) {
                 case 'text':
@@ -28,6 +29,12 @@ class sfPhastRequest extends sfWebRequest
                 case 'content':
                 case 'gallery':
                     $item->setByName($column->getPhpName(), trim($this[$key]));
+                    break;
+
+                case 'image':
+                    if($this->hasFile($key)){
+                        call_user_func([$item, 'upload'.ucfirst(sfPhastUtils::camelize($key))], $key, '/' . lcfirst($table));
+                    }
                     break;
 
                 case 'calendar':
@@ -53,7 +60,10 @@ class sfPhastRequest extends sfWebRequest
                     break;
 
             }
+
 		}
+
+
 	}
 
 	protected $xmlHttpRequestToggle = false;

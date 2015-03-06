@@ -109,13 +109,27 @@ class sfPhastUIResponse extends ArrayObject
 		$tableMap = $tablePeer::getTableMap();
 
 		foreach ($this->box->getFields() as $key => $field) {
-			if('password' == $field->getType()) continue;
+            if ('password' == $field->getType()) continue;
 
-            if($crop = $field->getAttribute('crop')){
+            if ($crop = $field->getAttribute('crop')) {
                 $this['phast_crop_' . $key] = $item->getByName($crop, BasePeer::TYPE_FIELDNAME);
             }
 
-            if('file' == $field->getType()){
+            if ('image' == $field->getType()) {
+                if($size = $field->getAttribute('size')){
+                    $size = explode(',', $size);
+                    foreach($size as &$sizePart){
+                        $sizePart = sfPhastUtils::evaluateScalar($sizePart);
+                    }
+                    unset($sizePart);
+
+                }else{
+                    $size = [100,100,true];
+                }
+
+                $this['phast_file_' . $key] = call_user_func_array([$item, 'get'.ucfirst(sfPhastUtils::camelize($key)).'Tag'], $size);
+
+            }else if('file' == $field->getType()){
                 if($receive = $field->getAttribute('receive')){
                     $closure = create_function('$item', 'return ' . $receive . ';');
                     $this['phast_file_' . $key] = $closure($item);
