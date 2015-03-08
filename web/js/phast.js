@@ -749,7 +749,8 @@ $.fn.serializeJSON = function(){
             pattern.scripts['.delete'] = function(item, node, list){
                 if(confirm('Удалить элемент «'+node.closest('tr').find('> td.control > div > a.action').text()+'»?')){
                     pattern.request('.delete', item.$pk);
-                    var $tr = node.closest('tr');
+                    var $tr = node.closest('tr'),
+                        $tbody = $tr.closest('tbody');
 
                     $tr.nextAll('tr').each(function(){
                         var $item = $(this);
@@ -761,6 +762,12 @@ $.fn.serializeJSON = function(){
                     });
 
                     $tr.remove();
+
+                    if(!$tbody.find('tr:not(.pages)').length){
+                        list.load();
+                    }
+
+
                 }
             };
             $.extend(pattern, {
