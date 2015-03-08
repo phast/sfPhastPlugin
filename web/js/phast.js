@@ -463,7 +463,7 @@ $.fn.serializeJSON = function(){
                         if(pattern.relations)
                             if(!pattern.flex || (list.opened[mask + ' ' + item.$pk]))
                                 $.each(pattern.relations, function(x, rel){
-                                    list.runPattern(list.pattern(rel.target), rel, rel.source_field == '%' ? item.$pk : item[rel.source_field], level + 1);
+                                    list.runPattern(list.pattern(rel.target), rel, rel.source_field == '%' ? (item.$pk || '%') : item[rel.source_field], level + 1);
                                 });
                     });
 
