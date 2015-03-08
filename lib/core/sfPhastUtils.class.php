@@ -145,6 +145,15 @@ class sfPhastUtils{
         return;
     }
 
+    /*
+     * simple — 1 января 2015
+     * full — 1 января 2015 (четверг)
+     * active — Только что | Менее часа назад | Сегодня в ...
+     * active_short — Только что | Час назад | Сегодня | Вчера ...
+     * month — Январь
+     * month_day — 1 января
+     * month_date — января
+     */
     public static function date($format = null, $timestamp = null){
         if(is_int($format)){
             if(is_string($timestamp)){

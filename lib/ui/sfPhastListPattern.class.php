@@ -437,19 +437,31 @@ class sfPhastListPattern
             foreach ($this->getAttachedRelations() as $relation){
 
                 if($this->getFlex() && !$hasChildren){
-                    $c = $relation->getPattern()->makeQuery($relation, $item->getByName($relation->getRelColumn()->getPhpName()), $level+1);
-                    if($c->limit(1)->count()){
-                        $hasChildren = true;
+                    if($relation->getColumn()){
+                        $c = $relation->getPattern()->makeQuery($relation, $item->getByName($relation->getRelColumn()->getPhpName()), $level+1);
+                        if($c->limit(1)->count()){
+                            $hasChildren = true;
+                        }else{
+                            continue;
+                        }
+
                     }else{
-                        continue;
+
+                        $hasChildren = true;
+
                     }
+
 
                 }
 
                 if ($this->getFlex() && (!$this->list->isOpened($mask . ' ' . $data['$pk'])))
                     break;
 
-                $relation->getPattern()->loadData($relation, $item->getByName($relation->getRelColumn()->getPhpName()), $level+1);
+                if($relation->getColumn()){
+                    $relation->getPattern()->loadData($relation, $item->getByName($relation->getRelColumn()->getPhpName()), $level+1);
+                }else{
+                    $relation->getPattern()->loadData($relation, $data['$pk'], $level+1);
+                }
 
             }
 
@@ -462,7 +474,7 @@ class sfPhastListPattern
 
 	public function getMask($rel, $relId)
 	{
-		return $mask = $rel && $rel->getColumn() === null ? "{$this->getAlias()} {$rel->getRelPattern()->getAlias()} %" : ($rel ? "{$this->getAlias()} {$rel->getRelPattern()->getAlias()} {$relId}" : "{$this->getAlias()} .");
+		return $rel ? "{$this->getAlias()} {$rel->getRelPattern()->getAlias()} {$relId}" : "{$this->getAlias()} .";
 	}
 
 	public function getData()
@@ -477,11 +489,7 @@ class sfPhastListPattern
 
     protected function pushData($data, $rel, $relId)
     {
-        if($rel && $rel->getColumn() === null){
-            $nodeName = $rel->getRelPatternAlias() . ' %';
-        }else{
-            $nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
-        }
+        $nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
 
         if (!isset($this->data[$nodeName])) $this->data[$nodeName] = array();
         return $this->data[$nodeName][] = $data;
@@ -489,11 +497,7 @@ class sfPhastListPattern
 
 	protected function pushPages($total, $rel, $relId)
 	{
-        if($rel && $rel->getColumn() === null){
-            $nodeName = $rel->getRelPatternAlias() . ' %';
-        }else{
-            $nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
-        }
+        $nodeName = $rel && $relId ? $rel->getRelPatternAlias() . ' ' . $relId : '.';
 		if ($total > 1) $this->data[$nodeName]['pages'] = $total;
 	}
 
