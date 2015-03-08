@@ -635,7 +635,8 @@ $.fn.serializeJSON = function(){
                         return false;
                     });
 
-                    table.on('click', 'tbody > tr.pages > td > div > a', function(){
+                    table.on('click', 'tbody > tr.pages > td > div > a', function(e){
+                        e.preventDefault();
                         if($(this).hasClass('active')) return;
                         list.pages[$(this).data('mask')] = $(this).text();
                         list.load();
