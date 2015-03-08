@@ -748,7 +748,18 @@ $.fn.serializeJSON = function(){
             pattern.scripts['.delete'] = function(item, node, list){
                 if(confirm('Удалить элемент «'+node.closest('tr').find('> td.control > div > a.action').text()+'»?')){
                     pattern.request('.delete', item.$pk);
-                    node.closest('tr').remove();
+                    var $tr = node.closest('tr');
+
+                    $tr.nextAll('tr').each(function(){
+                        var $item = $(this);
+                        if($item.data('level') > $tr.data('level')){
+                            $item.remove();
+                        }else{
+                            return false;
+                        }
+                    });
+
+                    $tr.remove();
                 }
             };
             $.extend(pattern, {
