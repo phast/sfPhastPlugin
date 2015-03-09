@@ -292,6 +292,16 @@ class sfPhastListPattern
 
 	public function addControl($options)
 	{
+        if(!is_array($options)){
+            $args = func_get_args();
+            $options = [
+                'caption' => $args[0],
+                'icon' => $args[1],
+                'action' => $args[2],
+            ];
+
+        }
+
 		if(isset($options['action'])){
 			$options['action'] = sfPhastUI::parseScript($options['action'], array('model' => array('list: list'), 'parameters' => array('relation: item.$pk')));
 		}
