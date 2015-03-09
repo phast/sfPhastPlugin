@@ -170,6 +170,10 @@ class sfPhastList extends ArrayObject
 							$pattern->setFlex(sfPhastUtils::parseBoolean($value));
 							break;
 
+						case 'invisible':
+							$pattern->setInvisible(sfPhastUtils::parseBoolean($value));
+							break;
+
 						case 'sort':
 							$pattern->setSort(sfPhastUtils::parseBoolean($value));
 							break;

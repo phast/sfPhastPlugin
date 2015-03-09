@@ -33,7 +33,7 @@ html .phast-box-textedit{
 }
 
 .phast-box-notice{
-    display: block;
+    margin-left: 5px;
     margin-bottom: 5px;
     font-size: 9px;
     font-weight: normal;
@@ -70,6 +70,13 @@ html .phast-box-textedit{
 }
 .phast-box-selectgroup > li + li{
 	margin-top: 2px;
+}
+.phast-box-selectgroup.oneline > li{
+  display: inline-block;
+}
+.phast-box-selectgroup.oneline > li + li{
+  margin-top: 0;
+  margin-left: 10px;
 }
 
 .phast-box-choose{

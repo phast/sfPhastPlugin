@@ -39,6 +39,7 @@ class sfPhastListPattern
 		$scripts = array(),
 		$attributes = array(),
 		$data = array(),
+        $invisible = false,
         $custom;
 
 	public function __construct($list, $table, $alias = NULL)
@@ -71,6 +72,14 @@ class sfPhastListPattern
 	public function getTableMap() { return $this->tableMap; }
 
 	public function getAlias() { return $this->alias; }
+
+	public function setInvisible($value)
+	{
+		$this->invisible = $value;
+		return $this;
+	}
+
+	public function getInvisible() { return $this->invisible; }
 
 	public function setFlex($value)
 	{
@@ -446,8 +455,11 @@ class sfPhastListPattern
             $hasChildren = false;
             foreach ($this->getAttachedRelations() as $relation){
 
-                if($this->getFlex() && !$hasChildren){
-                    if($relation->getColumn()){
+                if($this->getFlex() && !$hasChildren) {
+                    if($relation->getPattern()->getInvisible()) {
+                        continue;
+
+                    }else if($relation->getColumn()){
                         $c = $relation->getPattern()->makeQuery($relation, $item->getByName($relation->getRelColumn()->getPhpName()), $level+1);
                         if($c->limit(1)->count()){
                             $hasChildren = true;
@@ -457,11 +469,19 @@ class sfPhastListPattern
 
                     }else{
 
-                        $hasChildren = true;
+                        if(!$relation->getPattern()->isCustom() and $data['$pk']) {
+                            $c = $relation->getPattern()->makeQuery($relation, $data['$pk'], $level + 1);
+                            if ($c->limit(1)->count()) {
+                                $hasChildren = true;
+                            } else {
+                                continue;
+                            }
+
+                        }else{
+                            $hasChildren = true;
+                        }
 
                     }
-
-
                 }
 
                 if ($this->getFlex() && (!$this->list->isOpened($mask . ' ' . $data['$pk'])))
@@ -570,6 +590,7 @@ class sfPhastListPattern
 		$output = "\n\t\t'{$this->alias}': {";
 		if ($this->icon) $output .= "\n\t\t\ticon: '{$this->icon}',";
 		if ($this->flex) $output .= "\n\t\t\tflex: true,";
+		if ($this->invisible) $output .= "\n\t\t\tinvisible: true,";
 		if ($this->sort) $output .= "\n\t\t\tsort: true,";
 		if ($this->action) $output .= "\n\t\t\taction: function(item, node, list, pattern, event){{$this->action}},";
 		if ($relationMap) $output .= "\n\t\t\trelations: [{$relationMap}],";

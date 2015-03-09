@@ -32,10 +32,13 @@ class sfPhastUIResponse extends ArrayObject
 		$this->data['$placeholder'][$field] = $value;
 	}
 
-	public function error($message = null)
+	public function error($message = null, $break = false)
 	{
 		if(NULL === $message) return isset($this->data['error']);
 		$this->data['error'][] = $message;
+        if($break){
+            throw new sfPhastException('');
+        }
 	}
 
     public function check(){
@@ -49,9 +52,15 @@ class sfPhastUIResponse extends ArrayObject
         $this->pk($item);
     }
 
-	public function notfound($message = 'Элемент не найден'){
+	public function notfound($message = null, $break = false){
 		$this['$notfound'] = 1;
-		$this->error($message);
+        if($message === null or $message === true){
+            $message = 'Элемент не найден';
+        }
+        if($message === true){
+            $break = true;
+        }
+		$this->error($message, $break);
 	}
 
 	public function success($message){
@@ -80,6 +89,11 @@ class sfPhastUIResponse extends ArrayObject
 	}
 
 	public function select($fieldName, $options, $methodValue = null, $methodCaption = null, $insertEmpty = null){
+        if($options instanceof PropelCollection){
+            if(null === $methodValue) $methodValue = 'getId';
+            if(null === $methodCaption) $methodCaption = 'getTitle';
+        }
+
 		if($methodValue){
 			$items = $options;
 			$options = array();

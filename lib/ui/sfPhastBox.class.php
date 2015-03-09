@@ -253,9 +253,7 @@ class sfPhastBox
 		$template = preg_replace_callback('/\{#section\s*([^\n\r]+)((?:\s*(?:#\s*)?[@:]? *[\w\d_]+ *[^\n\r]+)?)\s*\}/', array($this, 'renderSection'), $template);
 		$template = preg_replace_callback('/\{#button\s*([\w\d_]+)\}/', array($this, 'renderButton'), $template);
 		$template = preg_replace_callback('/\{#list *([\w\d_]+)' . sfPhastUI::REGEX_ATTRIBUTES_GENERAL_TEMPLATE . '\}/s', array($this, 'renderList'), $template);
-		$template = preg_replace_callback('/\{#gallery*' . sfPhastUI::REGEX_ATTRIBUTES_GENERAL_TEMPLATE . '\}/s', array($this, 'renderGalleryList'), $template);
-		$template = preg_replace_callback('/\{#image*' . sfPhastUI::REGEX_ATTRIBUTES_GENERAL_TEMPLATE . '\}/s', array($this, 'renderSingleImageList'), $template);
-		$template = preg_replace_callback('/\{#event' . sfPhastUI::REGEX_ATTRIBUTES_GENERAL_TEMPLATE . '\}/s', array($this, 'renderEvent'), $template);
+		$template = preg_replace_callback('/\{#events?' . sfPhastUI::REGEX_ATTRIBUTES_GENERAL_TEMPLATE . '\}/s', array($this, 'renderEvent'), $template);
 		$template = preg_replace_callback('/\{:([\w\d_]+):\}/', array($this, 'renderField'), $template);
 		$template = trim(str_replace(array("\n", "\r"), '', $template));
 
@@ -394,128 +392,6 @@ class sfPhastBox
 		return "<dl><dt>{$caption}</dt><dd><div class=\"{$guid}\"></div></dd></dl>";
 	}
 
-    public function renderGalleryList($match)
-    {
-        $parameters = $match[1];
-
-        $wait = '';
-        $caption = '';
-        $autoload = 'false';
-        $ignorePk = 'false';
-        $params = '';
-        $id = '_GalleryList';
-
-        if ($parameters && preg_match_all(sfPhastUI::REGEX_ATTRIBUTES_PARSE, $parameters, $matches, PREG_SET_ORDER)) {
-
-            foreach ($matches as $param) {
-                $name = $param[1];
-                $value = trim(isset($param[3]) ? $param[3] : $param[2]);
-                switch($name){
-                    case 'wait':
-                        $wait = $value;
-                        break;
-
-                    case 'caption':
-                        $caption = $value;
-                        break;
-
-                    case 'autoload':
-                        $autoload = $value;
-                        break;
-
-                    case 'ignorePk':
-                        $ignorePk = $value;
-                        break;
-
-                    case 'parameters':
-                        $params = $value;
-                        break;
-
-                    case 'list':
-                        $id = $value;
-                        break;
-                }
-
-            }
-
-
-        }
-        if($params){
-            $params .= ',';
-        }
-
-        $params .= 'box:"'.$this->id.'"';
-
-        $guid = str_replace('.', '', uniqid($id, true));
-
-
-
-        $this->afterOpen .= "this.attachList($$.List.create('{$id}', {attach: this.getNode().find('div.{$guid}'), box: this, autoload: {$autoload}, ignorePk: {$ignorePk}, parameters: {{$params}}, wait: '{$wait}'}));";
-
-        return "<dl><dt>{$caption}</dt><dd><div class=\"{$guid}\"></div></dd></dl>";
-    }
-
-    public function renderSingleImageList($match)
-    {
-        $parameters = $match[1];
-
-        $wait = '';
-        $caption = '';
-        $autoload = 'false';
-        $ignorePk = 'false';
-        $params = '';
-        $id = '_SingleImageList';
-
-        if ($parameters && preg_match_all(sfPhastUI::REGEX_ATTRIBUTES_PARSE, $parameters, $matches, PREG_SET_ORDER)) {
-
-            foreach ($matches as $param) {
-                $name = $param[1];
-                $value = trim(isset($param[3]) ? $param[3] : $param[2]);
-                switch($name){
-                    case 'wait':
-                        $wait = $value;
-                        break;
-
-                    case 'caption':
-                        $caption = $value;
-                        break;
-
-                    case 'autoload':
-                        $autoload = $value;
-                        break;
-
-                    case 'ignorePk':
-                        $ignorePk = $value;
-                        break;
-
-                    case 'parameters':
-                        $params = $value;
-                        break;
-
-                    case 'list':
-                        $id = $value;
-                        break;
-                }
-
-            }
-
-
-        }
-        if($params){
-            $params .= ',';
-        }
-
-        $params .= 'box:"'.$this->id.'"';
-
-        $guid = str_replace('.', '', uniqid($id, true));
-
-
-
-        $this->afterOpen .= "this.attachList($$.List.create('{$id}', {attach: this.getNode().find('div.{$guid}'), box: this, autoload: {$autoload}, ignorePk: {$ignorePk}, parameters: {{$params}}, wait: '{$wait}'}));";
-
-        return "<dl><dt>{$caption}</dt><dd><div class=\"{$guid}\"></div></dd></dl>";
-    }
-
 
 	public function renderButton($match)
 	{
@@ -608,6 +484,10 @@ class sfPhastBox
 				}
 			}else{
                 foreach ($this->getFields() as $key => $field) {
+                    if($placeholder = $field->getAttribute('placeholder')){
+                        $response->placeholder($key, $placeholder);
+                    }
+
                     if('gallery' == $field->getType()){
                         $gallery = new Gallery();
                         $gallery->save();

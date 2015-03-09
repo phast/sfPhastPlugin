@@ -242,6 +242,9 @@ class sfPhastBoxField
 
 			case 'checkgroup':
 			case 'radiogroup':
+                if($this->getAttribute('oneline')){
+                    $class = 'oneline ' . $class;
+                }
 				$output .= "<ul data-name=\"{$name}\" style=\"{$style}\" class=\"phast-box-selectgroup phast-box-{$this->type} {$class}\"></ul>";
 				break;
 

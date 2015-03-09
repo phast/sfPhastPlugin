@@ -763,16 +763,15 @@ $.fn.serializeJSON = function(){
 
                     $tr.remove();
 
-                    if(!$tbody.find('tr:not(.pages)').length){
+                    if(!$tbody.find('tr:not(.pages):not(.invisible)').length){
                         list.load();
                     }
-
 
                 }
             };
             $.extend(pattern, {
                 getItemHTMLAttributes: function(item, relation, level, mask, guid){
-                    var output = '', attributes = {};
+                    var output = '', attributes = {}, classes = [];
 
                     attributes.pattern = this.name;
                     attributes.level = level;
@@ -798,7 +797,15 @@ $.fn.serializeJSON = function(){
                         output += ' data-' + key + '="' + value + '"';
                     });
 
-                    if(item.$class) output += ' class="' + item.$class + '"';
+                    if(pattern.invisible){
+                        classes.push('invisible');
+                    }
+
+                    if(item.$class){
+                        classes.push(item.$class);
+                    }
+
+                    if(classes) output += ' class="' + classes.join(' ') + '"';
                     if(item.$style) output += ' style="' + item.$style + '"';
 
                     return output;
