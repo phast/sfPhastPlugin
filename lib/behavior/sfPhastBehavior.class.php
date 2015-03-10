@@ -85,6 +85,47 @@ class sfPhastBehavior extends SfPropelBehaviorBase
                     }
         ';
 
+
+        foreach($this->getTable()->getReferrers() as $rel){
+            $relTable = $rel->getTable();
+            $primaryKeys = $relTable->getPrimaryKey();
+
+            if(count($primaryKeys) == 2){
+                $sourceColumn = $relTable->getColumn($rel->getLocalColumns()[0]);
+                $targetColumn = $primaryKeys[$primaryKeys[0]->getPhpName() == $sourceColumn->getPhpName() ? 1 : 0];
+
+                $script .= "
+                    public function assign{$relTable->getPhpName()}s(\$values){
+
+                        if(\$values === null){
+                            \$values = [];
+                        }
+
+                        \$values_ex = [];
+                        foreach(\$this->get{$relTable->getPhpName()}s() as \$rel){
+                            if(in_array(\$rel->get{$targetColumn->getPhpName()}(), \$values)){
+                                \$values_ex[] = \$rel->get{$targetColumn->getPhpName()}();
+                            }else{
+                                \$rel->delete();
+                            }
+                        }
+
+                        foreach(array_diff(\$values, \$values_ex) as \$value){
+                            \$rel = new {$targetColumn->getTable()->getPhpName()}();
+                            \$rel->set{$sourceColumn->getPhpName()}(\$this->getId());
+                            \$rel->set{$targetColumn->getPhpName()}(\$value);
+                            \$rel->save();
+                        }
+
+                        return \$this;
+
+                    }
+                ";
+
+            }
+        }
+
+
         $imageColumns = [];
         $dateColumns = [];
         foreach ($this->getTable()->getColumns() as $column) {
