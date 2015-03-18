@@ -65,6 +65,9 @@ public function getHolder(){
 	if(\$this->holderObject !== null) return \$this->holderObject;
 	return \$this->holderObject = PhastHolderPeer::retrieveFor(\$this);
 }
+public function getHolderId(){
+    return \$this->getHolder()->getId();
+}
 public function renderWidget(\$column = 'content'){
 	return PhastWidgetPeer::render(\$this, \$column);
 }
