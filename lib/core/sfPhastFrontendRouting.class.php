@@ -12,9 +12,7 @@ class sfPhastFrontendRouting extends sfPatternRouting
 
 		if(substr($url, -1) !== '/'){
 			$context->getController()->redirect(
-				(sfConfig::get('sf_no_script_name') ? '' : $pathinfo['SCRIPT_NAME'])
-				. $url . '/'
-				. ($pathinfo['QUERY_STRING'] ? '?' . $pathinfo['QUERY_STRING'] : ''));
+				$url . '/' . ($pathinfo['QUERY_STRING'] ? '?' . $pathinfo['QUERY_STRING'] : ''));
 		}
 				
 		$tokens = explode('/', $this->normalizeUrl($url));
