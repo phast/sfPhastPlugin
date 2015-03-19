@@ -65,6 +65,10 @@ class sfPhastUser extends sfBasicSecurityUser
 
 	}
 
+    public function getObject(){
+        return $this->getObjectModel();
+    }
+
 	public function getSession(){
 		return UserSessionQuery::create()->findOneById($this->storage->read(self::USERSESSIONID_NAMESPACE));
 	}
