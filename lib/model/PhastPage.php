@@ -40,7 +40,17 @@ class PhastPage extends BaseObject
 
     public function getParents($mode = 1){
 
-        if(!$this->parent_id) return [];
+        if(!$this->parent_id){
+            if($mode & self::INCLUDE_SELF){
+                if($mode & self::PARENT_PKS){
+                    return [$this->id];
+                }else{
+                    return [$this];
+                }
+            }
+
+            return [];
+        }
 
         if($mode & self::PARENT_PKS){
 
