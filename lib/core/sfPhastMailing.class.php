@@ -97,7 +97,7 @@ class sfPhastMailing{
     }
 
     public static function sendSms($phone, $message, $parameters = []){
-        return true;
+        return MailingMessage::sendSms($phone, $message, $parameters);
     }
 
     public static function pushSms($phone, $message, $parameters = []){
