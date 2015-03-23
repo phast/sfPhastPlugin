@@ -46,13 +46,20 @@ class sfPhastPage implements ArrayAccess{
         return false;
     }
 
-    public function addChain($name, $link = null){
+    public function addChain($name, $link = null, $offset = false){
         $name = preg_replace('#\< *br */?\ *>#i', '', $name);
-
-        $this->chain[] = [
+        $chain = [
             'name' => $name,
             'link' => $link
         ];
+
+        if(false !== $offset){
+            array_splice($this->chain, $offset, 0, [$chain]);
+
+        }else{
+            $this->chain[] = $chain;
+        }
+
     }
 
     public function getChain(){
