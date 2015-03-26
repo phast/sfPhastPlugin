@@ -30,11 +30,28 @@ class sfPhastFrontendRouting extends sfPatternRouting
 		}
 
         $pages = (new PageQuery)->forRouting($keys)->find()->getData();
-		usort($pages, function($a, $b) {
-			$a = $a->getURI();
-			$b = $b->getURI();
-			if (mb_strlen($a) < mb_strlen($b)) { return 1; } elseif (mb_strlen($a) == mb_strlen($b)) { return 0; } else { return -1; }
-		});
+        usort($pages, function ($a, $b) {
+            $aul = mb_strlen($a->getURI());
+            $bul = mb_strlen($b->getURI());
+
+            if ($aul == $bul) {
+                $al = mb_strlen($a->getRoutePattern());
+                $bl = mb_strlen($b->getRoutePattern());
+
+                if ($al == $bl) {
+                    return 0;
+                } else if ($al < $bl) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+
+            } else if ($aul < $bul) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
 		
 		$yaml = new sfYamlParser();
 		
