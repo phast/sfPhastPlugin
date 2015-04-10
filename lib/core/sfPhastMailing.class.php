@@ -29,7 +29,6 @@ class sfPhastMailing{
 				);
             }
         }
-
         return $mailer->send($mail);
     }
 
