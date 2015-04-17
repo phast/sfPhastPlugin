@@ -334,7 +334,10 @@ class sfPhastUIWidget{
             }
 
             {title, Название}
-            {content:textarea, Описание}
+            {content:textedit, Описание
+                @style height:50px
+			    @mode link
+            }
 
             {#button Default}
         ');
@@ -673,6 +676,10 @@ class sfPhastUIWidget{
 			{width, Ширина}
 			{height, Высота}
 			{autoplay:checkbox, Автостарт}
+			{content:textedit, Описание
+			    @style height:50px
+			    @mode link
+			}
 			{#section Результат
 				@button Default
 			}
