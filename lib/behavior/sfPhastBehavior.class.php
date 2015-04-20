@@ -128,7 +128,14 @@ class sfPhastBehavior extends SfPropelBehaviorBase
 
         $imageColumns = [];
         $dateColumns = [];
+        $i18nColumns = [];
+
         foreach ($this->getTable()->getColumns() as $column) {
+
+            if (preg_match('/^(\w+)?Ru$/', $column->getPhpName(), $match)) {
+                $i18nColumns[$match[1]] = $column;
+            }
+
             /** @var $column Column */
             if (preg_match('/^(\w+)?ImageId$/', $column->getPhpName(), $match)) {
                 $prefix = isset($match[1]) ? $match[1] : '';
@@ -139,6 +146,10 @@ class sfPhastBehavior extends SfPropelBehaviorBase
             }else if (preg_match('/^(\w+)?At$/', $column->getPhpName(), $match)) {
                 $dateColumns[$match[1]] = $column;
             }
+        }
+
+        foreach($i18nColumns as $prefix => $column){
+            $script .= "public function get{$prefix}(\$culture = null){return (null !== \$culture && 'ru' == \$culture or null === \$culture && 'ru' == sfContext::getInstance()->getUser()->getCulture()) ? \$this->get{$prefix}Ru() : \$this->get{$prefix}En();}\n";
         }
 
         foreach($dateColumns as $prefix => $column){

@@ -38,8 +38,9 @@ class PhastImage extends BaseObject
                 $image = $transform->execute($image);
                 $image->setQuality(100);
                 $image->saveAs($filepath);
+
             }else{
-                $transform = new sfImageResizeGeneric($width, $height, $inflate, $scale);
+                $transform = new sfImageResizeGeneric($width, $height, $inflate ?: false, $scale ?: false);
                 $image = new sfImage($this->getSource());
                 $image = $transform->execute($image);
                 $image->setQuality(100);
