@@ -65,6 +65,10 @@ class sfPhastPage implements ArrayAccess{
     public function getChain(){
         return $this->chain;
     }
+
+    public function clearChain(){
+        $this->chain = [];
+    }
 	
     public function getSetting(){
         return call_user_func_array(['SettingPeer', 'retrieveByName'], func_get_args());
