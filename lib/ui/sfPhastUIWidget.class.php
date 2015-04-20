@@ -69,6 +69,11 @@ class sfPhastUIWidget{
                         $rel = new GalleryRel;
                         $rel->setGallery($gallery);
                         $rel->setImageId(Image::createFromUpload($upload)->getId());
+
+                        if(!empty($options['galleryCover'])){
+                            $rel->assignCover(true);
+                        }
+
                         $rel->save();
                     }
                     catch (Exception $e){
@@ -329,7 +334,10 @@ class sfPhastUIWidget{
             }
 
             {title, Название}
-            {content:textarea, Описание}
+            {content:textedit, Описание
+                @style height:50px
+			    @mode link
+            }
 
             {#button Default}
         ');
@@ -668,6 +676,10 @@ class sfPhastUIWidget{
 			{width, Ширина}
 			{height, Высота}
 			{autoplay:checkbox, Автостарт}
+			{content:textedit, Описание
+			    @style height:50px
+			    @mode link
+			}
 			{#section Результат
 				@button Default
 			}
@@ -797,14 +809,14 @@ class sfPhastUIWidget{
         ->setColumns('Название', '.', '.')
         ->setLayout('
             {GalleryRel
-                @fields title, image:getPreviewTag
+                @fields title, cover, image:getPreviewTag
                 @template :title, *, .visible, .delete
                 @icon none
                 @action &GalleryRelEditor
                 @sort on
 
                 :title{
-                    return "<div>" + item.image + "</div>" + (item.title ? item.title : "Фотография #"+item.$pk);
+                    return "<div>" + item.image + "</div>" + (item.title ? item.title : "Фотография #"+item.$pk) + (item.cover ? " <div class=\"notice\">обложка</div>" : "");
                 }
             }
         ')
@@ -842,6 +854,12 @@ class sfPhastUIWidget{
                 .'
             }
 
+            '.
+
+            (!empty($options['galleryCover']) ? '{cover:checkbox, Обложка}' : '')
+
+            .'
+
 			{#button Default}
 		')
         ->setReceive(function ($request, $response, $item) {
@@ -849,6 +867,17 @@ class sfPhastUIWidget{
             if ($item) {
                 $response['image'] = $item->getImage()->getTag(200, 200);
             }
+
+        })
+        ->setSave(function($request, $response, $item) use ($options){
+
+            $response->check();
+            $request->autofill($item, ['cover']);
+            if(!empty($options['galleryCover']) and $request['cover']){
+                $item->assignCover();
+            }
+            $item->save();
+            $response->pk($item);
 
         });
 

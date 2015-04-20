@@ -5,6 +5,7 @@ class sfPhastPluginConfiguration extends sfPluginConfiguration
 	public function initialize()
 	{
 
+        sfConfig::set('host', sfConfig::get('app_host'));
         sfConfig::set('app_sfImageTransformPlugin_mime_type', [
             'auto_detect' => true,
             'library' => 'gd_mime_type'

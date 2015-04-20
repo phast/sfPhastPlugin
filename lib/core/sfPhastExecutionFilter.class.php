@@ -15,17 +15,21 @@ class sfPhastExecutionFilter extends sfExecutionFilter
 		    $this->context->set('appControl', $appControl = new sfAppControl());
 	    }
 
-	    $action->sf_page = $sf_page = new sfPhastPage($action);
-	    $action->sf_settings = $sf_settings = new sfPhastSettings();
-
-	    $this->context->getEventDispatcher()->connect('template.filter_parameters', function(sfEvent $event, $parameters) use ($sf_page, $sf_settings){
-	        $parameters['sf_page']  = $sf_page;
-	        $parameters['sf_settings']  = $sf_settings;
-            return $parameters;
-        });
 
 		if(!$appControl->inProcess()){
 			$appControl->inProcess(true);
+
+            $action->sf_page = $sf_page = new sfPhastPage($action);
+            $action->sf_settings = $sf_settings = new sfPhastSettings();
+
+
+            $this->context->getEventDispatcher()->connect('template.filter_parameters', function(sfEvent $event, $parameters) use ($sf_page, $sf_settings){
+                $parameters['sf_page']  = $sf_page;
+                $parameters['sf_settings']  = $sf_settings;
+                return $parameters;
+            });
+
+
             if('backend' == sfConfig::get('sf_app')){
                 $this->backendBeforeExecute($action);
             }
