@@ -126,6 +126,7 @@ class sfPhastBehavior extends SfPropelBehaviorBase
         }
 
 
+        $galleryColumns = [];
         $imageColumns = [];
         $dateColumns = [];
         $i18nColumns = [];
@@ -134,6 +135,12 @@ class sfPhastBehavior extends SfPropelBehaviorBase
 
             if (preg_match('/^(\w+)?Ru$/', $column->getPhpName(), $match)) {
                 $i18nColumns[$match[1]] = $column;
+            }
+
+            if (preg_match('/^(\w+)?GalleryId$/', $column->getPhpName(), $match)) {
+                if($this->getTable()->getPhpName() == 'Image') continue;
+                $prefix = isset($match[1]) ? $match[1] : '';
+                $galleryColumns[$prefix] = $column;
             }
 
             /** @var $column Column */
@@ -154,6 +161,18 @@ class sfPhastBehavior extends SfPropelBehaviorBase
 
         foreach($dateColumns as $prefix => $column){
             $script .= "public function get{$prefix}Date(\$mode = 'simple'){return sfPhastUtils::date(\$mode, strtotime(\$this->get{$prefix}At()));}\n";
+        }
+
+        foreach ($galleryColumns as $prefix => $column){
+            $method = count($imageColumns) > 1 ? "getImageRelatedBy{$column->getPhpName()}" : 'getGallery';
+            $script .= "
+                public function get{$prefix}GalleryRels(){
+                    if(\$gallery = \$this->{$method}()){
+                        return \$gallery->getRels();
+                    }
+                    return new PropelCollection;
+                }
+            ";
         }
 
         foreach ($imageColumns as $column) {
