@@ -32,5 +32,39 @@ class PhastVideo extends BaseObject
         return 'http://img.youtube.com/vi/'.($match[1] ? $match[1] : $match[2]).'/'.$type.'.jpg';
     }
 
+    public function getImage($type = 0){
+        if(preg_match('/(?:\?v=([\w\d]+)|.be\/([\w\d]+))/i', $this->getUrl(), $match)){
+            $filename = $match[1] . '-' . $type . '.jpg';
+            $webpath = '/generated/video/';
+            $dirpath = sfConfig::get('sf_web_dir') . $webpath;
+            $filepath = $dirpath . $filename;
+
+            if(!file_exists($filepath)){
+                if(!is_file($dirpath)){
+                    @mkdir($dirpath, 0775, true);
+                }
+
+                if($content = file_get_contents('http://img.youtube.com/vi/'.($match[1] ? $match[1] : $match[2]).'/'.$type.'.jpg')){
+                    file_put_contents($filepath, $content);
+                }
+            }
+
+            $image = new Image();
+            $image->setVirtualColumn('isTemp', true);
+            $image->setPath(rtrim($webpath, '/'));
+            $image->setFilename($filename);
+
+            return $image;
+        }
+    }
+
+    public function getImageUri($width = null, $height = null, $scale = null, $inflate = null){
+        return ($image = $this->getImage()) ? $image->getUri($width, $height, $scale, $inflate) : '';
+    }
+
+    public function getImageTag($width = null, $height = null, $scale = null, $inflate = null){
+        return ($image = $this->getImage()) ? $image->getTag($width, $height, $scale, $inflate) : '';
+    }
+
 
 }
