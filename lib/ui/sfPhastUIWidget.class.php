@@ -763,12 +763,14 @@ class sfPhastUIWidget{
 
 
 
-        (new sfPhastList(
+        $widgetGalleryList = (new sfPhastList(
         //----------------------------------
             'WidgetGalleryList'
         //----------------------------------
-        ))
-        ->addControl(['caption' => 'Добавить фото', 'icon' => 'silk-picture-add', 'action' => '
+        ));
+
+
+        $widgetGalleryList->addControl(['caption' => 'Добавить фото', 'icon' => 'silk-picture-add', 'action' => '
             var $input = $("<input type=\"file\">"),
                 $loader,
                 total = 0,
@@ -805,18 +807,24 @@ class sfPhastUIWidget{
                 }
             }).click();
 
-        '])
+        ']);
+
+        if(!empty($options['galleryVideo'])){
+            $widgetGalleryList->addControl('Добавить видео', 'silk-film-add', '&GalleryRelVideoEditor');
+        }
+
+        $widgetGalleryList
         ->setColumns('Название', '.', '.')
         ->setLayout('
             {GalleryRel
-                @fields title, cover, image:getPreviewTag
+                @fields title:getTitle, cover, media:getPreviewTag, type:getType
                 @template :title, *, .visible, .delete
                 @icon none
-                @action &GalleryRelEditor
+                @action if(item.type == "video") &GalleryRelVideoEditor else &GalleryRelEditor
                 @sort on
 
                 :title{
-                    return "<div>" + item.image + "</div>" + (item.title ? item.title : "Фотография #"+item.$pk) + (item.cover ? " <div class=\"notice\">обложка</div>" : "");
+                    return "<div>" + item.media + "</div>" + (item.title ? item.title : "Медиа-объект #"+item.$pk) + (item.cover ? " <div class=\"notice\">обложка</div>" : "");
                 }
             }
         ')
@@ -881,7 +889,79 @@ class sfPhastUIWidget{
 
         });
 
-	}
+
+        $widgetGalleryRelVideo = new sfPhastBox('GalleryRelVideoEditor');
+        $widgetGalleryRelVideo->setTable('GalleryRel');
+        $widgetGalleryRelVideo->setTemplate('
+            {#section Видео
+                @button Default
+            }
+			{url, Ссылка на видео}
+			{title, Название}
+
+			 '.
+
+            (!empty($options['galleryCover']) ? '{cover:checkbox, Обложка}' : '')
+
+            .'
+
+			{#section Результат
+				@button Default
+			}
+		 	<div class="preview"></div>
+			{#event
+				@afterRender{
+					if(box.data.code){
+						node.find("div.preview").html(box.data.code);
+					}
+				}
+			}
+        ');
+        $widgetGalleryRelVideo->setReceive(function($request, $response, $rel){
+
+            if($rel and $item = $rel->getVideo()) {
+                $response->autofill($item);
+                $response['code'] = $item->getCode(500);
+            }
+
+            $response->placeholder('title', 'автоматически');
+
+        });
+        $widgetGalleryRelVideo->setSave(function(sfPhastRequest $request, $response, $item) use ($user){
+
+            if(!VideoPeer::validateURL($request['url'])){
+                return $response->error('Указана неверная ссылка на видео');
+            }
+
+            if(($item->isNew() || !$request['title']) && $title = VideoPeer::retrieveTitleFromURL($request['url'])){
+            }else if($title = $request['title']){
+            }else{
+                return $response->error('Укажите название');
+            }
+
+            $request['title'] = $title;
+
+            if(!$response->error()){
+                $video = $item->getVideo() ?: new Video();
+                $request->autofill($item);
+                $request->autofill($video);
+                $video->save();
+
+                $item->setVideo($video);
+
+                if($item->isNew()){
+                    $item->setGalleryId($request['#gallery_id']);
+                }
+
+                $item->save();
+                $response->pk($item->getId());
+            }
+
+
+        });
+
+
+    }
 
 	public static function getHolder($request, $response, $item){
 		if($item){

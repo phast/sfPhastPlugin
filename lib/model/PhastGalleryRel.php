@@ -4,7 +4,39 @@
 class PhastGalleryRel extends BaseObject
 {
 
+    public function getMedia(){
+        if($this->image_id) return $this->getImage();
+        if($this->video_id) return $this->getVideo();
+    }
+
+    public function getType(){
+        if($this->image_id) return 'image';
+        if($this->video_id) return 'video';
+    }
+
+    public function getTitle(){
+        if($media = $this->getMedia()) {
+            if ($media instanceof Image) {
+                return $media->getTitle();
+
+            }else if($media instanceof Video){
+                return $media->getTitle();
+            }
+        }
+        return '';
+    }
+
     public function getPreviewTag(){
+        if($media = $this->getMedia()) {
+            if ($media instanceof Image) {
+                return $media->getTag(50, 50, true, false);
+
+            }else if($media instanceof Video){
+                return $media->getPreviewTag(50);
+            }
+        }
+        return '';
+
         return $this->getImage()->getTag(50, 50, true, false);
     }
 
