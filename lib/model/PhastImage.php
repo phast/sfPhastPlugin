@@ -16,6 +16,17 @@ class PhastImage extends BaseObject
             $filename = "{$width}-{$height}-{$scale}-{$inflate}-{$this->getFilename()}";
         }
 
+        $filters = null;
+        if($crop && !isset($crop['x'])){
+            $filters = $crop;
+            $crop = null;
+        }
+
+        if($filters){
+            $filters = (array) $filters;
+            $filename = str_replace(['[',']', '"', '{', '}', ':'], [''], json_encode($filters)) . '-' . $filename;
+        }
+
         $dirpath = sfConfig::get('sf_web_dir') . $webpath;
         $filepath = $dirpath . $filename;
 
@@ -24,6 +35,8 @@ class PhastImage extends BaseObject
             if(!is_file($dirpath)){
                 @mkdir($dirpath, 0775, true);
             }
+
+
             if($crop){
                 $transform = new sfImageCropGD($crop['x'], $crop['y'], $crop['w'], $crop['h']);
                 $image = new sfImage($this->getSource());
@@ -37,6 +50,11 @@ class PhastImage extends BaseObject
                 $image = new sfImage($this->getSource());
                 $image = $transform->execute($image);
                 $image->setQuality(100);
+
+                if($filters){
+                    $image = $this->applyFilters($image, $filters);
+                }
+
                 $image->saveAs($filepath);
 
             }else{
@@ -44,6 +62,11 @@ class PhastImage extends BaseObject
                 $image = new sfImage($this->getSource());
                 $image = $transform->execute($image);
                 $image->setQuality(100);
+
+                if($filters){
+                    $image = $this->applyFilters($image, $filters);
+                }
+
                 $image->saveAs($filepath);
             }
             if(!$this->hasVirtualColumn('isTemp')) $this->setUpdatedAt(time())->save();
@@ -52,8 +75,8 @@ class PhastImage extends BaseObject
         return $webpath . $filename . '?_=' . base_convert($this->updated_at, 16, 36);
     }
 
-    public function getTag($width = null, $height = null, $scale = null, $inflate = false){
-        $src = $this->getURI($width, $height, $scale, $inflate);
+    public function getTag($width = null, $height = null, $scale = null, $inflate = false, $filters = null){
+        $src = $this->getURI($width, $height, $scale, $inflate, $filters);
         return '<img src="'.$src.'" alt="'.$this->getTitle().'">';
     }
 
@@ -105,6 +128,20 @@ class PhastImage extends BaseObject
 
     public function cleanSource(){
         if($source = $this->getSource() and file_exists($source)) unlink($source);
+    }
+
+    private function applyFilters($image, $filters){
+        foreach($filters as $filter => $parameters){
+            switch($filter){
+                case 'blur':
+                    $transform = new sfImageGaussianBlurGD();
+                    for($i=0; $i<$parameters; $i++){
+                        $image = $transform->execute($image);
+                    }
+                    break;
+            }
+        }
+        return $image;
     }
 
 }

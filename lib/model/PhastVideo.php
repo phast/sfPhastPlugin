@@ -58,12 +58,12 @@ class PhastVideo extends BaseObject
         }
     }
 
-    public function getImageUri($width = null, $height = null, $scale = null, $inflate = null){
-        return ($image = $this->getImage()) ? $image->getUri($width, $height, $scale, $inflate) : '';
+    public function getImageUri($width = null, $height = null, $scale = null, $inflate = null, $filters = null){
+        return ($image = $this->getImage()) ? $image->getUri($width, $height, $scale, $inflate, $filters) : '';
     }
 
-    public function getImageTag($width = null, $height = null, $scale = null, $inflate = null){
-        return ($image = $this->getImage()) ? $image->getTag($width, $height, $scale, $inflate) : '';
+    public function getImageTag($width = null, $height = null, $scale = null, $inflate = null, $filters = null){
+        return ($image = $this->getImage()) ? $image->getTag($width, $height, $scale, $inflate, $filters) : '';
     }
 
 

@@ -182,16 +182,16 @@ class sfPhastBehavior extends SfPropelBehaviorBase
             $script .= "public function get{$prefix}ImageObject(){
                             return \$this->{$method}();
                     }";
-            $script .= "public function get{$prefix}ImageTag(\$width = null, \$height = null, \$scale = null, \$inflate = null){
+            $script .= "public function get{$prefix}ImageTag(\$width = null, \$height = null, \$scale = null, \$inflate = null, \$filters = null){
                         if(\$image = \$this->get{$prefix}ImageObject()){
-                            return \$image->getTag(\$width, \$height, \$scale, \$inflate);
+                            return \$image->getTag(\$width, \$height, \$scale, \$inflate, \$filters);
                         }else{
                             return '';
                         }
                     }";
-            $script .= "public function get{$prefix}ImageUri(\$width = null, \$height = null, \$scale = null, \$inflate = null){
+            $script .= "public function get{$prefix}ImageUri(\$width = null, \$height = null, \$scale = null, \$inflate = null, \$filters = null){
                         if(\$image = \$this->get{$prefix}ImageObject()){
-                            return \$image->getUri(\$width, \$height, \$scale, \$inflate);
+                            return \$image->getUri(\$width, \$height, \$scale, \$inflate, \$filters);
                         }else{
                             return '';
                         }
