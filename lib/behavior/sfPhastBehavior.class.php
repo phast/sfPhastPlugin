@@ -160,7 +160,7 @@ class sfPhastBehavior extends SfPropelBehaviorBase
         }
 
         foreach($dateColumns as $prefix => $column){
-            $script .= "public function get{$prefix}Date(\$mode = 'simple'){return sfPhastUtils::date(\$mode, strtotime(\$this->get{$prefix}At()));}\n";
+            $script .= "public function get{$prefix}Date(\$mode = 'simple'){return sfPhastUtils::date(\$mode, is_int(\$this->get{$prefix}At()) ? \$this->get{$prefix}At() : strtotime(\$this->get{$prefix}At()));}\n";
         }
 
         foreach ($galleryColumns as $prefix => $column){
