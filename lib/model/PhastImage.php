@@ -69,6 +69,9 @@ class PhastImage extends BaseObject
 
                 $image->saveAs($filepath);
             }
+
+            imagedestroy($image->getAdapter()->getHolder());
+
             if(!$this->hasVirtualColumn('isTemp')) $this->setUpdatedAt(time())->save();
         }
 
