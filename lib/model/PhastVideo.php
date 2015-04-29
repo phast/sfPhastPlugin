@@ -66,5 +66,10 @@ class PhastVideo extends BaseObject
         return ($image = $this->getImage()) ? $image->getTag($width, $height, $scale, $inflate, $filters) : '';
     }
 
+    public function getVideoId(){
+        preg_match('/(?:\?v=([\w\d]+)|.be\/([\w\d]+))/i', $this->getUrl(), $match);
+        return $match[1];
+    }
+
 
 }
