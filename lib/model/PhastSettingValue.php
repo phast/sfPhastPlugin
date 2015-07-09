@@ -25,4 +25,25 @@ class PhastSettingValue extends BaseObject
         return $value;
     }
 
+    public function setValue($value){
+        $field = $this->getSettingField();
+        $fieldValue = $this;
+
+        if($field->getTypeName() == 'file') {
+            $fieldValue->setFile($value);
+        }else if($field->getTypeName() == 'image'){
+            $fieldValue->setImage($value);
+        }else if($field->getTypeName() == 'gallery'){
+            $fieldValue->setGallery($value);
+        }else if($field->getTypeName() == 'select'){
+            $fieldValue->setSettingOption($value);
+        }elseif($field->getTypeName() == 'checkbox'){
+            $fieldValue->setText(!!$value);
+        }else{
+            $fieldValue->setText($value);
+        }
+
+        $fieldValue->save();
+    }
+
 }

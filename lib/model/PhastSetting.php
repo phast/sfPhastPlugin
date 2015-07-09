@@ -247,5 +247,9 @@ class PhastSetting extends BaseObject
 		return $this->results[$resultIndex][$key];
 	}
 
+    public function setValue($key, $value){
+        $this->getResult()->setValue($key, $value);
+    }
+
 
 }

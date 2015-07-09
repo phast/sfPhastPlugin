@@ -262,7 +262,7 @@ class sfPhastBoxField
 				break;
 
 			case 'calendar':
-				$output .= "<div class=\"phast-box-calendar\"><input type=\"text\" name=\"{$name}\" style=\"{$style}\" class=\"{$class}\"><i></i></div>";
+				$output .= "<div class=\"phast-box-calendar\" ".($this->getAttribute('time') ? 'data-time="1"' : '')."><input type=\"text\" name=\"{$name}\" style=\"{$style}\" class=\"{$class}\"><i></i></div>";
 				break;
 
             case 'static':

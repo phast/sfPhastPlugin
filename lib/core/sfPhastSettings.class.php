@@ -8,6 +8,10 @@ class sfPhastSettings implements ArrayAccess{
         static::$instance = $this;
     }
 
+    public static function getInstance(){
+        return static::$instance;
+    }
+
     public function offsetGet($var){
         return $this->get($var);
     }

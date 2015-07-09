@@ -67,6 +67,7 @@ class sfPhastUI
             '/sfPhastPlugin/js/jquery/jquery.tablednd.js',
             '/sfPhastPlugin/js/jquery/jquery-ui.custom.min.js',
             '/sfPhastPlugin/js/jquery/jquery.ui.datepicker-ru.js',
+            '/sfPhastPlugin/js/jquery/jquery-ui-timepicker-addon.js',
             '/sfPhastPlugin/js/jquery/jquery.Jcrop.min.js',
             '/sfPhastPlugin/js/tinymce/tiny_mce.js?1',
             '/sfPhastPlugin/js/tinymce/jquery.tinymce.js',
