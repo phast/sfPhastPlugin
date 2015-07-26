@@ -12,6 +12,7 @@ class PhastWidget extends BaseObject
         if($this->getGalleryId()) return $this->getGallery();
         if($this->getVideoId()) return $this->getVideo();
         if($this->getFileId()) return $this->getFile();
+        if($this->getContentBlockId()) return $this->getContentBlock();
         return null;
     }
 
@@ -20,6 +21,7 @@ class PhastWidget extends BaseObject
         if($this->getGalleryId()) return 'gallery';
         if($this->getVideoId()) return 'video';
         if($this->getFileId()) return 'file';
+        if($this->getContentBlockId()) return 'content';
         return 'undefined';
     }
 
@@ -62,6 +64,10 @@ class PhastWidget extends BaseObject
         return '<div class="widget-video" style="'. $options['style'] .'">'.$object->getCode().'</div>';
     }
 
+    public function getContentHtml($object, $options){
+        return sfPhastUtils::getpartial('content/'.$object->getType(), ['block' => $object]);
+    }
+
 
     public function getHtml($options = []){
 
@@ -81,6 +87,9 @@ class PhastWidget extends BaseObject
 
             case 'video':
                 return $this->getVideoHtml($object, $options);
+
+            case 'content':
+                return $this->getContentHtml($object, $options);
 
         }
 

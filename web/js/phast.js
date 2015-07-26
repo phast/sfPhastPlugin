@@ -19,7 +19,7 @@ $.fn.serializeJSON = function(){
 
     var Phast = function(){
         console.log('Phast $$');
-    }
+    };
 
 
     $.extend(Phast, {
@@ -135,7 +135,7 @@ $.fn.serializeJSON = function(){
         var autoIncrement = 0;
         var triggerEvent = function(event, option){
             if(list.event) list.event.call(list, event, option || {}, list);
-        }
+        };
         var filterRendered = false;
 
         $.extend(
@@ -231,8 +231,8 @@ $.fn.serializeJSON = function(){
                         $id: list.id,
                         $pages: list.pages,
                         $opened: list.opened,
-                        $parameters: {},
-                    }
+                        $parameters: {}
+                    };
 
                     if(list.box){
                         $.extend(parameters, list.box.parameters);
@@ -870,7 +870,7 @@ $.fn.serializeJSON = function(){
         },
         noticeLine: function(content, hint){
             return '<span class="notice" '+(hint?'title="'+hint+'"':'')+'>' + (content !== null ? content : '') + '</span>';
-        },
+        }
     });
 
 
@@ -895,14 +895,14 @@ $.fn.serializeJSON = function(){
         var initialized,
             loading,
             opened,
-            locked
+            locked;
 
         var serialized;
 
         var execute = function(name){
             if(root.events[name])
                 root.events[name].call(root, root, rootNode);
-        }
+        };
 
         var lists = [];
 
@@ -925,7 +925,7 @@ $.fn.serializeJSON = function(){
                 makeQuery: function(){
                     var parameters = {};
                     var output = {
-                        $id: root.id,
+                        $id: root.id
                     };
 
                     if(root.list){
@@ -944,7 +944,7 @@ $.fn.serializeJSON = function(){
                         $.each(root.parameters, function(name, value){
                             output['$parameters['+name+']'] = value;
                         });
-                    };
+                    }
 
                     return output;
                 },
@@ -1366,7 +1366,7 @@ $.fn.serializeJSON = function(){
             });
 
             object.getNode().css({
-                zIndex: this.offset + depth - 2,
+                zIndex: this.offset + depth - 2
             });
 
             this.blackout.css('z-index', this.offset + depth - 3).fadeIn(300);
@@ -1412,7 +1412,7 @@ $.fn.serializeJSON = function(){
                 item.object.getNode().css({
                     top: offset,
                     left: offset,
-                    right: offset,
+                    right: offset
                 });
             }
         },
@@ -1486,7 +1486,7 @@ $.fn.serializeJSON = function(){
     });
 
     tinymceSettings.simple = $.extend({}, tinymceSettings.default, {
-        plugins : "paste,advlink",
+        plugins : "widget,paste,advlink",
         theme_advanced_buttons1 : "bold,italic,underline,removeformat",
         theme_advanced_buttons2 : "",
         theme_advanced_buttons3 : ""
@@ -1497,11 +1497,11 @@ $.fn.serializeJSON = function(){
     });
 
     tinymceSettings.text = $.extend({}, tinymceSettings.simple, {
-        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,|,formatselect,styleselect,|,removeformat"
+        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,widget,|,formatselect,styleselect,|,removeformat"
     });
 
     tinymceSettings.image = $.extend({}, tinymceSettings.simple, {
-        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,image,|,formatselect,styleselect,|,removeformat"
+        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,image,widget,|,formatselect,styleselect,|,removeformat"
     });
 
     $(function(){

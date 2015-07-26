@@ -238,7 +238,7 @@ class sfPhastBoxField
 			case 'textedit':
                 $mode = 'data-mode="' . $this->getAttribute('mode') . '"';
 				$output .= "<textarea name=\"{$name}\" style=\"{$style}\" class=\"phast-box-textedit {$class}\" {$mode}></textarea>";
-				break;
+                break;
 
 			case 'checkgroup':
 			case 'radiogroup':

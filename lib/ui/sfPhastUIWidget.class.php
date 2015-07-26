@@ -87,7 +87,8 @@ class sfPhastUIWidget{
         sfContext::getInstance()->getConfiguration()->loadHelpers('Asset');
         use_javascript('/sfPhastPlugin/js/jquery/jquery.damnUploader.js', 'last');
 
-		$widget = new sfPhastList('WidgetList');
+        $contentWidgets = ContentPeer::initializeWidgets();
+        $widget = new sfPhastList('WidgetList');
 
         foreach($options['widgets'] as $widgetName){
             switch($widgetName){
@@ -108,7 +109,64 @@ class sfPhastUIWidget{
                     break;
 
                 case 'content':
-                    $widget->addControl(array('caption' => 'Добавить блок контента', 'icon' => 'silk-layout-add', 'action' => '&WidgetContent'));
+                    foreach ($contentWidgets as $type => $config) {
+                        $widget->addControl($config['name'], $config['icon'], "&WidgetContent_{$type}Editor");
+
+                        (new sfPhastBox("WidgetContent_{$type}Editor"))
+                            ->setTemplate('
+                                {#section ' . $config['name'] . '
+                                    @button Default
+                                }
+
+                                ' . $config['template'] . '
+
+                                {#button Default}
+
+                            ')
+                            ->setReceive(function ($request, sfPhastUIResponse $response) use ($type) {
+                                $item = $request->getItem('ContentBlock', true);
+                                if ($isNew = $item->isNew()) {
+                                    $item->setType($type);
+                                    $item->save();
+                                }
+
+                                $response->autofill($item);
+                                $response->parameter('pk', $item->getId());
+
+                            })
+                            ->setSave(function ($request, $response) use ($config) {
+                                if(!$holder = HolderPeer::retrieveByPK($request['#holder'])) {
+                                    return $response->notfound();
+                                }
+
+                                if (!$item = $request->getItem('ContentBlock')) {
+                                    $response->notfound();
+                                }
+
+                                $response->check();
+                                $request->autofill($item);
+
+                                if ($request->hasFile('image')) {
+                                    $item->uploadImage('image', '/content');
+                                }
+
+                                if (isset($config['save'])) {
+                                    $config['save']($item);
+                                }
+
+                                if(!$item->getCompleted()){
+                                    $widget = new Widget;
+                                    $widget->setHolder($holder);
+                                    $widget->setContentBlock($item);
+                                    $widget->save();
+                                }
+
+                                $item->setCompleted(true);
+                                $item->save();
+                                $response->pk($item);
+                            });
+                    }
+
                     break;
 
             }
@@ -117,7 +175,7 @@ class sfPhastUIWidget{
 		$widget->setColumns('Виджет', '', '.');
 		$widget->setLayout('
             {Widget
-                @fields id, type:getType, file_id, video_id, image_id, gallery_id, content_id
+                @fields id, type:getType, file_id, video_id, image_id, gallery_id, content_block_id
                 @template title, :paste, .delete
                 @sort on
                 @action{
@@ -125,7 +183,7 @@ class sfPhastUIWidget{
                     if(item.gallery_id) return &WidgetGallery
                     if(item.video_id) return &WidgetVideo
                     if(item.file_id) return &WidgetFile
-                    if(item.content_id) return &WidgetContent
+                    if(item.content_block_id) return $$.Box.create("WidgetContent_"+item.content_block_type+"Editor", {parameters: {pk: item.content_block_id}, list: list}).open();
                 }
 
                 :paste{
@@ -178,7 +236,7 @@ class sfPhastUIWidget{
 		$widgetPattern->setCriteria(function(Criteria $criteria, $pattern){
 			$criteria->addAnd(WidgetPeer::HOLDER_ID, $pattern->getList()->getParameter('holder'));
 		});
-		$widgetPattern->setDecorator(function(&$output, Widget $item) use ($request){
+		$widgetPattern->setDecorator(function(&$output, Widget $item) use ($request, $contentWidgets){
 			if($request['#edit'] == $item->getId()) $output['$class'] = 'selected';
 			if($item->getVideoId()){
 				$output['$icon'] = 'film';
@@ -196,9 +254,20 @@ class sfPhastUIWidget{
 				$output['$icon'] = 'silk-drive';
 				$output['title'] = $item->getObject()->getTitle();
 			}
-            else if($item->getContentId()){
-                $output['$icon'] = 'silk-layout';
-                $output['title'] = $item->getObject()->getTypeCaption();
+            else if($item->getContentBlockId()){
+                $object = $item->getObject();
+
+                if(isset($contentWidgets[$object->getType()])){
+                    $contentWidget = $contentWidgets[$object->getType()];
+                    $output['$icon'] = $contentWidget['icon'];
+                    $output['title'] =  $contentWidget['name'] . ($object->getTitle() ? " ({$object->getTitle()})" : ' #' . $item->getId());
+                }else{
+                    $output['$icon'] = 'silk-layout';
+                    $output['title'] = ($item->getObject()->getTitle() ?: 'Без названия #' . $item->getId()) . " ({$object->getType()})";
+
+                }
+
+                $output['content_block_type'] = $object->getType();
             }
 			if(!$output['title']) $output['title'] = 'Без названия #' . $item->getId();
 		});
@@ -419,182 +488,6 @@ class sfPhastUIWidget{
 			}
 
 		});
-
-
-        $widgetContent = new sfPhastBox('WidgetContent');
-        $widgetContent->setTemplate('
-            {#section Блок контента
-                @button Default
-            }
-
-            {type:select, Тип контента}
-
-            {image1:file, Изображение
-                @receive $item->getPreview1Tag()
-                @render on
-            }
-
-            {image2:file, Изображение
-                @receive $item->getPreview2Tag()
-                @render on
-            }
-
-            {image3:file, Изображение
-                @receive $item->getPreview3Tag()
-                @render on
-            }
-
-            {title, Заголовок}
-            {notice, Примечание}
-            {content1:textedit, Описание
-                @mode link
-                @style height:50px
-            }
-            {content2:textedit, Описание
-                @mode link
-                @style height:50px
-            }
-            {content3:textedit, Описание
-                @mode link
-                @style height:50px
-            }
-            {#event
-                @afterOpen{
-                    var node = $(node);
-                    node.find(".phast-box-field-type select").on("change", function(){
-                        var type = $(this).val();
-                        node.find(".phast-box-type-field-file, .phast-box-type-field-text, .phast-box-type-field-textedit").hide();
-                        if(type == 1){
-                            node.find(".phast-box-field-image1, .phast-box-field-title, .phast-box-field-notice, .phast-box-field-content1").fadeIn(300);
-                        }else if(type == 2){
-                            node.find(".phast-box-field-image1, .phast-box-field-image2, .phast-box-field-image3, .phast-box-field-content1, .phast-box-field-content2, .phast-box-field-content3").fadeIn(300);
-                        }
-
-                    });
-                }
-
-                @afterRender{
-                    var node = $(node);
-                    node.find(".phast-box-field-type select").trigger("change");
-                }
-            }
-            {#button Default}
-        ');
-        $widgetContent->setReceive(function($request, $response){
-
-			if(!HolderPeer::retrieveByPK($request['#holder']))
-				return $response->notfound();
-
-			if(false !== $widget = $request->getItem('Widget')){
-				if($widget && $object = $widget->getObject()){
-					$response->autofill($object);
-				}else{
-					return $response->notfound();
-				}
-			}else{
-				$response['type'] = 1;
-			}
-
-            $response->select('type', ContentPeer::getTypes());
-
-		});
-        $widgetContent->setSave(function(sfPhastRequest $request, $response) use ($user){
-
-			if(!$holder = HolderPeer::retrieveByPK($request['#holder']))
-				return $response->notfound();
-
-			if(!$item = $request->getItem('Widget', true)){
-				return $response->notfound();
-			}
-
-            if(!$request['type']) return $response->error('Укажите тип контента');
-            if($request['type'] == 1){
-                if($item->isNew() && !$request->hasFile('image1')) return $response->error('Загрузите изображение');
-                if(!$request['title']) return $response->error('Введите заголовок');
-                if(!$request['content1']) return $response->error('Введите описание');
-            }else if($request['type'] == 2){
-                if($item->isNew() && (!$request->hasFile('image1') or !$request->hasFile('image2') or !$request->hasFile('image3')))
-                    return $response->error('Загрузите изображения');
-                if(!$request['content1'] or !$request['content2'] or !$request['content3'])
-                    return $response->error('Введите описание');
-            }
-
-			if(!$response->error()){
-
-                $uploadImage = function($object) use ($holder, $request){
-                    if($request->hasFile('image1')){
-                        $upload = new sfPhastUpload('image1');
-                        $upload->path(sfConfig::get('sf_upload_dir') . '/' . (isset(static::$options['prefix']) ? static::$options['prefix'] : 'widget') . '/content');
-                        $upload->type('web_images');
-                        $upload->save();
-                        if($object->getImage1Id()){
-                            $object->getImageRelatedByImage1Id()->updateFromUpload($upload);
-                        }else{
-                            $object->setImage1Id(Image::createFromUpload($upload)->getId());
-                        }
-                    }
-
-                    if($request->hasFile('image2')){
-                        $upload = new sfPhastUpload('image2');
-                        $upload->path(sfConfig::get('sf_upload_dir') . '/' . (isset(static::$options['prefix']) ? static::$options['prefix'] : 'widget') . '/content');
-                        $upload->type('web_images');
-                        $upload->save();
-                        if($object->getImage2Id()){
-                            $object->getImageRelatedByImage2Id()->updateFromUpload($upload);
-                        }else{
-                            $object->setImage2Id(Image::createFromUpload($upload)->getId());
-                        }
-                    }
-
-                    if($request->hasFile('image3')){
-                        $upload = new sfPhastUpload('image3');
-                        $upload->path(sfConfig::get('sf_upload_dir') . '/' . (isset(static::$options['prefix']) ? static::$options['prefix'] : 'widget') . '/content');
-                        $upload->type('web_images');
-                        $upload->save();
-                        if($object->getImage3Id()){
-                            $object->getImageRelatedByImage3Id()->updateFromUpload($upload);
-                        }else{
-                            $object->setImage3Id(Image::createFromUpload($upload)->getId());
-                        }
-                    }
-
-                };
-
-                try{
-
-                    if($item->isNew()){
-                        $object = new Content();
-                        $request->autofill($object);
-                        $uploadImage($object);
-                        $object->save();
-
-                        $item->setContentId($object->getId());
-                        $item->setHolderId($holder->getId());
-                        $item->save();
-
-                    }else{
-
-                        if($object = $item->getObject()){
-                            $uploadImage($object);
-                            $request->autofill($object);
-                            $object->save();
-                        }else{
-                            return $response->notfound();
-                        }
-
-                    }
-
-                    $response->pk($item->getId());
-                }
-                catch (Exception $e){
-                    return $response->error($e->getMessage());
-                }
-            }
-
-		});
-
-
-
 
 		$widgetGallery = new sfPhastBox('WidgetGallery');
 		$widgetGallery->setTemplate('
