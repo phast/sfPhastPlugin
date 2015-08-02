@@ -87,7 +87,7 @@ class sfPhastUIWidget{
         sfContext::getInstance()->getConfiguration()->loadHelpers('Asset');
         use_javascript('/sfPhastPlugin/js/jquery/jquery.damnUploader.js', 'last');
 
-        $contentWidgets = ContentPeer::initializeWidgets();
+        $contentWidgets =  class_exists('ContentPeer') ? ContentPeer::initializeWidgets() : [];
         $widget = new sfPhastList('WidgetList');
 
         foreach($options['widgets'] as $widgetName){
