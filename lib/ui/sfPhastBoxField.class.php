@@ -282,6 +282,11 @@ class sfPhastBoxField
                 break;
 		}
 
+		if($this->getAttribute('after')){
+			$output .= '<div class="phast-box-after-field"></div>';
+			$this->box->addSystemEvent('afterRender', "node.find('.phast-box-field-$name').find('.phast-box-after-field').html(box.data.{$this->getAttribute('after')} || '')");
+		}
+
 		$output .= '</dd>';
 		$output .= '</dl>';
 

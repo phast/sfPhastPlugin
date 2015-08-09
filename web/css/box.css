@@ -60,7 +60,8 @@ html .phast-box-textedit{
 }
 
 .phast-box-type-field-file > dd > div,
-.phast-box-type-field-image > dd > div
+.phast-box-type-field-image > dd > div,
+.phast-box-after-field
 {
 	margin-top: 5px;
 }
@@ -84,6 +85,9 @@ html .phast-box-textedit{
 }
 .phast-box-choose input{
 	cursor: pointer;
+	background-image: url(../iconset/silk/bullet_go.png);
+	background-position: 2px 40%;
+	padding-left: 20px !important;
 }
 .phast-box-choose > a.clear{
 	position: absolute;
