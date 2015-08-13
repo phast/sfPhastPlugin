@@ -51,7 +51,8 @@ class sfPhastUpload{
     }
 
     public function save(){
-        return $this->filename = $this->clean()->save($this->filename);
+        $file =  $this->clean();
+        return $this->filename = $file->save($this->filename ? $this->filename : sha1($file->getOriginalName().rand(11111, 99999)).$file->getOriginalExtension());
     }
 
     public function setFilename($filename){
