@@ -11,8 +11,8 @@ class sfPhastFrontendRouting extends sfPatternRouting
 		$pathinfo = $request->getPathInfoArray();
 
 		if(substr($url, -1) !== '/'){
-			$context->getController()->redirect(
-				$url . '/' . ($pathinfo['QUERY_STRING'] ? '?' . $pathinfo['QUERY_STRING'] : ''));
+			return $context->getController()->redirect(
+				$url . '/' . ($pathinfo['QUERY_STRING'] ? '?' . $pathinfo['QUERY_STRING'] : ''), 0, 301);
 		}
 				
 		$tokens = explode('/', $this->normalizeUrl($url));
@@ -64,7 +64,7 @@ class sfPhastFrontendRouting extends sfPatternRouting
 				if($route_options = $yaml->parse('parse: {'. $page->getRouteOptions() . '}')){
 					$options = array_merge($options, $route_options['parse']);
 				}
-				
+
 			}
             $requirements = $page->getRouteRequirements() ? $yaml->parse('parse: {'. $page->getRouteRequirements() . '}')['parse'] : [];
             $route = new sfRoute($pattern, $options, $requirements);
