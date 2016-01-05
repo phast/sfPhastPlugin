@@ -61,6 +61,9 @@ EOF;
 
 					$script .= "
 protected \$holderObject;
+/**
+ * @return Holder
+ */
 public function getHolder(){
 	if(\$this->holderObject !== null) return \$this->holderObject;
 	return \$this->holderObject = PhastHolderPeer::retrieveFor(\$this);

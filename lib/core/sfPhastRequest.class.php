@@ -15,8 +15,9 @@ class sfPhastRequest extends sfWebRequest
 		$table = get_class($item);
 		$tablePeer = $table . 'Peer';
 		$tableMap = $tablePeer::getTableMap();
+        $fields = $this->box->getFields();
 
-		foreach ($this->box->getFields() as $key => $field) {
+		foreach ($fields as $key => $field) {
             $column = $field->getType() == 'image' ? ($key . '_id') : $key;
 			if (!$tableMap->hasColumn($column) || in_array($key, $ignore)) continue;
             $key = strtolower($key);
@@ -59,6 +60,16 @@ class sfPhastRequest extends sfWebRequest
                     $item->setByName($column->getPhpName(), $this[$key] ? true : false);
                     break;
 
+            }
+
+            if($targetFieldKey = $field->getAttribute('transliterate')){
+                if(!$this[$targetFieldKey]){
+                    $value = sfPhastUtils::transliterate($item->getByName($column->getPhpName()));
+                    $targetColumn = $tableMap->getColumn($targetFieldKey);
+                    $item->setByName($targetColumn->getPhpName(), $value);
+                    $this[$targetFieldKey] = $value;
+
+                }
             }
 
 		}

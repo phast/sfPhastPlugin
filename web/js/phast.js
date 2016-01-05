@@ -1080,15 +1080,17 @@ $.fn.serializeJSON = function(){
                         var $field = $(this);
                         $field.find('> input')[$field.data('time') ? 'datetimepicker' : 'datepicker'](
                             {
-                                dateFormat: 'd MM yy',
-                                numberOfMonths: 3,
+                                dateFormat: 'd MM yy' + ($field.data('time') ? ',' : ''),
+                                numberOfMonths: 1,
                                 showOn: 'button',
                                 buttonImage: '/sfPhastPlugin/icons/date.png',
                                 buttonImageOnly: true,
                                 timeFormat: 'HH:mm:ss',
                                 stepHour: 1,
                                 stepMinute: 1,
-                                stepSecond: 1
+                                stepSecond: 1,
+                                controlType: 'select',
+                                oneLine: true
                             }
                         );
                     });

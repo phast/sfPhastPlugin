@@ -163,11 +163,9 @@ class sfPhastUIResponse extends ArrayObject
 
 				if('calendar' == $field->getType()){
                     if('TIMESTAMP' == $column->getType() || 'DATE' == $column->getType()){
-                        $this[$key] = $this[$key] ? sfPhastUtils::date(strtotime($this[$key])) : '';
-                    }else{
-                        $this[$key] = $this[$key] ? sfPhastUtils::date($this[$key]) : '';
-                    }
-                    $this[$key] = $this[$key] ? sfPhastUtils::date($this[$key]) : '';
+                        $this[$key] = $this[$key] ? strtotime($this[$key]) : '';
+					}
+                    $this[$key] = $this[$key] ? sfPhastUtils::date($this[$key]) . ($field->getAttribute('time') ? ', ' . date('H:i:s', $this[$key]) : '') : '';
 
 				}else if('choose' == $field->getType()){
 
