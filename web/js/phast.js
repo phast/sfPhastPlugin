@@ -417,13 +417,20 @@ $.fn.serializeJSON = function(){
                     });
 
                     filtersNode.find('div.phast-box-calendar').each(function(){
-                        $(this).find('> input').timepicker(
+                        var $field = $(this);
+                        $field.find('> input')[$field.data('time') ? 'datetimepicker' : 'datepicker'](
                             {
-                                dateFormat: 'd MM yy',
-                                numberOfMonths: 3,
+                                dateFormat: 'd MM yy' + ($field.data('time') ? ',' : ''),
+                                numberOfMonths: 1,
                                 showOn: 'button',
                                 buttonImage: '/sfPhastPlugin/icons/date.png',
-                                buttonImageOnly: true
+                                buttonImageOnly: true,
+                                timeFormat: 'HH:mm:ss',
+                                stepHour: 1,
+                                stepMinute: 1,
+                                stepSecond: 1,
+                                controlType: 'select',
+                                oneLine: true
                             }
                         );
                     });
