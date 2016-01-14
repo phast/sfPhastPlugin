@@ -151,7 +151,7 @@ class sfPhastUIResponse extends ArrayObject
                 continue;
 
             }else if($field->getAttribute('custom')){
-	            $closure = create_function('$item', 'return ' . $field->getAttribute('recieve') . ';');
+	            $closure = create_function('$item', 'return ' . $field->getAttribute('custom') . ';');
 	            $this[$key] = $closure($item);
             }else if($field->getAttribute('receive')){
                 $expression = new Symfony\Component\ExpressionLanguage\ExpressionLanguage();
