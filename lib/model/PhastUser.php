@@ -98,6 +98,19 @@ class PhastUser extends BaseObject{
 
     }
 
+    public function inGroup($groupName){
+        return $this->cache('inGroup'.$groupName, function() use ($groupName){
+            return UserQuery::create()
+                ->filterById($this->id)
+                ->useUserGroupRelQuery()
+                    ->useUserGroupQuery()
+                        ->filterByName($groupName)
+                        ->endUse()
+                    ->endUse()
+                ->findOne();
+        });
+    }
+
     /**
      * @param $section UserGroupSection|string
      */
