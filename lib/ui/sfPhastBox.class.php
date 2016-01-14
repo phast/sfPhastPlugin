@@ -389,7 +389,7 @@ class sfPhastBox
 
 		$this->afterOpen .= "this.attachList($$.List.create('{$id}', {attach: this.getNode().find('div.{$guid}'), box: this, autoload: {$autoload}, ignorePk: {$ignorePk}, parameters: {{$params}}, wait: '{$wait}'}));";
 
-		return "<dl><dt>{$caption}</dt><dd><div class=\"{$guid}\"></div></dd></dl>";
+		return "<dl class=\"phast-box-type-field-list phast-box-field-list-{$id}\"><dt>{$caption}</dt><dd><div class=\"{$guid}\"></div></dd></dl>";
 	}
 
 
