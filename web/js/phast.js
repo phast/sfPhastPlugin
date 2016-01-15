@@ -985,7 +985,7 @@ $.fn.serializeJSON = function(){
                     formNode.find('div.phast-box-static').each(function(i, item){
                         item = $(item);
                         var field = item.data('field');
-                        if(root.data[field])
+                        if(root.data[field] !== undefined)
                             item.html(root.data[field]);
                     });
                     if(root.data.$placeholder){
