@@ -14,6 +14,8 @@
 ?>
 #}
 
+<input type="text" id="search">
+
 <ul class="iconset">
     {% for key, section in sections %}
         <li>
@@ -29,7 +31,9 @@
     (function(){
         var i = 0,
             $icon,
-            $icons = document.querySelectorAll('.iconset i');
+            $icons = document.querySelectorAll('.iconset i'),
+            $search = document.getElementById('search'),
+            searchTimer;
 
         while($icon = $icons[i++]){
             $icon.onclick = function(){
@@ -38,6 +42,27 @@
                 box.getNode().css({left: 'auto', padding: 0}).find('input').css({border: 'none'}).select();
             }
         }
+
+        $search.onkeyup = function(){
+            var self = this;
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function(){
+                var $icon, i = 0;
+
+                while($icon = $icons[i++]){
+                    if($icon.title.indexOf(self.value) >= 0){
+                        $icon.style.display = 'inline-block';
+                    }else{
+                        $icon.style.display = 'none';
+
+                    }
+                }
+            }, 300);
+        };
+
+        $search.focus();
+
+
     })();
 
 </script>
