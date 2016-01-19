@@ -15,7 +15,8 @@ class PhastUser extends BaseObject{
     }
 
     public function getCredentials(){
-        return UserCredentialQuery::create()
+        return array_merge(
+            UserCredentialQuery::create()
                 ->useUserCredentialRelQuery()
                 ->useUserGroupQuery()
                 ->useUserGroupRelQuery()
@@ -24,8 +25,19 @@ class PhastUser extends BaseObject{
                 ->endUse()
                 ->endUse()
                 ->select('Name')
-                ->find()
-                ->toArray();
+                ->find()->toArray(),
+            array_map(
+                function($name){
+                    return '#' . $name;
+                },
+                UserGroupQuery::create()
+                ->useUserGroupRelQuery()
+                    ->filterByUserId($this->id)
+                    ->endUse()
+                ->select('Name')
+                ->find()->toArray()
+            )
+        );
     }
 
     public function setGroup($groups, $consist = null){
