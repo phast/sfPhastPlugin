@@ -59,6 +59,10 @@ class sfPhastExecutionFilter extends sfExecutionFilter
 			$viewName = $output;
 		}
 
+        if($request->isXmlHttpRequest() && is_object($viewName) && $viewName instanceof PropelArrayCollection){
+            $viewName = $viewName->toArray();
+        }
+
 		if($request->isXmlHttpRequest() && is_array($viewName)){
 			$response = $this->context['response'];
 			$response->setContent(json_encode($viewName));
