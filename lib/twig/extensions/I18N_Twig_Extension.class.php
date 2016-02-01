@@ -21,6 +21,26 @@ class I18N_Twig_Extension extends Twig_Extension
             $translation = $context->get('i18n')->__($text, $args, $domain);
             return $translation;
         });
+        $twig_functions['date_human'] = new Twig_SimpleFunction('date_human', function($timestamp, $domain = 'messages', $args = null) {
+            $date_now = strtotime(date("Y-m-d", time()) . " 00:00:00");
+            $tomorrow = strtotime("+1 day", $date_now);
+            $yesterday = strtotime("-1 day", $date_now);
+            $date_in = strtotime(date("Y-m-d", $timestamp) . " 00:00:00");
+            $context = sfContext::getInstance();
+            if ($date_now == $date_in) {
+                $translation = $context->get('i18n')->__("Сегодня", $args, $domain);
+            }
+            else if ($tomorrow == $date_in) {
+                $translation = $context->get('i18n')->__("Завтра", $args, $domain);
+            }
+            else if ($yesterday == $date_in) {
+                $translation = $context->get('i18n')->__("Вчера", $args, $domain);
+            }
+            else {
+                $translation = false;
+            }
+            return $translation;
+        });
         return $twig_functions;
     }
 
