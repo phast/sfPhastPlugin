@@ -81,7 +81,7 @@ class settingsActions extends sfActions
             }
 
             <div class="form-section">
-                Загрука...
+                Загрузка...
             </div>
 
             {#event
