@@ -1506,11 +1506,11 @@ $.fn.serializeJSON = function(){
     });
 
     tinymceSettings.text = $.extend({}, tinymceSettings.simple, {
-        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,widget,|,formatselect,styleselect,|,removeformat"
+        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,sub,sup,bullist,numlist,widget,|,formatselect,styleselect,|,removeformat"
     });
 
     tinymceSettings.image = $.extend({}, tinymceSettings.simple, {
-        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,bullist,numlist,image,widget,|,formatselect,styleselect,|,removeformat"
+        theme_advanced_buttons1 : "bold,italic,underline,link,unlink,sub,sup,bullist,numlist,image,widget,|,formatselect,styleselect,|,removeformat"
     });
 
     $(function(){
