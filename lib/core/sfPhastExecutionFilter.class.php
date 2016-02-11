@@ -59,18 +59,14 @@ class sfPhastExecutionFilter extends sfExecutionFilter
 			$viewName = $output;
 		}
 
-        if($request->isXmlHttpRequest() && is_object($viewName) && $viewName instanceof PropelArrayCollection){
+        if(is_object($viewName) && $viewName instanceof PropelArrayCollection){
             $viewName = $viewName->toArray();
         }
 
-		if(is_array($viewName) and ($request->isXmlHttpRequest() or 'application/json' == $request->getContentType())){
+		if(is_array($viewName)){
 			$response = $this->context['response'];
 			$response->setContent(json_encode($viewName));
 			return sfView::NONE;
-		}
-
-		if(is_array($viewName)){
-			$action->forward404();
 		}
 
 		return null === $viewName ? sfView::SUCCESS : $viewName;
