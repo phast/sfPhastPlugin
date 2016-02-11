@@ -213,4 +213,11 @@ class sfPhastRequest extends sfWebRequest
         return $result;
     }
 
+    public function getJsonContent(){
+        if('application/json' == $this->getContentType() and $content = $this->getContent()){
+            return json_decode($content, true);
+        }
+        return [];
+    }
+
 }
