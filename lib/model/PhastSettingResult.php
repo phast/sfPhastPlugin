@@ -12,7 +12,7 @@ class PhastSettingResult extends BaseObject
     public function getTitle(){
         $title = '#' . $this->getId();
 
-        if($titleValue = SettingValueQuery::create()->filterBySettingResult($this)->useSettingFieldQuery()->filterByKey('title')->endUse()->findOne()){
+        if($titleValue = SettingValueQuery::create()->filterBySettingResult($this)->useSettingFieldQuery()->filterByKey('title%')->endUse()->findOne()){
             if($titleValue->getText())
                 return $titleValue->getText();
             else
