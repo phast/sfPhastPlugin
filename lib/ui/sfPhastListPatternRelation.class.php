@@ -12,7 +12,7 @@ class sfPhastListPatternRelation{
 	;
 
 	public function __construct(sfPhastListPattern $pattern, $rel){
-		if (!preg_match('/^([\w\d_]+)\.([A-Z_]+|%)$/', $rel, $match))
+		if (!preg_match('/^([\w\d_]+)\.([A-Z_]+|%)(?:.([A-Z_]+))?$/', $rel, $match))
 			throw new sfPhastException(sprintf('Relation » Неверный формат %s', $rel));
 
         if($match[2] == '%'){
@@ -25,7 +25,7 @@ class sfPhastListPatternRelation{
         }else{
             $column = $pattern->getTableMap()->getColumn(strtolower($match[2]));
 
-            if (!$column->getRelatedColumnName())
+            if (!isset($match[3]) and !$column->getRelatedColumnName())
                 throw new sfPhastException(sprintf('Relation » Поле %s не имеет связей', $column->getName()));
 
             $pattern->setField($column->getName());
@@ -33,7 +33,7 @@ class sfPhastListPatternRelation{
             $this->pattern = $pattern;
             $this->column = $column;
             $this->relPatternAlias = $match[1];
-            $this->relColumn = $this->column->getRelatedColumn();
+            $this->relColumn = isset($match[3]) ? $match[3] : $this->column->getRelatedColumn();
             if($this->pattern->getAlias() === $match[1]){
                 $this->recursive = true;
                 $this->pattern->setRecursiveRelation($this);
@@ -59,17 +59,26 @@ class sfPhastListPatternRelation{
             $relPattern->attachRelation($this);
 
         }else{
-            $relTableName = $this->column->getRelatedTable()->getPhpname();
             if(!$relPattern = $this->pattern->getList()->getPattern($this->relPatternAlias))
                 throw new sfPhastException(sprintf('FixRelations » Паттерн %s не найден', $this->relPatternAlias));
 
-            if($relPattern->getTable() !== $relTableName)
-                throw new sfPhastException(sprintf('Relation » Паттерн %s не содержит поле %s.%s ', $relPattern->getAlias(), $relTableName, $this->column->getName()));
+            if($this->relColumn instanceof ColumnMap){
+                $relTableName = $this->column->getRelatedTable()->getPhpname();
+
+                if($relPattern->getTable() !== $relTableName){
+                    throw new sfPhastException(sprintf('Relation » Паттерн %s не содержит поле %s.%s ', $relPattern->getAlias(), $relTableName, $this->column->getName()));
+                }
+                
+            }else{
+                $this->relColumn = $relPattern->getTableMap()->getColumn(strtolower($this->relColumn));
+            }
+
 
             $relPattern->setField($this->relColumn->getName());
             $relPattern->attachRelation($this);
 
             $this->relPattern = $relPattern;
+
         }
 
 
